@@ -1,0 +1,429 @@
+﻿Revision History
+
+Notes:
+	+ Feature changes or additions are prefix by '+' on each line.
+	- Historically added bug information is prefixed by '-'.
+	! Important historical information on each release, prefixed by '!'.
+	# Mantis/Bugzilla Bug ids are referenced as (#bugid).
+	* Note to clarify customer query.
+
+#########################################################################################
+
+
+Revision ONEINTERFACE 3.0.1.5 (09/06/2010 7:30 PM )
+Release Features : 
+                   + Partial authorization not supported by One1  for Hypercom-USA
+		   + Void not supported by One1-Vx810
+                   + Updating of grecr.properties with correct Activation code
+		   + Exception in license – Premature end of line and Content is not allowed in prolog
+		   + D0 command before all sale/void/refund/settle commands to make sure the terminal is 
+		     ready to process transactions (T4220 HKK)
+
+Revision ONEINTERFACE 3.0.1.0 (31/05/2010 11:32 )
+Release Features : 
+                   + Error Code handling
+		   + Separation of gripsmx
+                   + License key validation
+
+Revision ONEINTERFACE 3.0.0.2 (10/05/2010 17:30 )
+Release Features : 
+                   + Support for Dynamic paths
+
+Revision ONEINTERFACE 3.0.0.1 (10/05/2010 17:30)
+Release Features : 
+                   + Bug fixed for OMC issue
+
+Revision ONEINTERFACE 3.0.0.0 (03/05/2010 17:30 )
+Release Features : 
+                   + OMC Integration
+                   + MP Integration
+                   + EMS Integration
+
+Revision grecr-2.2.0.67(23/04/2010 17:30 )
+Release Features : 
+                   + Integral Refund bug fix
+                   + Pre auth support added for Integral
+                   + Support for handling receipt response
+
+Revision grecr-2.2.0.66(20/04/2010 22:31 )
+Release Features :
+                  + Integral : Fix for LRC issue.
+
+Revision grecr-2.2.0.65(20/04/2010 22:31 )
+Release Features :
+                  + Integral : modification of request packet creation[To resolve issue "terminal not responding"].
+
+Revision grecr-2.2.0.64(20/04/2010 17:39 )
+Release Features :
+                  + Integral : fetching unavailable request fiekds from properties file
+
+Revision grecr-2.2.0.63(19/04/2010 18:27)
+Release Features :
+                  + Integral : Ignoring the delay message and waiting for success response till the specified time out.
+		  + Ingenico formatter : Transaction supported ECRinit,Sale[veraion1.0]
+
+Revision grecr-2.2.0.62(09/04/2010 13:40 )
+Release Features :
+                  # Mantis bug fix #0015636 
+
+Revision grecr-2.2.0.61(08/04/2010 16:23 )
+Release Features :
+                  + Handling the service ids [<RefundService>03</RefundService>]
+
+Revision grecr-2.2.0.60(07/04/2010 18:37 )
+Release Features :
+                  + Settlement transaction implementation for HypercomUSA
+		  + EcrInit is change to handle J4 field based on log files.
+		  + RRN from request is remaped to beused as Invoice-number in void transaction
+		  # mantis bug fix #0015452
+		  # mantis bug fix #0015524
+
+Revision grecr-2.2.0.59(06/04/2010 16:08 )
+Release Features :
+                  + TFS enhancement [Bank-account & Bank-Cheque]
+
+Revision grecr-2.2.0.58(06/04/2010 13:56 )
+Release Features :
+                  + CR001 :  header version 1.6 ,
+		  + CR001 :Render Receipt  implementation for txresp(only for 1.6)
+		  + CR002 : Uploading error message into Event viewer.
+		  + CR002 : TFS Card number encryption, card validation(LUHNCHECK) and
+                            handling free text
+
+Revision grecr-2.2.0.57(31/03/2010 19:48 )
+Release Features :
+                  + TFS enhancement : Handling Service id 03
+		  + Integral Serial communication issue.
+
+Revision grecr-2.2.0.56(31/03/2010 16:12 )
+Release Features :
+                  # mantis bug fix #0015536
+		  + support for header version 1.6
+		  + Render Receipt  implementation for txresp(only for 1.6)
+		  + Fix for Integral formatters <STX> and <ETX> Issue
+
+Revision grecr-2.2.0.55(30/03/2010 13:27 )
+Release Features :
+                  + Fix for MICROS issues [Sequential Transaction Failure]
+
+Revision grecr-2.2.0.54(29/03/2010 19:24 )
+Release Features :
+                  + CR002 : Performance monitoring request response time
+                  + Card Validation.
+
+Revision grecr-2.2.0.53(26/03/2010 21:12 )
+Release Features :
+                  + HypercomUSA formatter : supported transaction ECRInit,Sale,Void
+                  + CR002 : Uploading error message into Event viewer.
+                  + CR002 : TFS Card number encryption, card validation(LUHNCHECK) and
+                                handling free text
+
+Revision grecr-2.2.0.52(19/03/2010 18:45 )
+	+ handling the refund service for reisuue
+
+Revision grecr-2.2.0.51(19/03/2010 18:00 )
+	+ Integral formatter is upgraded to specification 3.3
+        + Unlike earlier all request fields(51 fields) are sent to terminal, if not
+                   available empty value is sent.
+        * Lrc is calculated for <PACKET+ETX> to this STX is prepended. 
+
+Revision 2.2.0.50(19/03/2010 09:57)
+	* Release for MICROS Hedaer Id implementation and internal Response Mapping
+
+Revision 2.2.0.49(15/03/2010 17:03)
+	* Release for New Formatter Implementation(Integral 2.7).
+
+Revision 2.2.0.48(12/03/2010 17:26 )
+	* Release to resolve Customer fields length and defult reponse
+
+Revision 2.2.0.47(11/03/2010 17:55 )
+	* Release to resolve Micros issues(Internal Response mapping) with POSID Enhancement
+	
+Revision 2.2.0.46(11/03/2010 02:08)
+	* Release to resolve Micros issues(Specific for GRECR2GRECR)
+	* TipAdjustment Transaction implementation for GRECR2GRECR
+
+Revision 2.2.0.45(09/03/2010 18:44)
+	* Release to resolve  bug ID's #0015246,#0015247
+Revision 2.2.0.44(04/03/2010 13:27  )
+	* Release to resolve Micros Response processing delay
+
+Revision 2.2.0.43(02/03/2010 18:18 )
+	* Release to resolve bug ID's #0015147
+
+Revision 2.2.0.42(02/03/2010 14:34 )
+	* Release to resolve bug ID's #0015136,#15141 & #15137
+
+Revision 2.2.0.41 (01/03/2010 13:54 )
+	* Fix for the bug iD #0015115 : handling ASCII255 charset.
+	* Instaler : Replaced the old Global-Refund image with new Global-Blue
+
+Revision 2.2.0.40 (25/02/2010 16:48 )
+	* Fix for Country codes mismatch in gripsmx(Country code mismatched with Country Name in previous version #0015021).
+
+Revision 2.2.0.39 (25-02-2010 14:33 )
+	* Handling ISO Country codes for gripsmx #0015021
+	* Installer setup issue.
+	* GRECR2GRECR internal response field mapping issue.
+
+Revision 2.2.0.38 (23-02-2010 12:55 )
+	* This release contains the Installer issue
+	* Fix for TFS service id miscalculation.
+	+ Micros : Addition of validations
+
+Revision 2.2.0.37 (22-02-2010 18:11 )
+	+ Bug fix release to resolve Refund-service issue related to TFS.
+
+Revision 2.2.0.32 (19-02-2010 23:59 )
+	* Modified the response code to display 2 digit response code instead of single digit(As per Pranav's request).
+	+ Fix for the Issue with mismatching of values in Service tag(TFS).
+
+Revision 2.2.0.23 (12-02-2010 19:09 )
+	* Release to resolve bug #0014931
+
+Revision 2.2.0.22 (11/02/2010 19:12 )
+	* Release to resolve bug #0014774, #0014907
+
+Revision 2.2.0.21 (08-02-2010 15:39 )
+	* Micros related bug fixe's
+
+Revision 2.2.0.20 (08-02-2010 15:39 )
+	* Release to resolve bug #0014846
+
+Revision 2.2.0.18 (13/01/2010 14:06 )
+	+ Micros implementation for T4220 and T2100 formatters.
+
+Revision 2.2.0.17 (08/01/2010 13:02 )
+	+ Addition of XSD TFS related transaction.
+	+ Bug Fixes for T2100, T4220, Ocius relates issues.
+
+Revision 2.2.0.16 (07/01/2010 00:23 )
+	+ Micros Integrated with GRECR2GRECR formatter.
+	* Bug Fixes for T2100, T4220,Ocius and GRECR2GRECR,TFS related issues.
+
+Revision 2.2.0.15 (05/01/2010 17:35 )
+	+ Addition of validations for all formatters related transaction's for both verion's 1.4 and 1.5.
+
+Revision 2.2.0.14(29/12/2009 16:17 )
+	+ Support for GRECR2GRECR socket version.
+	+ Implementation for properties based routing of transaction either to terminal or TFS server.
+
+Revision 2.2.0.13(17/12/2009 15:55 )
+	+ This release has the fix for CUP transaction for Formatter T2100.
+
+Revision 2.2.0.11(15/12/2009 20:25 )
+	* Updation of exception handling to fix breaking of transaction-response in ocius formatter.
+
+Revision 2.2.0.10(15/12/2009 18:01 )
+	* #14173 Bug fix release to resolve Negative header in TxTFSResp2 - PDF cheque response.
+
+Revision 2.2.0.9(15/12/2009 13:38 )
+	* bug fixes related to formatters.
+
+Revision 2.2.0.4(12/12/2009 07:34 )
+	+ Bug fix release to resolve bugs in EcrInitResp(1.5).
+	+ Updation of the XSD's.
+
+Revision 2.2.0.2(11/12/2009 06:06 )
+	+ Multi version Enhancement to support version's 1.4 and 1.5
+
+Revision 2.0.0.1 (20090822)
+	* Bug fix release to resolve bug id's 20752,20989,20990,21363,21365,21373,21413
+	+ Package Structure and Folder Structure Changed
+	+ Ocius Formatter
+	+ GRECR Formatter
+	+ IP Communication Support
+	+ SFTP Upload
+	+ Settlement File Generation
+	+ TxReq PreAuth, Pre Auth Top Up, Pre Auth Completion
+Revision 1.3.3.3 (20090429,20090429)
+	* Bug fix release to resolve blocker issue with cancel of purchases.
+	+ Fixed Mantis #10521 (http://mantis.globalrefund.com/view.php?id=10521).
+	+ Property "grecr.GRTxBindHostname" now accepts comma separated list of interface 
+	  ip-addresses or names. Default remains "127.0.0.1" for loopback interface ONLY.
+	+ Attempts to TxReq(1).Amount=0, now result in TxResp.TxResult=DECLINED=2.
+	+ Attempts to TxReq(void=7) without receiptNo, also causes TxResp.TxResult=DECLINED=2.
+	+ TRED=N until a successful request AND configured with "grecr.TfsForceFlag=true".
+	+ Now uses VTI 1.0.3.7, grecrCommon-1.0.3.6.
+	+ Resolved potential bug with EcrInit responses not being sent in exceptional cases.
+	+ Formalised the mappings between VTI presentation header response codes, and the
+	  GRTX.TxResp.TxResult value to use. (Excel mapping document available separately).
+	+ Windows installer now shipped as part of package:
+		# installer.exe
+	+ Known Issue: Installer programs needs for previous version's uninstaller to be 
+	  run prior to install. This will be updated in later releases to handle "upgrades".
+	+ Start->Programs entries for starting, stopping and un-installing GRECR. 
+	+ Default vti.settleResponseCount=4.
+	+ Resolved additional but unused jars in deployed image.
+	+ Java for deployed image now uses optimization without debug information.
+	+ Re-release with changed VTI configuration: vti.terminalAttachedCheck is now false.
+	
+Revision 1.3.3.2 (20090421)
+	* Update to help Gorm perform certification.
+	+ New handing of NUL bytes at start and end of VTI fields, to prevent EMV problems.
+	+ New "currency code" mapping in grecr.properties, allows arbitrary mapping of input to
+	  output currency codes.
+	+ Now uses VTI 1.0.3.3
+
+Revision 1.3.3.1 (20090420)
+	* Intended as the version to perform PCI DSS testing with.
+	# Fixes the Windows Service issue (incorrectly encoded file prevented namespace update).
+	# Includes VTI 1.0.3.1 which splits the configuration of the HP printer flag between multiple printer
+	  parameters, so can fine grain activate/deactivate on per command basis.
+
+Revision 1.3.2.28 (20090415)
+	+ Enhanced TxResp.Receipt.PAN masking
+	+ Fixed documented versus XSD "iVAT1" and not "iVat1" problems.
+	+ Checked handling of emvPosEntryMethod and ensured fallback of "manual".
+
+Revision 1.3.2.27 (20090414)
+	+ Terminal attachment handling updated to use *any* signal as "okay".
+	+ HP printer status handling added for VTI printer.
+	+ New configuration parameters. GrtxValidateXml.
+
+Revision 1.3.2.25 (20090331)
+	+ Fixes for handling of mandatory, actually optional XML fields.
+	+ Fixed potential loss of Settle response.
+	+ Fixed instances where server was closing connections upon error.
+	+ Added logging for terminal attachment issues.
+	- Now have NEWLY borken Credit Card handling. Under analysis.
+	+ Fixed responseCount being hardwired to 5000, now vti.properties can override.
+	+ Added "#n of m expected" logging for multiple Settle Responses.
+	
+Revision 1.3.2.22 (20090330)
+	+ Bug fixes:
+		+ Amounts and other fields of the TxTFS req are OPTIONAL, not mandatory as
+		  was understood from the documentation.
+		+ Yet another Credit Card masking update. Since we were masking ALL PANs, we
+		  could not pass the "POS sends known PAN" TEST.
+		+ Multiple responses are unreliable due to their device (profile?) specific
+	      behaviour. Fix is to add a Configurable response count added to vti.properties.
+		+ Missing optional date and time GRTx fields to be interpreted as "Today/Now".
+	+ Attempted purchase requests where no card is presented, should now be handled
+	  without causing the server to fault on the non-compliant Purcahse Response.
+
+Revision 1.3.2.19 (20090325)
+	+ Fixes for YET again Credit Card handling. All PANs now stored masked ONLY.
+	+ Bug fixes for lots of issues reported by Gorm.
+	+ Support for multiple responses for Settle("000"), with basic handling of 6 responses.
+	
+Revision 1.3.2.16 (20090324)
+	+ Added support for configurable "default" local currency handling.
+	  (Currently set to "HKD"). 
+	+ Updated build process to prevent classpath problems.
+	+ GripsMX client updated to include various fixes.
+	+ Updated test suite.
+	+ Annoying bug in version number presentation.
+	+ Small bugs in VTI field handling, especially padding.
+
+Revision 1.3.2.0 (20090323)
+	+ VTI:
+		+ State machine bug fixes, for retry/timeout.
+		+ Schema management updates (combined duplciated elements).
+		+ Extended type checking of field content and length.
+		+ Credit Card masking, update to match revised requirements.
+		+ Revised and updated Test cases.
+		+ Device checking configuration parameters updated.
+		+ Added functionality to check for attached devices, sadly using
+		  CSR and NOT using DTR due to device errors.
+		+ Added configuration parameter to check if device is attached before 
+	      trying IO.
+	    + Refactored encoding/decoding to remove duplicated code.
+	    + Made all VTI Protocol Parameter settings configurable via vti.properties.
+	    + Checked field mappings.
+	+  GRECR:
+		+ Mapping of approval code updated to match revised requirements.
+		+ Settle and ECRInit request handling checked.
+		+ New "DeskID" parameter for GripsMX handling.
+		+ Fixed bug that connection was being closed on failed responses.
+	
+Revision 1.3.1.1 (20090304)
+	+ Changed TxType card mappings, now:
+		1. Use VTI NAME as the primary identifier.
+		2. Added AMEX->AE mapping.
+		3. Added JCB->JC mapping.
+		4. Have no TxType value for "CUP". ??
+		5. Use prefix match of "DIN" to TxType.DI
+
+	
+Revision 1.3.1.0 (20090304)
+	Changes in response to GRECR testing error reports.
+	+ Some reworked VTI field handling, to minimise copying.
+	+ Unified Purchase/Void/Refund field handling at the VTI level.
+	+ Unified Purchase/Void/Refund field handling at the VTI level.
+	+ Unified Purchase/Void/Refund field handling at the GRCER level.
+	+ Enabled INFO dump trace of SerialDevice read/write buffers.
+	- Functionality should be good, but detected issue with Field handling
+	  (duplication) that should be fixed in later release.
+
+
+Revision 1.3.0.5 (2009-02-27 11:07)
+	+ Tested and updated fix for StackOverflow error on failed ECR InitReq (#0009827)
+	- Has issues with fields in the GRTx responses for Refund, void, ...
+
+Revision 1.3.0.4 (20090226 22:44)
+	+ Tentative fix for StackOverflow error causing failed ECR InitReq (#0009827).
+	+ Only tested on "mock" GRECR due to lack of VTI device by developer at home.
+	! Needed further updates and should not be used.
+
+Revision 1.3.0.3 (20090226 22:26)
+	+ Point release to assist in reproduction of (#0009827).
+	+ Epicor test data was not communicated to developers, so reproduced from traces
+	  and logs sent by epicor.
+	! This is purely a "reproduce the error" release. No changes to core functionality,
+	  just updated test classes.
+
+Revision 1.3.0.2 (2009-02-26 14:59)
+	+ Updated test client to produce more realistic (includes more optional fields) TxReq.
+	+ Fixed issue with missing BatchId field from XML schemas, and TexReq handling, to
+	  match "IpSquare Design Notes v.06".
+	+ Altered CurrencyCode handling in XML schema and code, to String, from integer.
+	  (ISO 3 digit code would be improperly handled by XML parser otherwise, and should
+	   be treated as a "constrained" but otherwise opaque string.)
+	+ Discovered potential conflict with mapping of GRTx.TxReq.ProdInfo.ProdNum.
+	  *Until information supplied, no mapping from Txreq to it are performed*
+		a. Currently mapped as optional element to VTI.productCode1(S1)
+		b. This appears incorrect since confusion with identity
+		   of the product versus the number of units of product purchased.
+		c. VTI rejects too long (greater than 2 char) codes.
+		d. VTI rejects ?unknown? 2-char codes but we have no way to know 
+		   what the ?allowed? codes are.
+	+ Until product information issues resolved, cannot handle TxReq.ProdInfo.
+	* The API version of the "Commons" in the logfile is of an IPSQUARE utility library,
+	   and should of course NOT match the GRECR release, since has own versioning.
+
+
+Revision 1.3.0.1 (2009-02-26 14:59)
+	+ Point release to fix a reported problem with "CurrencyCode" field in GRTx.TxResp.
+	+ Dynamic Currency Conversion not supported, until Viennese.Phase.II or "Stage3".
+
+
+Revision 1.3.0.0 (2009-02-26 00:13)
+	+ First version incorporating Sumi's re-designed GRTx.TxResp and its Receipt fields.
+	+ First release with end-to-end Void and Refund capability.
+	+ Numerous fixes to field mappings.
+	+ Enhanced exception handling to ensure TxResp sent for failed operations.
+	+ Additional Session parameter handling, from ECRInitReq.
+	+ Full support for GRTx.ECRInitReq.Decimals mapping to/from VTI amounts.
+
+
+
+Revision 1.2.2.1 (2009-02-12)
+	Map GRTxECR   /SettleReq/AcqID to VTI settle field NII
+	In current test-environment pass "019" to settle with HSBC
+
+	PAN trucation/blinding in GRTxECR TxResp/CardInfo/Pan and TxResp/Receipt/CardNumber
+
+
+Revision 1.2.2.0 (2009-02-11)
+
+	Fixes for real Sales transaction
+	
+	supports Void and Refund
+
+
+Revision 1.2.1.0 (2009-02-06)
+
+   GRTxECR v1.4.0 ASCII header
+
+   PAN truncation for PCI DSS compliance

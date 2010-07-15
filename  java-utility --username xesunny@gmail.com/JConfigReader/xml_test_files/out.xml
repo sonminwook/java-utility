@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><math>
+<simple-equations>
+  <first_degree_equation>
+      First-degree equation:
+      <terms_first_degree a="0.0" b="0.0"/>
+      <solution>"-b/a"</solution>
+  </first_degree_equation>
+</simple-equations>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+<SignedInfo>
+	<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+	<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+	<Reference URI="">
+		<Transforms>
+			<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+		</Transforms>
+		<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+		<DigestValue>PlQASEXK+FR8BAhzfgtKfh79LmM=</DigestValue>
+	</Reference>
+</SignedInfo>
+
+<SignatureValue>
+GyVmEt98etVVfsXkwn2jxSu7RZlxQCcKtVmP3wbDGR6ldYgSZTFGOoBH9TlHeYisegtBGATVl8KKo2VmuxhJIw==
+</SignatureValue>
+<KeyInfo>
+	<KeyValue>
+		<RSAKeyValue>
+			<Modulus>k+MCpl2XFYmUyrugm+Xw5Fpch5PKrFAmgALxMbznd5j1k4QE+qagcQwxwLyVdgVhnHPQ3k/SaHc8il8iQmt5Vw==
+			</Modulus>
+			<Exponent>AQAB</Exponent>
+		</RSAKeyValue>
+	</KeyValue>
+</KeyInfo>
+</Signature>
+</math>
