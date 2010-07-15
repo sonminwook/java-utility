@@ -108,14 +108,14 @@ public class PropReader {
 								//----MEANS This is the first time.
 								try {
 									handler=(PropHandler)Class.forName("com.GR.handler."+className).newInstance();
+									handler.loadPropertiesFile(location + File.separator+ name);
+									handler.initialize();
+									handler.addToSession(propMap);
+									beanPropHandlerMap.put(propMap.get(name), handler);
 								} catch (ClassNotFoundException e) {
 									logger.info("No Handler/Bean has been defined for the ["+name+"] properties file");
 									logger.error("IGNORE -->", e);									
-								}
-								handler.loadPropertiesFile(location + File.separator+ name);
-								handler.initialize();
-								handler.addToSession(propMap);
-								beanPropHandlerMap.put(propMap.get(name), handler);
+								}								
 							}else{
 								handler = beanPropHandlerMap.get(propMap.get(name));
 								handler.loadPropertiesFile(location + File.separator+ name);
