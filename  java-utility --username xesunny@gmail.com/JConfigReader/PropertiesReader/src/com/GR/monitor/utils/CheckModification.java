@@ -32,14 +32,7 @@ public class CheckModification {
 		File directory = new File(folderPath);
 		List<String> tempList = new ArrayList<String>();
 		if(directory.isDirectory()){
-			    File[] files = directory.listFiles();
-			    for(File f : files){
-			    	if(!f.isDirectory()){
-			    		tempList.add(f.getName());
-			    	}
-			    }
-				String[] fileNames = (String[])tempList.toArray();
-				
+			    String[] fileNames = directory.list();				
 				//----------SIZE CHECK--------------
 				if(fileNames.length == lastLoopResults.size()){
 					//logger.debug("No File(s) has/have been added or Deleted, Checking for modification");

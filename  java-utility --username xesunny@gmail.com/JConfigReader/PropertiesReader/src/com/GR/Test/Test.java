@@ -28,8 +28,8 @@ public class Test {
 //		PropReader p = new PropReader("bin/properties");
 		try {
 			for(int i=0; i<10; i++){
-			logger.info("Name "+i+" "+myBean.getName());
-			myBean.setName("Testing");
+			System.out.println("Name "+i+" "+myBean.getName());
+			//myBean.setName("Testing");
 			Thread.currentThread().sleep(5000);	
 			
 			}
