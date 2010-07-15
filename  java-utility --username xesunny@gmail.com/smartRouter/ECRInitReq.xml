@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ECRInitReq>
+<POSID>goon</POSID>
+<TID>50899994</TID>
+<UseACK>Y</UseACK>
+<UseLRC>N</UseLRC>
+<MagCard>Y</MagCard>
+<EMVCard>N</EMVCard>
+<Decimals>2</Decimals>
+<Prompt>N</Prompt>
+<TermPrint>N</TermPrint>
+<DCC>Y</DCC>
+<TFS>Y</TFS>
+<ActivationCode>4A320-FF14B-FD4BD-29460</ActivationCode>
+</ECRInitReq>
