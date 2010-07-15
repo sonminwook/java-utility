@@ -102,25 +102,30 @@ public class PropReader {
 					switch(event){
 					case LOAD:{
 						for(String name : load){
-							String className = name.substring(0, name.indexOf(".")).concat("Handler");
-							PropHandler handler = null;
-							if(propMap.get(name)== null){
-								//----MEANS This is the first time.
-								try {
-									handler=(PropHandler)Class.forName("com.GR.handler."+className).newInstance();
+							try {
+								String className = name.substring(0, name.indexOf(".")).concat("Handler");
+								PropHandler handler = null;
+								if(propMap.get(name)== null){
+									//----MEANS This is the first time.
+									try {
+										handler=(PropHandler)Class.forName("com.GR.handler."+className).newInstance();
+										handler.loadPropertiesFile(location + File.separator+ name);
+										handler.initialize();
+										handler.addToSession(propMap);
+										beanPropHandlerMap.put(propMap.get(name), handler);
+									} catch (ClassNotFoundException e) {
+										logger.info("No Handler/Bean has been defined for the ["+name+"] properties file");
+										logger.error("IGNORE -->"+ e.getMessage());									
+									}								
+								}else{
+									handler = beanPropHandlerMap.get(propMap.get(name));
 									handler.loadPropertiesFile(location + File.separator+ name);
 									handler.initialize();
 									handler.addToSession(propMap);
-									beanPropHandlerMap.put(propMap.get(name), handler);
-								} catch (ClassNotFoundException e) {
-									logger.info("No Handler/Bean has been defined for the ["+name+"] properties file");
-									logger.error("IGNORE -->", e);									
-								}								
-							}else{
-								handler = beanPropHandlerMap.get(propMap.get(name));
-								handler.loadPropertiesFile(location + File.separator+ name);
-								handler.initialize();
-								handler.addToSession(propMap);
+								}
+							} catch (ArrayIndexOutOfBoundsException e) {
+								logger.info(name + " doesn't seem to be a valid property file name");
+								logger.error("IGNORE -->"+ e.getMessage());	
 							}
 														
 						} //End of For Loop for Load Class

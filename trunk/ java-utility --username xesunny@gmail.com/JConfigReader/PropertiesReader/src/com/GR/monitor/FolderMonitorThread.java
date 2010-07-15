@@ -54,7 +54,6 @@ public class FolderMonitorThread implements Runnable {
 	}
 	
 	public void run(){
-		//logger.debug("Count no "+count++);
 		if(lastModifiedList.size() == 0){
 				new CollectData(lastModifiedList).collect(this.folderPath);
 				//return FolderEvent.NO_CHANGE;
@@ -132,7 +131,7 @@ public class FolderMonitorThread implements Runnable {
 				
 			}
 			//logger.debug("Loop completed");
-			if(this.folderEventList.size() != 0){
+			if(this.folderEventList.size() > 0){
 				this.proceed.lock();
 				try{
 					logger.debug("Notifying Controller thread that Data is ready");
