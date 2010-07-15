@@ -75,8 +75,8 @@ public class FolderMonitorThread implements Runnable {
 								logger.info("Following File(s) has/have been ADDED");
 								for(int i=0; i< fileAddedQueue.size(); i++){
 									String fileName = fileAddedQueue.pop();
+								if(!(new File(fileName)).isDirectory()){
 									logger.info(fileName);
-								if((new File(fileName)).isFile()){
 									this.load.push(fileName);
 									if(!this.folderEventList.contains(FolderEvent.LOAD)){
 										this.folderEventList.add(FolderEvent.LOAD);
@@ -91,8 +91,8 @@ public class FolderMonitorThread implements Runnable {
 								logger.info("Following File(s) has/have been DELETED");
 								for(int i=0; i< fileDeletedQueue.size(); i++){
 									String fileName = fileDeletedQueue.pop();
+								if(!(new File(fileName)).isDirectory()){
 									logger.info(fileName);
-								if((new File(fileName)).isFile()){
 									this.unload.push(fileName);
 									if(!this.folderEventList.contains(FolderEvent.UNLOAD)){
 										this.folderEventList.add(FolderEvent.UNLOAD);
@@ -107,8 +107,8 @@ public class FolderMonitorThread implements Runnable {
 								logger.info("Following File(s) has/have been MODIFIED");
 								for(int i=0; i< fileModifiedQueue.size(); i++){
 									String fileName = fileModifiedQueue.pop();
+								if(!(new File(fileName)).isDirectory()){
 									logger.info(fileName);
-									if(new File(fileName).isFile()){
 									this.load.push(fileName);
 									if(!this.folderEventList.contains(FolderEvent.LOAD)){
 										this.folderEventList.add(FolderEvent.LOAD);

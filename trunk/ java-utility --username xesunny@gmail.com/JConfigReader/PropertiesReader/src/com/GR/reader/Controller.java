@@ -115,11 +115,15 @@ INFINITE_LOOP:while(true){
 		logger.debug("Directory under monitor is :"+ directory2Monitor);
 		File f = new File(directory2Monitor);
 		if(f.isDirectory()){
-			for(String fileName : f.list()){
-				logger.debug(fileName);
-				this.load.push(fileName);				
+			for(File file : f.listFiles()){
+				if(!(file.isDirectory())){
+					logger.debug(file);
+					this.load.push(file.getName());
+				}
 			}			
-			this.folderEventList.add(FolderEvent.LOAD);
+			if(this.load.size() > 0){
+				this.folderEventList.add(FolderEvent.LOAD);
+			}
 			logger.debug(":::::::::::::::::::::::::::::::::::");
 		}else{
 			logger.debug(directory2Monitor + " is not a direcotry\n" );			
