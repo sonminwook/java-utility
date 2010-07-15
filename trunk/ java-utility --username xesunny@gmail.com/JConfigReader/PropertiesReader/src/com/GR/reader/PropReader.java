@@ -123,7 +123,7 @@ public class PropReader {
 									handler.initialize();
 									handler.addToSession(propMap);
 								}
-							} catch (ArrayIndexOutOfBoundsException e) {
+							} catch (StringIndexOutOfBoundsException e) {
 								logger.info(name + " doesn't seem to be a valid property file name");
 								logger.error("IGNORE -->"+ e.getMessage());	
 							}
