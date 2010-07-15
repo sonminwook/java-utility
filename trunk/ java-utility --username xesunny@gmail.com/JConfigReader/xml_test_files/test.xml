@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<math>
+<simple-equations>
+  <first_degree_equation>
+      First-degree equation:
+      <terms_first_degree a="0.0" b="0.0"></terms_first_degree>
+      <solution>"-b/a"</solution>
+  </first_degree_equation>
+</simple-equations>
+</math>
