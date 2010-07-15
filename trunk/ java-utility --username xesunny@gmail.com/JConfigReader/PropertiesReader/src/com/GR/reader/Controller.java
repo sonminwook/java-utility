@@ -100,8 +100,8 @@ INFINITE_LOOP:while(true){
 					}
 					this.prop.loadPropertiesFile();					
 				}catch(Exception e){
-					logger.error("Exception while controller thread interacting with folder monitor thread");
-					logger.error("Exception", e);
+						logger.error("Exception while controller thread interacting with folder monitor thread");
+						logger.error("Exception", e);					
 				}finally{
 					this.proceed.unlock();
 				}

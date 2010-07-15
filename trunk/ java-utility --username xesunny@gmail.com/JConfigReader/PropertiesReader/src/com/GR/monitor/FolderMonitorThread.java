@@ -1,6 +1,7 @@
 package com.GR.monitor;
 
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,10 +76,14 @@ public class FolderMonitorThread implements Runnable {
 								for(int i=0; i< fileAddedQueue.size(); i++){
 									String fileName = fileAddedQueue.pop();
 									logger.info(fileName);
+								if((new File(fileName)).isFile()){
 									this.load.push(fileName);
 									if(!this.folderEventList.contains(FolderEvent.LOAD)){
 										this.folderEventList.add(FolderEvent.LOAD);
 									}
+								}else {
+									logger.info(fileName +" is a directory, It will be ignored");
+								}
 								}
 								break;
 							}
@@ -87,10 +92,14 @@ public class FolderMonitorThread implements Runnable {
 								for(int i=0; i< fileDeletedQueue.size(); i++){
 									String fileName = fileDeletedQueue.pop();
 									logger.info(fileName);
+								if((new File(fileName)).isFile()){
 									this.unload.push(fileName);
 									if(!this.folderEventList.contains(FolderEvent.UNLOAD)){
 										this.folderEventList.add(FolderEvent.UNLOAD);
 									}
+								}else{
+									logger.info(fileName +" is a directory, It will be ignored");
+								 }
 								}
 								break;
 							}
@@ -99,10 +108,14 @@ public class FolderMonitorThread implements Runnable {
 								for(int i=0; i< fileModifiedQueue.size(); i++){
 									String fileName = fileModifiedQueue.pop();
 									logger.info(fileName);
+									if(new File(fileName).isFile()){
 									this.load.push(fileName);
 									if(!this.folderEventList.contains(FolderEvent.LOAD)){
 										this.folderEventList.add(FolderEvent.LOAD);
 									}
+								}else{
+									logger.info(fileName +" is a directory, It will be ignored");
+								  }
 								}
 								break;
 							}
