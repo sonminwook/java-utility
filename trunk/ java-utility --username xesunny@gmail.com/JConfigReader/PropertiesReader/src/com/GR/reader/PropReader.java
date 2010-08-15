@@ -53,6 +53,7 @@ public class PropReader {
 	private String location = null;
 	private static Logger logger = Logger.getLogger(PropReader.class);
 	private boolean priorityFlag = false;
+	private boolean isRefreshed = false;
 	
 	/**
 	 * This is the heart of application. In order to start, all it needs is location of properties
@@ -61,9 +62,9 @@ public class PropReader {
 	 * This program will also initiate a thread which will upload the properties file into cache and bind the cache to POJO.
 	 * @param location : Directory where properties files are stored. Either direct or relative path.
 	 */	
-	public PropReader(String location) {
+	public PropReader(String location, int timePeriod) {
 	 this.location = location;
-	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this);
+	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod);
 	 new Thread(detectiveOO7).start();	 
 	 logger.debug("CONTROLLER thread has been started");
 	 /*
@@ -80,7 +81,7 @@ public class PropReader {
 	}
 
 
-	/*
+	/**
 	 * This is the method which will upload the properties file into Cache and will bind
 	 * cache to POJO. This method will share a lock and condition object with ReturnMapValue 
 	 * method to avoid concurrent access to HashMap.
@@ -143,6 +144,7 @@ public class PropReader {
 			eventQueue.clear();
 			load.clear();
 			unload.clear();
+			isRefreshed = true;
 		}finally{
 			//-----------------NOTIFY the returnMapValue-----------
 			this.priorityFlag=false;
@@ -201,7 +203,7 @@ public class PropReader {
 
 	//----------------------RUNNING THE GARBAGE COLLECTOR-----------------
 	protected void finalize(){
-		logger.info("I am inside finalize method, I can kill the child threads now....");
+		logger.info("Inside finalize method, killing the child threads");
 		detectiveOO7.graceFullShutDown();
 		
 	}
@@ -215,5 +217,22 @@ public class PropReader {
 		detectiveOO7.graceFullShutDown();
 	}
 	
+	/**
+	 * this method is to do Force upload.
+	 */
+	public void refresh(){
+		updateLock.lock();
+		try{
+			detectiveOO7.refresh();
+			updateLock.unlock();
+			this.loadPropertiesFile();
+		}catch(Exception iae){
+			logger.error("Refresh action can not be performed");
+			logger.error("EXCEPTION", iae);
+		}
+		finally{
+			detectiveOO7.unlock();
+		}
+	}
 
 }

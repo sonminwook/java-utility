@@ -23,6 +23,7 @@ public class Controller implements Runnable{
 	private List<FolderEvent> folderEventList = null;
 	private String directory2Monitor = null;
 	private PropReader prop = null;
+	private int timePeriod = 5;
 	//private String mainFileName = null;
 	
 	private final ScheduledExecutorService executorPool = Executors.newScheduledThreadPool(1);
@@ -37,12 +38,14 @@ public class Controller implements Runnable{
 					 Stack<String> unload,
 					 List<FolderEvent> eventQueue,
 					 String directory2Monitor,
-					 PropReader prop){
+					 PropReader prop,
+					 int timePeriod){
 		this.load = load;
 		this.unload = unload;
 		this.folderEventList = eventQueue;
 		this.directory2Monitor = directory2Monitor;		
-		this.prop = prop;		
+		this.prop = prop;
+		this.timePeriod = timePeriod;
 	}
 	
 	//----------------STARTING TO MONITOR THE THREAD---------------------
@@ -126,7 +129,7 @@ INFINITE_LOOP:while(true){
 			}
 			logger.debug(":::::::::::::::::::::::::::::::::::");
 		}else{
-			logger.debug(directory2Monitor + " is not a direcotry\n" );			
+			logger.error(directory2Monitor + " is not a direcotry\n" );			
 		}
 	}
 	
@@ -137,7 +140,7 @@ INFINITE_LOOP:while(true){
 																	this.folderEventList,
 																	this.proceed,
 																	this.isProceed);
-		executorPool.scheduleWithFixedDelay(folderMonitor, 0, 5, TimeUnit.SECONDS);		
+		executorPool.scheduleWithFixedDelay(folderMonitor, 0, timePeriod, TimeUnit.SECONDS);		
 
 	}
 	
@@ -152,5 +155,14 @@ INFINITE_LOOP:while(true){
 			this.proceed.unlock();
 		}
 		//executorPool.shutdown();
-	}	
+	}
+	
+	void refresh(){
+		this.proceed.lock();
+		this.firstTime();		
+	}
+	
+	void unlock(){
+		this.proceed.unlock();
+	}
 }

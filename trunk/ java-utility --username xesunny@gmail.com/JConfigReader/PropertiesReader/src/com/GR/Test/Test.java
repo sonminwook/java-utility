@@ -21,7 +21,7 @@ public class Test {
 		// TODO Auto-generated method stub
 		
 	//	new Test().doIT();
-		PropReader p = new PropReader("bin/properties");
+		PropReader p = new PropReader("bin/properties",60);
 		Map<String, Bean> map = p.returnMapValue();
 		sunnyBean myBean = (sunnyBean)map.get("sunny.xml");
 		
@@ -31,6 +31,7 @@ public class Test {
 			System.out.println("Name "+i+" "+myBean.getName());
 			//myBean.setName("Testing");
 			Thread.currentThread().sleep(5000);	
+			p.refresh();
 			
 			}
 		}catch(Exception e){
@@ -59,7 +60,7 @@ public class Test {
 	public void doIT() {
 		PropReader[] array = new PropReader[100];
 		for(int i=0; i<100; i++){
-			array[i] = new PropReader("bin/properties");
+			array[i] = new PropReader("bin/properties",50);
 		}
 		try{
 			for(PropReader p : array){
