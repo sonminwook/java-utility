@@ -1,4 +1,4 @@
-package com.gr.oneInterface.utils;
+package com.javainsight.utils;
 
 
 import org.apache.log4j.Logger;

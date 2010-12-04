@@ -1,4 +1,4 @@
-package com.gr.oneInterface.utils;
+package com.javainsight.utils;
 
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.log4j.Logger;
 
-import com.gr.oneInterface.utils.params.Constants;
+import com.javainsight.utils.params.Constants;
 
 public class Sender implements SerialPortEventListener {
 

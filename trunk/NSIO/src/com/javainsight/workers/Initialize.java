@@ -1,4 +1,4 @@
-package com.gr.oneInterface.workers;
+package com.javainsight.workers;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -8,8 +8,8 @@ import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
-import com.gr.oneInterface.DTO.SerialConfiguration;
-import com.gr.oneInterface.utils.params.Constants;
+import com.javainsight.DTO.SerialConfiguration;
+import com.javainsight.utils.params.Constants;
 
 public class Initialize implements Callable<Boolean> {
 	
