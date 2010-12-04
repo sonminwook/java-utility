@@ -1,8 +1,8 @@
-package com.gr.oneInterface.workers;
+package com.javainsight.workers;
 
 import java.util.concurrent.Callable;
 
-import com.gr.oneInterface.utils.Sender;
+import com.javainsight.utils.Sender;
 
 public class Close implements Callable<Boolean> {
 

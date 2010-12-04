@@ -1,4 +1,4 @@
-package com.gr.oneInterface;
+package com.javainsight;
 
 public enum DataOperation {
 

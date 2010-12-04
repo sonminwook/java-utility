@@ -1,4 +1,4 @@
-package com.gr.oneInterface.utils.params;
+package com.javainsight.utils.params;
 
 public enum Baud {
 	BAUD_9600(9600, "9600-baud")

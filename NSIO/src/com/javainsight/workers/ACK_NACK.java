@@ -1,12 +1,12 @@
-package com.gr.oneInterface.workers;
+package com.javainsight.workers;
 
 import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
-import com.gr.oneInterface.DataResult;
-import com.gr.oneInterface.utils.Sender;
-import com.gr.oneInterface.utils.params.Constants;
+import com.javainsight.DataResult;
+import com.javainsight.utils.Sender;
+import com.javainsight.utils.params.Constants;
 
 public class ACK_NACK implements Callable<DataResult> {
 

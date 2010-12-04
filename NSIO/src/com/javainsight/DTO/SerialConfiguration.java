@@ -1,6 +1,6 @@
-package com.gr.oneInterface.DTO;
+package com.javainsight.DTO;
 
-import com.gr.oneInterface.utils.params.*;
+import com.javainsight.utils.params.*;
 
 public class SerialConfiguration {
 

@@ -1,4 +1,4 @@
-package com.gr.oneInterface;
+package com.javainsight;
 
 import gnu.io.SerialPort;
 
@@ -13,17 +13,17 @@ import org.apache.mina.core.session.IoSession;
 
 import com.gr.one1nterface.grecr.common.exception.CommunicatorException;
 import com.gr.one1nterface.grecr.common.interfaces.Communicator;
-import com.gr.oneInterface.DTO.SerialConfiguration;
-import com.gr.oneInterface.utils.HexToBytes;
-import com.gr.oneInterface.utils.Sender;
-import com.gr.oneInterface.utils.params.Constants;
-import com.gr.oneInterface.workers.ACK_NACK;
-import com.gr.oneInterface.workers.Close;
-import com.gr.oneInterface.workers.ENQ;
-import com.gr.oneInterface.workers.Initialize;
-import com.gr.oneInterface.workers.Response;
-import com.gr.oneInterface.workers.Send;
-import com.gr.oneInterface.workers.SendNRecieve;
+import com.javainsight.DTO.SerialConfiguration;
+import com.javainsight.utils.HexToBytes;
+import com.javainsight.utils.Sender;
+import com.javainsight.utils.params.Constants;
+import com.javainsight.workers.ACK_NACK;
+import com.javainsight.workers.Close;
+import com.javainsight.workers.ENQ;
+import com.javainsight.workers.Initialize;
+import com.javainsight.workers.Response;
+import com.javainsight.workers.Send;
+import com.javainsight.workers.SendNRecieve;
 
 /**
  * This is new Serial IO Implementatin for OneInterface.
