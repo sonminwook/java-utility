@@ -7,9 +7,9 @@ import gnu.io.SerialPortEventListener;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-
 import org.apache.log4j.Logger;
 
+import com.javainsight.exceptions.RS232Exception;
 import com.javainsight.utils.params.Constants;
 
 public class Sender implements SerialPortEventListener {
@@ -24,6 +24,7 @@ public class Sender implements SerialPortEventListener {
 	private Byte[] checkBytes = null;
 	private boolean neadCheck = false;
 	private String waitString = null;
+		
 	private ByteBuffer response = ByteBuffer.allocate(Constants.responseBufferCapacity);
 	private int respnseLength = 0;
 	private byte[] responseByte = null;
@@ -33,13 +34,17 @@ public class Sender implements SerialPortEventListener {
 	
 	private static Logger logger = Logger.getLogger(Sender.class);
 	
-	public Sender(SerialPort serialPort) throws Exception{
-		this.serialPort = serialPort;
-		/*
-		 * Add the EVENT Listener
-		 */
-		this.serialPort.addEventListener(this);
-		this.serialPort.notifyOnDataAvailable(true);		
+	public Sender(SerialPort serialPort) throws RS232Exception{
+		try{
+			this.serialPort = serialPort;
+			/*
+			 * Add the EVENT Listener
+			 */
+			this.serialPort.addEventListener(this);
+			this.serialPort.notifyOnDataAvailable(true);		
+		}catch(Exception e){
+			throw new RS232Exception(Constants.NSIO_ERROR_CODE_9, Constants.TOO_MANY_LISTEN_ERR_MSG, e);
+		}
 	}
 	
 	public boolean send(byte[] data, String wait, int waitTime, Byte... notifyByte){
@@ -66,12 +71,11 @@ public class Sender implements SerialPortEventListener {
 					this.neadCheck = true;
 					waitString.wait(waitTime);					
 			}}
-			
+								
 			/*
 			 * If waitString was notified, that means response was receieved. so Neadcheck should be false.
 			 */			
-			if(! neadCheck){
-				System.out.println("Sending true");
+			if(! neadCheck){				
 				return true;
 			}else{
 				return false;
@@ -253,6 +257,10 @@ public class Sender implements SerialPortEventListener {
 		return resp;
 	}
 	
+	public void clearResponse(){
+		this.resp = "";
+	}
+	
 	@Override
 	public void serialEvent(SerialPortEvent event) {
 		int size = 0;
@@ -281,7 +289,7 @@ public class Sender implements SerialPortEventListener {
 	        	/*
 	        	 * Store the data into response
 	        	 */
-	        	System.out.println(new String(read));
+	        	//System.out.println(new String(read));
 	        	resp += new String(read);
                 response.put(read);                
                 /*
