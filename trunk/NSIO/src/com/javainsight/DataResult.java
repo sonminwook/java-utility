@@ -8,5 +8,6 @@ public enum DataResult {
 	NACK,
 	ENQ,
 	NO_DATA,
+	BYTE_RECEIVED,
 	RESPONSE;
 }

@@ -6,14 +6,15 @@ import gnu.io.SerialPort;
 import java.util.Stack;
 import java.util.concurrent.Callable;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import com.javainsight.DTO.SerialConfiguration;
+import com.javainsight.exceptions.RS232Exception;
 import com.javainsight.utils.params.Constants;
 
 public class Initialize implements Callable<Boolean> {
 	
-	private static Logger logger = Logger.getLogger(Initialize.class);
+	//private static Logger logger = Logger.getLogger(Initialize.class);
 	private SerialConfiguration config = null;
 	private SerialPort serialPort = null;
 	private Stack<SerialPort> serialPortQueue = null;
@@ -25,8 +26,7 @@ public class Initialize implements Callable<Boolean> {
 	}
 
 	@Override
-	public Boolean call() {
-		logger.debug("========Initializing the NSIO===========");
+	public Boolean call() throws RS232Exception{
 		CommPortIdentifier portIdentifier = null;
 		try{
 			/*
@@ -37,9 +37,8 @@ public class Initialize implements Callable<Boolean> {
 			 * Step 2: Check if Port is already occupied by some other process.
 			 */
 			if(portIdentifier.isCurrentlyOwned()){
-				logger.error(Constants.NSIO_ERROR_CODE_6+ ") "+this.config.getComPort()+ " Port in already in use, owner ["+ portIdentifier.getCurrentOwner()+"]");
-				logger.error("!!! ===================== Initialization - FAILED =====================!!!");
-				return false;
+				String additionMSG = "\r\n"+this.config.getComPort()+ " Port in already in use, owner ["+ portIdentifier.getCurrentOwner()+"]";
+				throw new RS232Exception(Constants.NSIO_ERROR_CODE_4, Constants.INIT_ERR_MSG + additionMSG);
 			}
 			/*
 			 * Step 3: Open the port.
@@ -53,7 +52,7 @@ public class Initialize implements Callable<Boolean> {
 			 * appname - Name of application making this call. This name will become the owner of the port. Useful when resolving ownership contention.
     		 * timeout - Time in milliseconds to block waiting for port open. 
 			 */
-			this.serialPort = (SerialPort)portIdentifier.open("OneInterface", 300);
+			this.serialPort = (SerialPort)portIdentifier.open("JavaInsight", 5000);
 			/*
 			 * Step 4: Setting up serial Parameters.
 			 */
@@ -62,24 +61,22 @@ public class Initialize implements Callable<Boolean> {
 												this.config.getStopBits().getValue(),
 												this.config.getParity().getValue());
 			this.serialPort.setFlowControlMode(this.config.getFlowControl().getValue());
-			logger.debug("Serial Communication Params : COMPORT-"+ this.config.getComPort()
-													+" -\r\n Baud ["+ this.serialPort.getBaudRate()
+			/*
+			logger.debug("Serial Communication Params : \r\nCOMPORT ["+ this.config.getComPort()
+													+"] -\r\n Baud ["+ this.serialPort.getBaudRate()
 													+"]\r\n DataBits ["+ this.serialPort.getDataBits()
 													+"]\r\n StopBits ["+ this.serialPort.getStopBits()
 													+"]\r\n Parity ["+ this.serialPort.getParity()
-													+"]\r\n FlowControl ["+ this.serialPort.getFlowControlMode()+"]");
+													+"]\r\n FlowControl ["+ this.serialPort.getFlowControlMode()+"]"); */
 			/*
 			 * Step 5: Setting up input and output buffer size.
 			 */
 			this.serialPort.setInputBufferSize(this.config.getInputBufferSize());
 			this.serialPort.setOutputBufferSize(this.config.getOutputBufferSize());
 			this.serialPortQueue.push(this.serialPort);
-			logger.debug("========Initializing SUCCESSFUL===========");
 		}catch(Exception e){
-			logger.error(Constants.NSIO_ERROR_CODE_5+ ") "+this.config.getComPort()+ " Port failed to Initialize");
-			logger.error("!!! ===================== Initialization - FAILED =====================!!!");
-			logger.error("Exception -", e);
-			return false;
+			String additionMSG = "\r\n" + this.config.getComPort()+ " Port failed to Initialize";
+			throw new RS232Exception(Constants.NSIO_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);
 		}
 		return true;
 	}

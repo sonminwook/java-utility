@@ -1,9 +1,6 @@
 package com.javainsight.utils;
 
 
-import org.apache.log4j.Logger;
-
-
 /**
  * Demonstrate how to handle hex strings.
  *
@@ -16,8 +13,7 @@ public final class HexToBytes
     /**
      * precomputed translate table for chars 0..'f'
      */
-	private static Logger logger = Logger.getLogger(HexToBytes.class);
-    private static byte[] correspondingNibble = new byte['f' + 1];
+	 private static byte[] correspondingNibble = new byte['f' + 1];
     // -------------------------- PUBLIC STATIC METHODS --------------------------
 
     /**
