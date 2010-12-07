@@ -32,7 +32,7 @@ public class TEST {
 			instruction.setOperation(DataOperation.INITIALIZE);
 			instruction.setRequest(request, null);
 			instruction.setWait(waitObj);
-			instruction.setTimeOutInSeconds(1000);
+			//instruction.(1000);
 			
 			executor = new RS232Executor(instruction);
 			executor.execute();
