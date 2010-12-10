@@ -45,6 +45,8 @@ public class Response implements Callable<Boolean> {
 			}else {
 					return this.sender.send(request, waitString, waitTime, Constants.ETX);
 			}
+		}catch(RS232Exception e){
+			throw e;
 		}catch(Exception e){
 			throw new RS232Exception(Constants.NSIO_ERROR_CODE_5, Constants.RESPONSE_ERR_MSG, e);
 		}

@@ -57,6 +57,8 @@ public class ACK_NACK implements Callable<DataResult> {
 			}			
 		}
 		 return DataResult.NO_DATA;
+		}catch(RS232Exception e){
+			throw e;
 		}catch(Exception e){			
 			throw new RS232Exception(Constants.NSIO_ERROR_CODE_1, Constants.ACK_NACK_ERR_MSG, e);
 		}

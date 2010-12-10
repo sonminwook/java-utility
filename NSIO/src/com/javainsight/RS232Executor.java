@@ -19,7 +19,7 @@ import gnu.io.SerialPort;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import com.javainsight.DTO.Instruction;
 import com.javainsight.DTO.SerialConfiguration;
 import com.javainsight.exceptions.RS232Exception;
@@ -33,9 +33,15 @@ import com.javainsight.workers.Response;
 import com.javainsight.workers.Send;
 import com.javainsight.workers.SendNRecieve;
 
+/**
+ * This is the main class with which user will Interact mainly.
+ * @author sjain
+ * @date 07-DEC-2010
+ */
+
 public class RS232Executor {
 	
-	private static Logger logger = Logger.getLogger(RS232Executor.class);
+	//private static Logger logger = Logger.getLogger(RS232Executor.class);
 	/*
 	 * An Instruction object is needed, it will be assigned the value sent by Instructor
 	 */
@@ -51,11 +57,20 @@ public class RS232Executor {
 	private Sender sender = null;
 	private final ExecutorService executorPool = Executors.newCachedThreadPool();
 	
+	/**
+	 * Instruction Object must be Initialized properly.
+	 * @param instruction
+	 */
 	public RS232Executor(Instruction instruction){
 		this.instruction = instruction;
 		this.config = instruction.getConfig();
 	}
 	
+	/**
+	 * After every instruction passed to Instructor user must give
+	 * a call to execute method.
+	 * @throws RS232Exception
+	 */
 	public void execute() throws RS232Exception{
 			boolean status = false;
 			/*
@@ -80,21 +95,21 @@ public class RS232Executor {
 				break;
 				}
 			case SEND_N_WAIT_FOR_ACK:{
-				ACK_NACK ackSender = new ACK_NACK(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutInSeconds());
+				ACK_NACK ackSender = new ACK_NACK(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond());
 				DataResult result = executorPool.submit(ackSender).get();			
 				instruction.setResult(result);
 				break;
 			}
 			case SEND_N_WAIT_FOR_ENQ:{
 				
-				ENQ ackSender = new ENQ(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutInSeconds());
+				ENQ ackSender = new ENQ(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond());
 				DataResult result = executorPool.submit(ackSender).get();			
 				instruction.setResult(result);
 				break;
 			}
 			case SEND_N_WAIT_FOR_ETX:{
 				
-				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutInSeconds());
+				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond());
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -104,7 +119,7 @@ public class RS232Executor {
 			}case CLR_SEND_N_WAIT_FOR_ETX:{
 				this.getSender().clearResponse();
 				
-				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutInSeconds());
+				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond());
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -113,7 +128,7 @@ public class RS232Executor {
 				break;
 				
 			}case WAIT_FOR_ETX :{
-				Response response = new Response(null, this.getSender(), instruction.getWait(), instruction.getTimeOutInSeconds());
+				Response response = new Response(null, this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond());
 				status = executorPool.submit(response).get();			
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -122,7 +137,7 @@ public class RS232Executor {
 				break;
 			}
 			case SEND_N_WAIT_FOR_DATA:{
-				SendNRecieve worker = new SendNRecieve(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutInSeconds());
+				SendNRecieve worker = new SendNRecieve(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond());
 				DataResult result = executorPool.submit(worker).get();			
 				instruction.setResult(result);
 				if(result.equals(DataResult.RESPONSE)){				
