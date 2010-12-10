@@ -60,6 +60,8 @@ public class NotifyingBytes implements Callable<DataResult> {
 				}
 			}
 			 return DataResult.NO_DATA;
+			}catch(RS232Exception e){
+				throw e;
 			}catch(Exception e){	
 				throw new RS232Exception(Constants.RS232_NOTIFYING_BYTES_EXCEPTION,
 						Constants.NOTIFY_ERROR_MSG,

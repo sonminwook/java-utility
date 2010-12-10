@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 //import java.nio.ByteBuffer;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import com.javainsight.exceptions.RS232Exception;
 import com.javainsight.utils.params.Constants;
@@ -47,10 +47,12 @@ public class Sender implements SerialPortEventListener {
 //	private byte[] responseByte = null;
 	private String resp = "";
 	private String oneTimeResponse = "";
+	private Exception exception = null;
+	private boolean isException = false;
 	
 	
 	
-	private static Logger logger = Logger.getLogger(Sender.class);
+	//private static Logger logger = Logger.getLogger(Sender.class);
 	
 	public Sender(SerialPort serialPort) throws Exception{
 		this.serialPort = serialPort;
@@ -62,7 +64,7 @@ public class Sender implements SerialPortEventListener {
 	}
 	
 	public boolean send(byte[] data, String wait, int waitTime, Byte... notifyByte) throws RS232Exception{
-		logger.debug("Sending data to SerialPort Device");
+	//	logger.debug("Sending data to SerialPort Device");
 		try{
 			checkBytes = notifyByte;
 			this.waitString = wait;
@@ -87,7 +89,10 @@ public class Sender implements SerialPortEventListener {
 					this.neadCheck = true;
 					waitString.wait(waitTime);					
 			}}
-			
+			/*
+			 * Check for exception
+			 */			
+			this.checkEventException();
 			/*
 			 * If waitString was notified, that means response was receieved. so Neadcheck should be false.
 			 */			
@@ -103,6 +108,10 @@ public class Sender implements SerialPortEventListener {
 		}catch(InterruptedException e){
 			String additionMSG = "Interruption while waiting to for data from Serial Device";
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG+ additionMSG, e);
+		}catch(RS232Exception e){
+			this.isException = false;
+			this.exception = null;
+			throw e;
 		}catch(Exception e){
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG, e);			
 		}		
@@ -135,7 +144,7 @@ public class Sender implements SerialPortEventListener {
 					this.neadCheck = true;
 					waitString.wait(waitTime);					
 			}}
-			
+			this.checkEventException();
 			/*
 			 * If waitString was notified, that means response was receieved. so Neadcheck should be false.
 			 */
@@ -151,6 +160,10 @@ public class Sender implements SerialPortEventListener {
 		}catch(InterruptedException e){
 			String additionMSG = "Interruption while waiting to for data from Serial Device";
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG+ additionMSG, e);
+		}catch(RS232Exception e){
+			this.isException = false;
+			this.exception = null;
+			throw e;
 		}catch(Exception e){
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG, e);			
 		}	
@@ -173,6 +186,7 @@ public class Sender implements SerialPortEventListener {
 					waitString.wait(waitTime);				
 				}
 			}
+			this.checkEventException();
 			/*
 			 * If waitString was notified, that means response was receieved. so Neadcheck should be false.
 			 */
@@ -202,6 +216,10 @@ public class Sender implements SerialPortEventListener {
 		}catch(InterruptedException e){
 			String additionMSG = "Interruption while waiting to for data from Serial Device";
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG+ additionMSG, e);
+		}catch(RS232Exception e){
+			this.isException = false;
+			this.exception = null;
+			throw e;
 		}catch(Exception e){
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG, e);			
 		}		
@@ -233,7 +251,7 @@ public class Sender implements SerialPortEventListener {
 				synchronized (waitString) {					
 					waitString.wait(waitTime);					
 			}}
-			
+			this.checkEventException();
 			/*
 			 * If waitString was notified, that means response was receieved. so Neadcheck should be false.
 			 */
@@ -249,6 +267,10 @@ public class Sender implements SerialPortEventListener {
 		}catch(InterruptedException e){
 			String additionMSG = "Interruption while waiting to for data from Serial Device";
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG+ additionMSG, e);
+		}catch(RS232Exception e){
+			this.isException = false;
+			this.exception = null;
+			throw e;
 		}catch(Exception e){
 			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG, e);			
 		}	
@@ -259,7 +281,7 @@ public class Sender implements SerialPortEventListener {
 	 * This method will be called to close off the communication with Serial device.
 	 */
 	public boolean close() throws RS232Exception{
-		logger.debug("Closing the communciation with serial device ");
+		//logger.debug("Closing the communciation with serial device ");
 		try{
 			/*
 			 * Lets first remove the listener.
@@ -294,6 +316,12 @@ public class Sender implements SerialPortEventListener {
 	
 	public void clearResponse(){
 		this.resp = "";
+	}
+	
+	private void checkEventException() throws RS232Exception{
+		if(this.isException){
+			throw new RS232Exception(Constants.NSIO_SEND_ERR_CODE, Constants.SEND_ERR_MSG, this.exception);
+		}
 	}
 	
 	@Override
@@ -356,14 +384,14 @@ public class Sender implements SerialPortEventListener {
     		}// END OF DATA AVAILABLE CASE                
          } // END OF SWITCH
 		}catch(Exception e){
-			logger.error(Constants.NSIO_ERROR_CODE_4 + ")!!!ERROR!!!- In the Event listener");
-			logger.error("Exception", e);
+			isException = true;
+			this.exception = e;
 			if(waitString!=null){
 				synchronized (waitString) {
 					this.neadCheck = false;
 					waitString.notify();
 				}
-			}
+			}				
 		}
 
 	}

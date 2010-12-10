@@ -1,4 +1,4 @@
-import org.apache.log4j.PropertyConfigurator;
+//import org.apache.log4j.PropertyConfigurator;
 
 import com.javainsight.DataOperation;
 import com.javainsight.RS232Executor;
@@ -55,7 +55,7 @@ public class TEST {
 	}
 
 	public static void main(String... args){
-		PropertyConfigurator.configure("config/log4j.properties");
+		//PropertyConfigurator.configure("config/log4j.properties");
 		new TEST().start();
 	}
 }

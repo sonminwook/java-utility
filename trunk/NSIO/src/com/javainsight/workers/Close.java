@@ -32,6 +32,8 @@ public class Close implements Callable<Boolean> {
 	public Boolean call()  throws RS232Exception{
 		try{
 			return this.sender.close();
+		}catch(RS232Exception e){
+			throw e;
 		}catch(Exception e){
 			throw  new RS232Exception(Constants.NSIO_ERROR_CODE_2, Constants.CLOSE_ERR_MSG, e);
 		}
