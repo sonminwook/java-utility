@@ -35,7 +35,7 @@ public class Close implements Callable<Boolean> {
 		}catch(RS232Exception e){
 			throw e;
 		}catch(Exception e){
-			throw  new RS232Exception(Constants.NSIO_ERROR_CODE_2, Constants.CLOSE_ERR_MSG, e);
+			throw  new RS232Exception(Constants.CLOSE_ERROR_CODE_2, Constants.CLOSE_ERR_MSG, e);
 		}
 	}
 

@@ -24,18 +24,19 @@ public class Constants {
 	public static int responseBufferCapacity = 1024;
 	
 	
-	public static String NSIO_ERROR_CODE_1 = "1001";
-	public static String NSIO_ERROR_CODE_2 = "1002";
-	public static String NSIO_ERROR_CODE_3 = "1003";
-	public static String NSIO_ERROR_CODE_4 = "1004";
-	public static String NSIO_ERROR_CODE_5 = "1005";
-	public static String NSIO_ERROR_CODE_6 = "1006";
-	public static String NSIO_ERROR_CODE_7 = "1007";
-	public static String NSIO_ERROR_CODE_8 = "1008";
-	public static String NSIO_ERROR_CODE_9 = "1009";
-	public static String NSIO_ERROR_CODE_10 = "1010";
-	public static String RS232_NOTIFYING_BYTES_EXCEPTION = "1011";
-	public static String NSIO_SEND_ERR_CODE = "1012";
+	public static final String ACK_NAK_ERROR_CODE_1 = "1001";
+	public static final String CLOSE_ERROR_CODE_2 = "1002";
+	public static final String ENQ_ERROR_CODE_3 = "1003";
+	public static final String INIT_ERROR_CODE_4 = "1004";
+	public static final String RESPONSE_ERROR_CODE_5 = "1005";
+	public static final String SEND_ERROR_CODE_6 = "1006";
+	public static final String SEND_N_RECEIVE_ERROR_CODE_7 = "1007";
+	public static final String SENDER1_ERROR_CODE_8 = "1008";
+	public static final String SENDER2_ERROR_CODE = "1009";
+	public static final String EXECUTOR_ERROR_CODE_10 = "1010";
+	public static final String RS232_NOTIFYING_BYTES_EXCEPTION = "1011";
+	public static final String NSIO_SEND_ERR_CODE = "1012";
+	
 	
 	private static final String EXCEPTION = "!!!!!!!!!!!!!!!EXCEPTION!!!!!!!!!!!!!!!!!!!!\r\n";
 		

@@ -50,7 +50,7 @@ public class SendNRecieve implements Callable<DataResult> {
 		}catch(RS232Exception e){
 			throw e;
 		}catch(Exception e){
-			throw new RS232Exception(Constants.NSIO_ERROR_CODE_7, Constants.SEND_N_RECEIVE_ERR_MSG, e);
+			throw new RS232Exception(Constants.SEND_N_RECEIVE_ERROR_CODE_7, Constants.SEND_N_RECEIVE_ERR_MSG, e);
 		}
 	}
 
