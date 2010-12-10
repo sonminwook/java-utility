@@ -39,7 +39,7 @@ public class Send implements Callable<Boolean> {
 		}catch(RS232Exception e){
 			throw e;
 		}catch(Exception e){
-			throw new RS232Exception(Constants.NSIO_ERROR_CODE_6, Constants.SEND_ERR_MSG, e);
+			throw new RS232Exception(Constants.SEND_ERROR_CODE_6, Constants.SEND_ERR_MSG, e);
 		}
 	}
 

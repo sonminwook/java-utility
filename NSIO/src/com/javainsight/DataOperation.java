@@ -104,15 +104,27 @@ public enum DataOperation {
 	/**
 	 * This Operation will send the data to serial device and wait 
 	 * for a specified time supplied in <code>Instruction.setTimeOutInMilliSeconds</code>.
-	 * If serial device sends any byte supplied by used in <code>Instrcution.setNotifyingBytes(Byte... byts)</code>
-	 * before timeout it will come back with <code>DataResult.BYTE_RECEIVED</code>.
+	 * If serial device sends any byte supplied by using <code>Instrcution.setNotifyingBytes(Byte... byts)</code>
+	 * before timeout it will come back with <code>DataResult.RESPONSE</code>.
+	 * If serial device doesn't send any data or any data that doesn't contain any byte 
+	 * before timeout it will come back with <code>DataResult.NO_DATA</code>.
+	 * If one wants to see what data has been recieved even in case of <code>DataResult.NO_DATA</code>
+	 * try - <code>Instruction.getResponse()</code> method.
+	 * <code>DataResult.FAILED</code> - In case of any exception
+	 */	
+	SEND_N_WAIT_FOR_NOTIFYING_BYTS,
+	/**
+	 * This operation will not send anything except wait 
+	 * for a specified time supplied in <code>Instruction.setTimeOutInMilliSeconds</code>.
+	 * If serial device sends any byte supplied by using <code>Instrcution.setNotifyingBytes(Byte... byts)</code>
+	 * before timeout it will come back with <code>DataResult.RESPONSE</code>.
 	 * If serial device doesn't send any data or any data that doesn't contain any byte 
 	 * before timeout it will come back with <code>DataResult.NO_DATA</code>.
 	 * If one wants to see what data has been recieved even in case of <code>DataResult.NO_DATA</code>
 	 * try - <code>Instruction.getResponse()</code> method.
 	 * <code>DataResult.FAILED</code> - In case of any exception
 	 */
-	SEND_N_RESPONSD_FOR_NOITFYING_BYTS,
+	WAIT_FOR_NOTIFYING_BYTS,
 	/**
 	 * This operation will not interact with serial device, instead
 	 * it will just cleare the response cache.

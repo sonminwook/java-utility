@@ -45,11 +45,7 @@ public enum DataResult {
 	/**
 	 * Indicates that Seial Device has not sent the desired data
 	 */
-	NO_DATA,
-	/**
-	 * Indicates that Serial Device has sent the desired bytes
-	 */
-	BYTE_RECEIVED,
+	NO_DATA,	
 	/**
 	 * Indicates that Serial device has sent the DATA...ETX..
 	 */

@@ -52,7 +52,7 @@ public class Initialize implements Callable<Boolean> {
 			 */
 			if(portIdentifier.isCurrentlyOwned()){
 				String additionMSG = "\r\n"+this.config.getComPort()+ " Port in already in use, owner ["+ portIdentifier.getCurrentOwner()+"]";
-				throw new RS232Exception(Constants.NSIO_ERROR_CODE_4, Constants.INIT_ERR_MSG + additionMSG);
+				throw new RS232Exception(Constants.INIT_ERROR_CODE_4, Constants.INIT_ERR_MSG + additionMSG);
 			}
 			/*
 			 * Step 3: Open the port.
@@ -95,13 +95,13 @@ public class Initialize implements Callable<Boolean> {
 			String config = "BAUD["+this.config.getBaud().getValue()+"]DATABITS["+this.config.getDataBits().getValue()+"]STOPBITS["+this.config.getStopBits().getValue()+"]PARITY["+
 							this.config.getParity().getValue()+"]FLOW CONTROL["+this.config.getFlowControl().getValue()+"]";			
 			String additionMSG = "\r\n CONFIG " + config+" is NOT SUPPORTED";
-			throw new RS232Exception(Constants.NSIO_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);	
+			throw new RS232Exception(Constants.INIT_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);	
 		}catch(NoSuchPortException e){
 			String additionMSG = "\r\n" + this.config.getComPort()+ " DOESN'T EXIST";
-			throw new RS232Exception(Constants.NSIO_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);		
+			throw new RS232Exception(Constants.INIT_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);		
 		}catch(Exception e){			
 			String additionMSG = "\r\n" + this.config.getComPort()+ " Port failed to Initialize";
-			throw new RS232Exception(Constants.NSIO_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);
+			throw new RS232Exception(Constants.INIT_ERROR_CODE_4, Constants.INIT_ERR_MSG+ additionMSG, e);
 		}
 		return true;
 	}

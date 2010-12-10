@@ -26,29 +26,40 @@ public class Response implements Callable<Boolean> {
 	private String waitString = null;
 	private int waitTime = 500;
 	private Sender sender = null;
+	Byte[] notifyingBytes = null;
 	
 	public Response(byte[] request,
 					Sender send,
 					String waitString,
-					int waitTime){
+					int waitTime,
+					Byte[] notifyingBytes){
 		this.request = request;
 		this.sender = send;
 		this.waitString = waitString;
 		this.waitTime = waitTime;
+		this.notifyingBytes = notifyingBytes;
 	}
 
 	@Override
 	public Boolean call() throws Exception {
 		try{
-			if(request == null){
-					return this.sender.send(waitString, waitTime , Constants.ETX);
-			}else {
-					return this.sender.send(request, waitString, waitTime, Constants.ETX);
+			if(this.notifyingBytes == null){
+				if(request == null){
+						return this.sender.send(waitString, waitTime , Constants.ETX);
+				}else {
+						return this.sender.send(request, waitString, waitTime, Constants.ETX);
+				}
+			}else{
+				if(request == null){
+					return this.sender.send(waitString, waitTime , notifyingBytes);
+				}else {
+					return this.sender.send(request, waitString, waitTime, notifyingBytes);
+				}
 			}
 		}catch(RS232Exception e){
 			throw e;
 		}catch(Exception e){
-			throw new RS232Exception(Constants.NSIO_ERROR_CODE_5, Constants.RESPONSE_ERR_MSG, e);
+			throw new RS232Exception(Constants.RESPONSE_ERROR_CODE_5, Constants.RESPONSE_ERR_MSG, e);
 		}
 	}
 
