@@ -338,8 +338,8 @@ public class Sender implements SerialPortEventListener {
 	        case SerialPortEvent.FE: break;
 	        case SerialPortEvent.PE: break;
 	        case SerialPortEvent.CD: break;
-	        case SerialPortEvent.CTS: System.out.println("I m CTS");break;
-	        case SerialPortEvent.DSR: System.out.println("I m DSR"); break;
+	        case SerialPortEvent.CTS:break;
+	        case SerialPortEvent.DSR:break;
 	        case SerialPortEvent.RI: break;
 	        case SerialPortEvent.OUTPUT_BUFFER_EMPTY: break;	        
 	        case SerialPortEvent.DATA_AVAILABLE:{
