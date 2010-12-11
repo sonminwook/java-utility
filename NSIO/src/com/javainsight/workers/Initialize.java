@@ -90,6 +90,7 @@ public class Initialize implements Callable<Boolean> {
 			this.serialPort.setInputBufferSize(this.config.getInputBufferSize());
 			this.serialPort.setOutputBufferSize(this.config.getOutputBufferSize());
 			this.serialPort.setDTR(true);
+			//this.serialPort.setRTS(true);
 			this.serialPortQueue.push(this.serialPort);
 		}catch(UnsupportedCommOperationException e){
 			String config = "BAUD["+this.config.getBaud().getValue()+"]DATABITS["+this.config.getDataBits().getValue()+"]STOPBITS["+this.config.getStopBits().getValue()+"]PARITY["+
