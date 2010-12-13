@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="buildHello">
+<project>
 	<property name="lib.dir" location="lib" />
 	<property name="build.dir" location="bin" />
 	<property name="src.dir" location="src" />
 	<property name="jar.dir" location="jar" />
+	<property name="doc.dir" location="docs" />
+	<property name="jar.name" value="SerialCommunicator.jar" />
+	<property name="obsjar.name" value="RS232Java-" />
+	<property name="jarPostFix" value=".jar" />
+	<property name="yguardJar" value="yguard.jar" />
+	<property name="version" value="1.0.0" />
+	<property name="app.name" value="Serial Communication Using JAVA" />
+	<property name="packages" value="com.javainsight.*" />
+
+	
 	<!-- ADDING CLASS PATH -->
 	<path id="build.classpath">
 		<fileset dir="${lib.dir}">
@@ -15,6 +25,7 @@
 	<target name="clean">
 		<delete dir="${build.dir}" />
 		<delete dir="${jar.dir}" />
+		<delete dir="${doc.dir}" />
 	</target>
 	<!-- Creates the  build  directory-->
 	<target name="makedir">
@@ -29,11 +40,65 @@
 	
 	<!--  Create a JAR file -->
 	<target name="jar" depends="compile">
-    <jar destfile="${jar.dir}/SerialCommunicator.jar"
-         basedir="."
+    <jar destfile="${jar.dir}/${jar.name}"
+         basedir="${build.dir}"
          includes="**/*.class"
          />
-  </target>
-	 
+  </target>	
+	
+	<target name="javadocs" depends="jar">
+	   <mkdir dir="${doc.dir}"/>
+
+	   <javadoc packagenames="${packages}"
+	            sourcepath="${src.dir}"
+	            destdir="${doc.dir}"
+	            classpath="build.classpath"
+	            author="true"
+	            version="true"
+	            use="true"
+	            windowtitle="${app.name} API"
+	            doctitle="&lt;h1&gt;${app.name}&lt;/h1&gt;" />
+
+	</target>
+	
+	<!-- Y Guard stuff -->
+	<target name="yguard" depends="javadocs">
+		<taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" classpath="${lib.dir}/${yguardJar}" />
+		<yguard>
+			<inoutpair in="${jar.dir}/${jar.name}" out="${jar.dir}/${obsjar.name}${version}${jarPostFix}" />
+			  <!-- ...using the yGuard 'rename' task. -->  
+     <rename logfile="${obfuscationLog}" replaceClassNameStrings="true">  
+       
+       <property name="obfuscation-prefix" value="myprefix"/>  
+        <keep>  
+         <class classes="public" methods="public" fields="public">  
+           <patternset>  
+             <include name="com.javainsight.DTO.*"/>
+           	 <include name="com.javainsight.*"/>
+           	 <include name="com.javainsight.exceptions.*"/>           	
+           </patternset>  
+         </class>  
+       </keep>  
+         
+       <!-- Adjust all occurences of now obfuscated names in plain-text -->  
+       <!-- files, too. -->  
+       <!-- For example, the names of property resource bundle files for -->  
+       <!-- yFiles classes must be adjusted to reflect the yFiles class's -->  
+       <!-- obfuscated name. 
+       <adjust replaceName="true">  
+         <include name="**/*.properties"/>            
+       </adjust>    -->        
+     </rename>  
+</yguard>
+		<jar destfile="${jar.dir}/${obsjar.name}${version}${jarPostFix}" update="true">
+					<manifest>
+						<section name="OWNERSHIP DETAILS">
+							<attribute name="Implementation-Title" value="COM PORT COMMUNICATION JAR" />
+							<attribute name="Implementation-Version" value="${version}" />
+							<attribute name="Implementation-Vendor" value="http://jovialjava.blogspot.com/" />							
+						</section>
+					</manifest>
+		</jar>		
+	</target> 
 
 </project>
