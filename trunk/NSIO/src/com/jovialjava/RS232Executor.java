@@ -1,19 +1,16 @@
 /*-------------------------------------------------------------------------
-RS232Java - This program has been build to simplfy the serial communication by providing 
-the implementation of common flow of serial communication world.
-Copyright (C) 2010  Sunny Jain [email: xesunny@gmail.com ]
+Copyright [2010] [Sunny Jain (email:xesunny@gmail.com)]
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
+http://www.apache.org/licenses/LICENSE-2.0
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 --------------------------------------------------------------------------*/
 package com.jovialjava;
 
@@ -22,7 +19,8 @@ import gnu.io.SerialPort;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-//import org.apache.log4j.Logger;
+
+
 import com.jovialjava.DTO.Instruction;
 import com.jovialjava.DTO.SerialConfiguration;
 import com.jovialjava.exceptions.RS232Exception;
@@ -38,11 +36,11 @@ import com.jovialjava.workers.SendNRecieve;
 
 /**
  * This is the main class with which user will Interact mainly.
- * @author sjain
+ * @author Sunny Jain
  * @date 07-DEC-2010
  */
 
-public class RS232Executor {
+public class RS232Executor{
 	
 	//private static Logger logger = Logger.getLogger(RS232Executor.class);
 	/*
@@ -58,13 +56,15 @@ public class RS232Executor {
 	 */
 	private Stack<SerialPort> serialPortQueue = new Stack<SerialPort>();
 	private Sender sender = null;
-	private final ExecutorService executorPool = Executors.newCachedThreadPool();
+	private ExecutorService executorPool = Executors.newCachedThreadPool();
+	
+	public RS232Executor(){}
 	
 	/**
 	 * Instruction Object must be Initialized properly.
 	 * @param instruction
 	 */
-	public RS232Executor(Instruction instruction){
+	public void init(Instruction instruction){
 		this.instruction = instruction;
 		this.config = instruction.getConfig();
 		Runtime.getRuntime().addShutdownHook(new Thread(){
@@ -72,7 +72,7 @@ public class RS232Executor {
 				executorPool.shutdown();
 			}
 		});
-	}
+	}	
 	
 	/**
 	 * After every instruction passed to Instructor user must give
@@ -92,6 +92,12 @@ public class RS232Executor {
 			switch(operation) {
 			case INITIALIZE:{
 				Initialize init = new Initialize(this.config, this.serialPortQueue);
+				/*
+				 * In case if you want to "re-init" the same object again.
+				 */
+				if(executorPool.isShutdown()){
+					executorPool = Executors.newCachedThreadPool();
+				}
 				status = executorPool.submit(init).get();
 				instruction.setResult(status ? DataResult.SUCCESS : DataResult.FAILED);
 				break;
@@ -117,7 +123,8 @@ public class RS232Executor {
 			}
 			case SEND_N_WAIT_FOR_ETX:{
 				
-				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond(),null);
+				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), 
+															instruction.getTimeOutMilliSecond(),null, false);
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -126,7 +133,8 @@ public class RS232Executor {
 				break;
 			}case CLR_SEND_N_WAIT_FOR_ETX:{
 				this.getSender().clearResponse();				
-				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond(), null);
+				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(),
+									instruction.getTimeOutMilliSecond(), null, false);
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -135,7 +143,39 @@ public class RS232Executor {
 				break;
 				
 			}case WAIT_FOR_ETX :{
-				Response response = new Response(null, this.getSender(), instruction.getWait(), instruction.getTimeOutMilliSecond(), null);
+				Response response = new Response(null, this.getSender(), instruction.getWait(), 
+																	instruction.getTimeOutMilliSecond(), null, false);
+				status = executorPool.submit(response).get();			
+				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
+				if(status){				
+					instruction.setResponse(this.getSender().getResponse());
+				}
+				break;
+			}
+			case SEND_N_WAIT_FOR_ETX_LRC:{
+				
+				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), 
+															instruction.getTimeOutMilliSecond(),null, true);
+				status = executorPool.submit(response).get();
+				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
+				if(status){				
+					instruction.setResponse(this.getSender().getResponse());
+				}
+				break;
+			}case CLR_SEND_N_WAIT_FOR_ETX_LRC:{
+				this.getSender().clearResponse();				
+				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(),
+									instruction.getTimeOutMilliSecond(), null, true);
+				status = executorPool.submit(response).get();
+				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
+				if(status){				
+					instruction.setResponse(this.getSender().getResponse());
+				}
+				break;
+				
+			}case WAIT_FOR_ETX_LRC :{
+				Response response = new Response(null, this.getSender(), instruction.getWait(), 
+																	instruction.getTimeOutMilliSecond(), null, true);
 				status = executorPool.submit(response).get();			
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -159,7 +199,7 @@ public class RS232Executor {
 			}case CLR_SEND_N_WAIT_FOR_NOTIFYING_BYTS:{
 				this.getSender().clearResponse();
 				Response response = new Response(instruction.getRequest(), this.getSender(), instruction.getWait(), 
-													instruction.getTimeOutMilliSecond(), instruction.getNotifyingBytes());
+													instruction.getTimeOutMilliSecond(), instruction.getNotifyingBytes(), false);
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if (status) {
@@ -169,7 +209,7 @@ public class RS232Executor {
 			}
 			case SEND_N_WAIT_FOR_NOTIFYING_BYTS:{
 				Response response = new Response(instruction.getRequest(), this.getSender(), 
-										instruction.getWait(), instruction.getTimeOutMilliSecond(),instruction.getNotifyingBytes());
+										instruction.getWait(), instruction.getTimeOutMilliSecond(),instruction.getNotifyingBytes(), false);
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -178,7 +218,8 @@ public class RS232Executor {
 				break;
 			}
 			case WAIT_FOR_NOTIFYING_BYTS:{
-				Response response = new Response(null, this.getSender(),instruction.getWait(), instruction.getTimeOutMilliSecond(),instruction.getNotifyingBytes());
+				Response response = new Response(null, this.getSender(),instruction.getWait(), instruction.getTimeOutMilliSecond(),
+															instruction.getNotifyingBytes(), false);
 				status = executorPool.submit(response).get();
 				instruction.setResult(status ? DataResult.RESPONSE : DataResult.NO_DATA);
 				if(status){				
@@ -206,7 +247,7 @@ public class RS232Executor {
 		}catch(Exception e){
 			instruction.setResult(DataResult.FAILED);
 			this.executorPool.shutdown();
-			throw new RS232Exception(Constants.EXECUTOR_ERROR_CODE_10, null, e);
+			throw new RS232Exception(Constants.EXECUTOR_ERROR_CODE_10, e.getMessage(), e);
 		}
 		
 		
@@ -246,5 +287,8 @@ public class RS232Executor {
 			}
 		}catch(Throwable t){}
 	}
+	
+
+
 
 }
