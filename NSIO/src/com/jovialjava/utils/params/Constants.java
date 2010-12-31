@@ -1,29 +1,27 @@
 /*-------------------------------------------------------------------------
-RS232Java - This program has been build to simplfy the serial communication by providing 
-the implementation of common flow of serial communication world.
-Copyright (C) 2010  Sunny Jain [email: xesunny@gmail.com ]
+Copyright [2010] [Sunny Jain (email:xesunny@gmail.com)]
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, version 3 of the License.
+http://www.apache.org/licenses/LICENSE-2.0
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 --------------------------------------------------------------------------*/
 package com.jovialjava.utils.params;
 
 public class Constants {
 	
-	public static Byte ACK = new Byte((byte)6);
-	public static Byte NACK = new Byte((byte)21);
-	public static Byte STX = new Byte((byte)2);
-	public static Byte ETX = new Byte((byte)3);
-	public static Byte ENQ = new Byte((byte)5);
+	public static final Byte ACK = new Byte((byte)6);
+	public static final Byte NACK = new Byte((byte)21);
+	public static final Byte STX = new Byte((byte)2);
+	public static final Byte ETX = new Byte((byte)3);
+	public static final Byte ENQ = new Byte((byte)5);
+		
 	public static int responseBufferCapacity = 1024;
 	
 	
@@ -40,10 +38,10 @@ public class Constants {
 	public static final String RS232_NOTIFYING_BYTES_EXCEPTION = "1011";
 	public static final String NSIO_SEND_ERR_CODE = "1012";
 	
+	
 	private static final String EXCEPTION = "\r\n!!!!!!!!!!!!!!!EXCEPTION!!!!!!!!!!!!!!!!!!!!\r\n";
 	private static final String ERRORCODE = "\r\n!!!!!!!!!!!!!!!!!";
 	private static final String ERRORTAIL = "!!!!!!!!!!!!!!!!!";
-
 		
 	public static final String NOTIFY_ERROR_MSG = EXCEPTION + " WHILE WAITING/RECEIVING USER SUPPLIED BYTES"+ ERRORCODE + RS232_NOTIFYING_BYTES_EXCEPTION +ERRORTAIL;
 	public static final String ACK_NACK_ERR_MSG = EXCEPTION + "   WHILE WAITING/RECEIVING ACK/NACK BYTE" +  ERRORCODE + ACK_NAK_ERROR_CODE_1 +ERRORTAIL;
