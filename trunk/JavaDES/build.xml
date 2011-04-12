@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<property name="lib.dir" location="lib" />
+	<property name="build.dir" location="bin" />
+	<property name="src.dir" location="src" />
+	<property name="jar.dir" location="jar" />
+	<property name="doc.dir" location="docs" />
+	<property name="jar.name" value="OneISecurity.jar" />
+	<property name="obsjar.name" value="OneISecurity" />
+	<property name="jarPostFix" value=".jar" />
+	<property name="yguardJar" value="yguard.jar" />
+	<property name="version" value="" />
+	<property name="app.name" value="Security for OneInterface" />
+	<property name="packages" value="com.globalblue.*" />
+	<property name="storeLocation" location="storeLocation/kumarstore" ></property>
+
+	
+	<!-- ADDING CLASS PATH -->
+	<path id="build.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	
+	<!-- Deletes the existing build directory-->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${jar.dir}" />
+		<delete dir="${doc.dir}" />
+	</target>
+	<!-- Creates the  build  directory-->
+	<target name="makedir">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${jar.dir}" />
+	</target>	
+	
+	<!-- Compiles the java code -->
+	<target name="compile" depends="clean, makedir">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath" />
+	</target>
+	
+	<!--  Create a JAR file -->
+	<target name="jar" depends="compile">
+    <jar destfile="${jar.dir}/${jar.name}"
+         basedir="${build.dir}"
+         includes="**/*.class"
+         />
+  </target>	
+	
+	<target name="javadocs" depends="jar">
+	   <mkdir dir="${doc.dir}"/>
+
+	   <javadoc packagenames="${packages}"
+	            sourcepath="${src.dir}"
+	            destdir="${doc.dir}"
+	            classpath="build.classpath"
+	            author="true"
+	            version="true"
+	            use="true"
+	            windowtitle="${app.name} API"
+	            doctitle="&lt;h1&gt;${app.name}&lt;/h1&gt;" />
+
+	</target>
+	
+	<!-- Y Guard stuff -->
+	<target name="yguard" depends="javadocs">
+		<taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" classpath="${lib.dir}/${yguardJar}" />
+		<yguard>
+			<inoutpair in="${jar.dir}/${jar.name}" out="${jar.dir}/${obsjar.name}${version}${jarPostFix}" />
+			  <!-- ...using the yGuard 'rename' task. -->  
+     <rename logfile="${obfuscationLog}" replaceClassNameStrings="true">  
+       
+       <property name="obfuscation-prefix" value="myprefix"/>  
+        <keep>  
+         <class classes="public" methods="public" fields="public">  
+           <patternset>  
+             <include name="com.globalblue.ACValidation"/>
+           	 <include name="com.globalblue.exception.OneIPlusSecurityException"/>           	 
+           </patternset>  
+         </class>  
+        <class name="org.apache.log4j.Logger" />
+       </keep>  
+         
+       <!-- Adjust all occurences of now obfuscated names in plain-text -->  
+       <!-- files, too. -->  
+       <!-- For example, the names of property resource bundle files for -->  
+       <!-- yFiles classes must be adjusted to reflect the yFiles class's -->  
+       <!-- obfuscated name. 
+       <adjust replaceName="true">  
+         <include name="**/*.properties"/>            
+       </adjust>    -->        
+     </rename>  
+</yguard>
+		
+		<jar destfile="${jar.dir}/${obsjar.name}${version}${jarPostFix}" update="true">
+					<manifest>
+						<section name="OneInterface+PLUS">
+							<attribute name="Implementation-Title" value="OneInterface Security JAR" />
+							<attribute name="Implementation-Version" value="${version}" />
+							<attribute name="Implementation-Vendor" value="http://www.global-blue.com/" />							
+						</section>
+					</manifest>
+		</jar>
+		<signjar destDir="${jar.dir}" alias="kumar" keystore="${storeLocation}"
+								 storepass="kumarp"   lazy="true" >
+						  <path>
+							<file file="${jar.dir}/${jar.name}"/>
+						  </path>
+						  <flattenmapper />
+				</signjar>
+		<echo message=" Signing Completed[${jar.dir}/${jar.name}]" />
+	</target> 
+
+</project>
