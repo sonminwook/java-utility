@@ -16,45 +16,30 @@ package com.javainsights;
 
 import gnu.io.SerialPort;
 
-import java.nio.ByteBuffer;
-import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-<<<<<<< .working
 
-import org.apache.mina.core.session.IoSession;
-//import org.apache.log4j.Logger;
-=======
-
-
->>>>>>> .merge-right.r51
-import com.gr.one1nterface.grecr.common.exception.CommunicatorException;
-import com.gr.one1nterface.grecr.common.interfaces.Communicator;
-package com.javainsights.DTO.Instruction;
-package com.javainsights.DTO.SerialConfiguration;
-package com.javainsights.exceptions.RS232Exception;
-package com.javainsights.utils.Sender;
-package com.javainsights.utils.params.Constants;
-package com.javainsights.workers.ACK_NACK;
-package com.javainsights.workers.Close;
-package com.javainsights.workers.ENQ;
-package com.javainsights.workers.Initialize;
-package com.javainsights.workers.Response;
-package com.javainsights.workers.Send;
-package com.javainsights.workers.SendNRecieve;
+import com.javainsights.DTO.Instruction;
+import com.javainsights.DTO.SerialConfiguration;
+import com.javainsights.exceptions.RS232Exception;
+import com.javainsights.utils.Sender;
+import com.javainsights.utils.params.Constants;
+import com.javainsights.workers.ACK_NACK;
+import com.javainsights.workers.Close;
+import com.javainsights.workers.ENQ;
+import com.javainsights.workers.Initialize;
+import com.javainsights.workers.Response;
+import com.javainsights.workers.Send;
+import com.javainsights.workers.SendNRecieve;
 
 /**
- * This is the main class with which user will Interact mainly.
- * @author Sunny Jain
- * @date 07-DEC-2010
- */
+* This is the main class with which user will Interact mainly.
+* @author Sunny Jain
+* @date 07-DEC-2010
+*/
 
-<<<<<<< .working
-public class RS232Executor implements Communicator{
-=======
-public class RS232Executor{
->>>>>>> .merge-right.r51
+public class RS232Executor {
 	
 	//private static Logger logger = Logger.getLogger(RS232Executor.class);
 	/*
@@ -301,42 +286,4 @@ public class RS232Executor{
 			}
 		}catch(Throwable t){}
 	}
-<<<<<<< .working
-	
-	@Override
-	public void closePort() {}
-	@Override
-	public String getSpectraResponse(byte[] arg0, int arg1, int arg2)throws CommunicatorException {return null;}
-	@Override
-	public String getType() {return null;}
-	@Override
-	public boolean isChecked() throws CommunicatorException {return true;}
-	@Override
-	public boolean isSpectraAckStauts() throws CommunicatorException {return false;}
-	@Override
-	public int receive() throws CommunicatorException {return 0;}
-	@Override
-	public int receive(ByteBuffer arg0, int arg1) throws CommunicatorException {return 0;}
-	@Override
-	public int receive(ByteBuffer arg0) throws CommunicatorException {return 0;}
-	@Override
-	public byte[] receiveInfo(IoSession session)throws CommunicatorException {return null;}
-	@Override
-	public int send(byte arg0) throws CommunicatorException {return 0;}
-	@Override
-	public int send(ByteBuffer buffer, IoSession session) throws CommunicatorException{	return 0;}
-	@Override
-	public void setConfigurator(Map<String, String> arg0, boolean arg1)	throws CommunicatorException {}
-	@Override
-	public void setConfigurator(Map<String, String> arg0)	throws CommunicatorException {	}
-=======
-	
->>>>>>> .merge-right.r51
-
-<<<<<<< .working
-
-=======
-
-
->>>>>>> .merge-right.r51
 }

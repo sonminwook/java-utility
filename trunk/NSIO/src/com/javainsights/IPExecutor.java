@@ -8,24 +8,23 @@ import java.util.concurrent.Executors;
 
 import org.apache.mina.core.session.IoSession;
 
-import com.gr.one1nterface.grecr.common.exception.CommunicatorException;
-import com.gr.one1nterface.grecr.common.interfaces.Communicator;
-package com.javainsights.DTO.IPConfiguration;
-package com.javainsights.DTO.Instruction;
-package com.javainsights.exceptions.IPException;
-package com.javainsights.exceptions.RS232Exception;
-package com.javainsights.iputils.IPSender;
-package com.javainsights.iputils.workers.ACK_NACK;
-package com.javainsights.iputils.workers.Close;
-package com.javainsights.iputils.workers.ENQ;
-package com.javainsights.iputils.workers.Initialize;
-package com.javainsights.iputils.workers.Response;
-package com.javainsights.iputils.workers.Send;
-package com.javainsights.iputils.workers.SendNRecieve;
-package com.javainsights.utils.params.Constants;
+
+import com.javainsights.DTO.IPConfiguration;
+import com.javainsights.DTO.Instruction;
+import com.javainsights.exceptions.IPException;
+import com.javainsights.exceptions.RS232Exception;
+import com.javainsights.iputils.IPSender;
+import com.javainsights.iputils.workers.ACK_NACK;
+import com.javainsights.iputils.workers.Close;
+import com.javainsights.iputils.workers.ENQ;
+import com.javainsights.iputils.workers.Initialize;
+import com.javainsights.iputils.workers.Response;
+import com.javainsights.iputils.workers.Send;
+import com.javainsights.iputils.workers.SendNRecieve;
+import com.javainsights.utils.params.Constants;
 
 
-public class IPExecutor implements Communicator {
+public class IPExecutor {
 	
 	/*
 	 * An Instruction object is needed, it will be assigned the value sent by Instructor
@@ -271,33 +270,5 @@ public class IPExecutor implements Communicator {
 			}
 		}catch(Throwable t){}
 	}
-	
-
-	@Override
-	public void closePort() {}
-	@Override
-	public String getSpectraResponse(byte[] arg0, int arg1, int arg2)throws CommunicatorException {return null;}
-	@Override
-	public String getType() {return null;}
-	@Override
-	public boolean isChecked() throws CommunicatorException {return true;}
-	@Override
-	public boolean isSpectraAckStauts() throws CommunicatorException {return false;}
-	@Override
-	public int receive() throws CommunicatorException {return 0;}
-	@Override
-	public int receive(ByteBuffer arg0, int arg1) throws CommunicatorException {return 0;}
-	@Override
-	public int receive(ByteBuffer arg0) throws CommunicatorException {return 0;}
-	@Override
-	public byte[] receiveInfo(IoSession session)throws CommunicatorException {return null;}
-	@Override
-	public int send(byte arg0) throws CommunicatorException {return 0;}
-	@Override
-	public int send(ByteBuffer buffer, IoSession session) throws CommunicatorException{	return 0;}
-	@Override
-	public void setConfigurator(Map<String, String> arg0, boolean arg1)	throws CommunicatorException {}
-	@Override
-	public void setConfigurator(Map<String, String> arg0)	throws CommunicatorException {	}
 
 }

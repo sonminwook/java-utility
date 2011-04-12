@@ -6,7 +6,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
-package com.javainsights.iputils.contants.ErrorCodeConstant;
+import com.javainsights.iputils.contants.ErrorCodeConstant;
 
 public class IPSSLRequestEncoder implements ProtocolEncoder {
 

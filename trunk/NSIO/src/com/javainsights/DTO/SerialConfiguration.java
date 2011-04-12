@@ -14,7 +14,12 @@ limitations under the License.
 --------------------------------------------------------------------------*/
 package com.javainsights.DTO;
 
-package com.javainsights.utils.params.*;
+import com.javainsights.utils.params.Baud;
+import com.javainsights.utils.params.DataBits;
+import com.javainsights.utils.params.FlowControl;
+import com.javainsights.utils.params.Parity;
+import com.javainsights.utils.params.StopBits;
+
 
 public class SerialConfiguration {
 

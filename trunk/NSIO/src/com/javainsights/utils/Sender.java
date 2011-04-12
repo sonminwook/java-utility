@@ -22,12 +22,13 @@ import gnu.io.SerialPortEventListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-//import java.nio.ByteBuffer;
+
+import com.javainsights.exceptions.RS232Exception;
+import com.javainsights.utils.params.Constants;
 
 //import org.apache.log4j.Logger;
 
-package com.javainsights.exceptions.RS232Exception;
-package com.javainsights.utils.params.Constants;
+
 
 
 public class Sender implements SerialPortEventListener {

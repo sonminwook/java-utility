@@ -10,7 +10,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.ssl.KeyStoreFactory;
 import org.apache.mina.filter.ssl.SslContextFactory;
 
-package com.javainsights.DTO.IPConfiguration;
+import com.javainsights.DTO.IPConfiguration;
 
 public class IPSSLContextGenerator {
 	

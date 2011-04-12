@@ -2,10 +2,10 @@ package com.javainsights.iputils.workers;
 
 import java.util.concurrent.Callable;
 
-package com.javainsights.DataResult;
-package com.javainsights.exceptions.IPException;
-package com.javainsights.iputils.IPSender;
-package com.javainsights.utils.params.Constants;
+import com.javainsights.DataResult;
+import com.javainsights.exceptions.IPException;
+import com.javainsights.iputils.IPSender;
+import com.javainsights.utils.params.Constants;
 
 public class SendNRecieve implements Callable<DataResult> {
 

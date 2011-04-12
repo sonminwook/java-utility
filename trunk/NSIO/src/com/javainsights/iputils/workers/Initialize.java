@@ -22,14 +22,14 @@ import org.apache.mina.filter.util.SessionAttributeInitializingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
-package com.javainsights.DTO.IPConfiguration;
-package com.javainsights.exceptions.IPException;
-package com.javainsights.iputils.TCPIPHandler;
-package com.javainsights.iputils.contants.ClientSessionConstant;
-package com.javainsights.iputils.contants.ErrorCodeConstant;
-package com.javainsights.iputils.filters.coders.IPSSLCodecFactory;
-package com.javainsights.iputils.filters.logging.IPSSLLoggingFilter;
-package com.javainsights.iputils.filters.utils.IPSSLContextGenerator;
+import com.javainsights.DTO.IPConfiguration;
+import com.javainsights.exceptions.IPException;
+import com.javainsights.iputils.TCPIPHandler;
+import com.javainsights.iputils.contants.ClientSessionConstant;
+import com.javainsights.iputils.contants.ErrorCodeConstant;
+import com.javainsights.iputils.filters.coders.IPSSLCodecFactory;
+import com.javainsights.iputils.filters.logging.IPSSLLoggingFilter;
+import com.javainsights.iputils.filters.utils.IPSSLContextGenerator;
 
 public class Initialize implements Callable<Boolean> {
 	/*

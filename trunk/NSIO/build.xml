@@ -11,7 +11,7 @@
 	<property name="yguardJar" value="yguard.jar" />
 	<property name="version" value="1.0.0" />
 	<property name="app.name" value="Serial Communication Using JAVA" />
-	<property name="packages" value="com.javainsight.*" />
+	<property name="packages" value="com.jovialjava.*" />
 
 	
 	<!-- ADDING CLASS PATH -->
@@ -42,8 +42,11 @@
 	<target name="jar" depends="compile">
     <jar destfile="${jar.dir}/${jar.name}"
          basedir="${build.dir}"
+    	filesonly="false"
          includes="**/*.class"
-         />
+         >
+    	<fileset dir="License" />
+    	</jar>
   </target>	
 	
 	<target name="javadocs" depends="jar">
@@ -58,6 +61,8 @@
 	            use="true"
 	            windowtitle="${app.name} API"
 	            doctitle="&lt;h1&gt;${app.name}&lt;/h1&gt;" />
+		
+		<!--doctitle="&lt;h1&gt;${app.name}&lt;/h1&gt;" /> -->
 
 	</target>
 	
@@ -73,9 +78,9 @@
         <keep>  
          <class classes="public" methods="public" fields="public">  
            <patternset>  
-             <include name="com.javainsight.DTO.*"/>
-           	 <include name="com.javainsight.*"/>
-           	 <include name="com.javainsight.exceptions.*"/>           	
+             <include name="com.jovialjava.DTO.*"/>
+           	 <include name="com.jovialjava.*"/>
+           	 <include name="com.jovialjava.exceptions.*"/>           	
            </patternset>  
          </class>  
        </keep>  
