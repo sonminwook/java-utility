@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
-package com.javainsights.iputils.contants.ClientSessionConstant;
-package com.javainsights.iputils.contants.ErrorCodeConstant;
-package com.javainsights.utils.params.Constants;
+import com.javainsights.iputils.contants.ClientSessionConstant;
+import com.javainsights.iputils.contants.ErrorCodeConstant;
+import com.javainsights.utils.params.Constants;
 
 public class TCPIPHandler extends IoHandlerAdapter {
 	

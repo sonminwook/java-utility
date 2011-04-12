@@ -9,10 +9,9 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.session.IoSession;
 
-import com.gr.one1nterface.grecr.common.exception.CommunicatorException;
-package com.javainsights.iputils.contants.ClientSessionConstant;
-package com.javainsights.iputils.contants.ErrorCodeConstant;
-package com.javainsights.utils.params.Common;
+import com.javainsights.iputils.contants.ClientSessionConstant;
+import com.javainsights.iputils.contants.ErrorCodeConstant;
+import com.javainsights.utils.params.Common;
 
 
 public class IPSender {
@@ -170,7 +169,7 @@ public class IPSender {
 			return (String)clientSession.removeAttribute(ClientSessionConstant.HOST_RESPONSE);
 		}catch(Exception e){
 			if(this.clientSession.getAttribute(ClientSessionConstant.CLIENT_EXCEPTION) != null){
-				throw (CommunicatorException)clientSession.getAttribute(ClientSessionConstant.CLIENT_EXCEPTION);
+				throw (Exception)clientSession.getAttribute(ClientSessionConstant.CLIENT_EXCEPTION);
 			}else{
 				if(e instanceof NullPointerException){
 					throw new Exception(ErrorCodeConstant.TIME_OUT_ERROR + "TIME OUT with TERMINAL", new IllegalStateException("NO RESPONSE FROM HOST"));

@@ -23,9 +23,9 @@ import gnu.io.UnsupportedCommOperationException;
 import java.util.Stack;
 import java.util.concurrent.Callable;
 
-package com.javainsights.DTO.SerialConfiguration;
-package com.javainsights.exceptions.RS232Exception;
-package com.javainsights.utils.params.Constants;
+import com.javainsights.DTO.SerialConfiguration;
+import com.javainsights.exceptions.RS232Exception;
+import com.javainsights.utils.params.Constants;
 
 public class Initialize implements Callable<Boolean> {
 	

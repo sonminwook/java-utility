@@ -14,10 +14,12 @@ limitations under the License.
 --------------------------------------------------------------------------*/
 package com.javainsights.DTO;
 
-package com.javainsights.DataOperation;
-package com.javainsights.DataResult;
-package com.javainsights.utils.HexToBytes;
-package com.javainsights.utils.params.Common;
+import com.javainsights.DataOperation;
+import com.javainsights.DataResult;
+import com.javainsights.utils.HexToBytes;
+import com.javainsights.utils.params.Common;
+
+
 
 /**
  * this is the key class and this is the interface between SerialCommunicator and

@@ -6,7 +6,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 
-package com.javainsights.iputils.contants.ErrorCodeConstant;
+import com.javainsights.iputils.contants.ErrorCodeConstant;
 
 public class IPSSLResponseDecoder extends CumulativeProtocolDecoder {
 

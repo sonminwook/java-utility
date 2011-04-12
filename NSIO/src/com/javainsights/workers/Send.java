@@ -17,9 +17,9 @@ package com.javainsights.workers;
 
 import java.util.concurrent.Callable;
 
-package com.javainsights.exceptions.RS232Exception;
-package com.javainsights.utils.Sender;
-package com.javainsights.utils.params.Constants;
+import com.javainsights.exceptions.RS232Exception;
+import com.javainsights.utils.Sender;
+import com.javainsights.utils.params.Constants;
 
 public class Send implements Callable<Boolean> {
 	
