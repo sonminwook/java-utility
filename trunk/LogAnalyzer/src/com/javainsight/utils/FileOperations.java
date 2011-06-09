@@ -77,27 +77,26 @@ public class FileOperations {
 					nameFileFilter[i] = new RegexFileFilter(namePattern[i],
 							Pattern.CASE_INSENSITIVE);
 				}
-
+				
 				if (isAND) {
-					fileFilter = FileFilterUtils.and(FileFilterUtils
-							.ageFileFilter(cutOffTime), FileFilterUtils
-							.or(nameFileFilter));
+					fileFilter = FileFilterUtils.and(FileFilterUtils.ageFileFilter(cutOffTime, false),
+													FileFilterUtils.or(nameFileFilter));
 				} else {
-					fileFilter = FileFilterUtils.or(FileFilterUtils
-							.ageFileFilter(cutOffTime), FileFilterUtils
-							.or(nameFileFilter));
+					fileFilter = FileFilterUtils.or(FileFilterUtils.ageFileFilter(cutOffTime), 
+													FileFilterUtils.or(nameFileFilter));
 				}
 			} else if (cutOffTime != 0) {
 				/*
 				 * This means - no file name patterns are provided, one may want to sort file names by time.
 				 */
-				fileFilter = FileFilterUtils.ageFileFilter(cutOffTime);
+				fileFilter = FileFilterUtils.ageFileFilter(cutOffTime, false);
 			} else {
 				/*
 				 * This means one wants to find all files from the directory.
 				 */
 				fileFilter = FileFilterUtils.trueFileFilter();
 			}
+			System.out.println(fileFilter.toString());
 			/*
 			 * Step 2: Retrieve the logic
 			 */
