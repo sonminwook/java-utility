@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+ <appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+  <param name="File" value="logs/JunitTestCase_log.log" />
+  <param name="Append" value="true" />
+  <param name="DatePattern" value="'.'yyyy-MM-dd" />
+  <param name="Encoding" value="UTF-8" />
+  <layout class="org.apache.log4j.PatternLayout">
+   <!--  <param name="ConversionPattern" value="[%d{yyyy.MM.dd HH:mm:ss.SSS}]: %p - %m %x%n" /> -->   
+   <param name="ConversionPattern" value="[%d{dd-MMM-yyyy} %d{ABSOLUTE}] [%-15t] [%-5p] [%-35c:%-3L %x]  -    %m%n" />
+  </layout>
+ </appender>
+ 
+ 
+ <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+  <param name="Target" value="System.out" />
+  <layout class="org.apache.log4j.PatternLayout">
+    <param name="ConversionPattern" value="[%d{dd-MMM-yyyy} %d{ABSOLUTE}][%-15t] [%-5p] [%-35c:%-3L %x]  -    %m%n" />
+  </layout>
+  <filter class="org.apache.log4j.varia.LevelRangeFilter">
+   <param name="LevelMin" value="DEBUG" />
+   <param name="LevelMax" value="INFO" />
+  </filter>
+ </appender>
+ 
+ <appender name="stderr" class="org.apache.log4j.ConsoleAppender">
+  <param name="Target" value="System.err" />
+  <layout class="org.apache.log4j.PatternLayout">
+   <param name="ConversionPattern" value="[%d{dd-MMM-yyyy} %d{ABSOLUTE}][%-15t] [%-5p] [%-35c:%-3L %x]  -    %m%n" />
+  </layout>
+  <filter class="org.apache.log4j.varia.LevelRangeFilter">
+   <param name="LevelMin" value="WARN" />
+   <param name="LevelMax" value="FATAL" />
+  </filter>
+ </appender>
+ 
+ 
+ 
+<!-- THIS CONFIGURATION IS FOR PAY FILE AND RENDERED RECEIPT -->
+<category name="com.javainsights" additivity="false">
+  <priority value="debug" /><!-- debug, info, warn, error, off  -->
+  <appender-ref ref="file" />
+  <appender-ref ref="stdout" />
+  <appender-ref ref="stderr" />
+</category>
+<!-- CONFIGURATION ENDS HERE -->
+
+<root>
+  <priority value="debug" />
+  <appender-ref ref="stdout" />
+  <appender-ref ref="stderr" />
+  <appender-ref ref="file" /> 
+ </root>
+
+</log4j:configuration>
