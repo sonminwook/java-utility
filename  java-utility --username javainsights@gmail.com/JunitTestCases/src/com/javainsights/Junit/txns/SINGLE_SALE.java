@@ -52,7 +52,9 @@ public class SINGLE_SALE extends TestCase {
 		 */
 		disconnect = PrepareSale.getDisconnectRequest(response);
 		disconnect = LengthUtils.getLength(","+ disconnect) + "," + disconnect;
-		response = connection.send(disconnect);	
+		response = connection.send(disconnect);
+		Thread.sleep(1000);
+		connection.dispose();
 	}
 
 	public void testSuccessSaleWithTip() throws Exception{

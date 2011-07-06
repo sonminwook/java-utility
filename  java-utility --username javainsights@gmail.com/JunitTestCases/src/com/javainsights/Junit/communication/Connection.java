@@ -29,9 +29,16 @@ public class Connection {
 	private static Logger log = Logger.getLogger(Connection.class);	
 	private Lock lock = new ReentrantLock();
 	private Condition condition = lock.newCondition();
+	NioSocketConnector connector = null;
+	
+	public void dispose(){
+		if(connector != null){
+			connector.dispose(false);
+		}
+	}
 	
 	public boolean initialize(String HOSTNAME, int PORT, int timeout, String certName, String password) throws Exception{
-		NioSocketConnector connector = new NioSocketConnector();    
+		connector =  new NioSocketConnector();    
 	    connector.setConnectTimeoutMillis(timeout);
 	    connector.setHandler(new ConnectionHandler());		    		    
 	    try {

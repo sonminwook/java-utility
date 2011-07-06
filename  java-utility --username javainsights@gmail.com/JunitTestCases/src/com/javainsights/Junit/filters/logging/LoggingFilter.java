@@ -31,8 +31,8 @@ public class LoggingFilter extends IoFilterAdapter {
 			WriteRequest writeRequest) throws Exception {
 		NDC.push( new StringBuilder("[Session id=").append(session.getId()).append("]").toString() );
 		log.debug("TCP/IP SSL Outgoing Message :("+ writeRequest.getOriginalRequest()+")");
-		log.debug("TCP/IP SSL Outgoing Message :("+ writeRequest.getMessage()+")");
-		log.debug("TCP/IP SSL Outgoing Message :("+ writeRequest.toString()+")");
+		//log.debug("TCP/IP SSL Outgoing Message :("+ writeRequest.getMessage()+")");
+		//log.debug("TCP/IP SSL Outgoing Message :("+ writeRequest.toString()+")");
 		NDC.pop();
 		super.messageSent(nextFilter, session, writeRequest);
 	}

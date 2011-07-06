@@ -48,6 +48,7 @@ public class PrepareLoginMessage {
 	}
 	
 	public static String getPerfectLoginRequest(){
+		//DTO.increaseCounter();
 		String header = PrepareHeaders.getLoginHeader();
 		String message = header + "," + getEmployeeNumber();		
 		return message;
