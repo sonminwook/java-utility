@@ -49,7 +49,7 @@ public class Constant {
 	public static final String CHECK_REGEX = "[{]{1}(\\p{Digit}){1,6}[#]{1}(\\p{Alnum}){0,32}[#]{1}(\\p{Digit}){2}[#]{1}(\\p{Digit}){1,32}[#]{1}" +
 	 											TENDER_LIST+
 	 											"[#]{1}" +
-	 											"(\\p{Graph}){0,2048}"+
+	 											"(\\p{Graph}){0,}"+
 	 											"[}]{1}";
 	public static final String CHECK_LIST = "("+ CHECK_REGEX + "){0,}";
 	

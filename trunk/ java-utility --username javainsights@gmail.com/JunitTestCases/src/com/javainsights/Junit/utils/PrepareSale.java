@@ -8,7 +8,7 @@ import com.javainsights.Junit.constants.Constant;
 
 public class PrepareSale {
 
-	public static String getLoginRequest(){
+	public static String getLoginRequest(){		
 		return PrepareLoginMessage.getPerfectLoginRequest();
 	}
 	
@@ -27,6 +27,21 @@ public class PrepareSale {
 		}
 	}
 	
+	public static String getGetTableRequest(String loginResponse, String ac, String deviceID, String counter, String tableNumber){
+		loginResponse = loginResponse.substring(1);
+		System.out.println(loginResponse);
+		if(loginResponse.matches(Constant.ERROR_REGEX)){
+			throw new IllegalArgumentException("ERROR LOGIN RESPONSE -"+ loginResponse);
+		}else if(loginResponse.matches(Constant.SUCCESS_LOGIN_WITHOUT_TABLE)){
+			return PrepareHeaders.getGetTableHeader(ac, deviceID, counter) + "," + tableNumber;
+		}else if(loginResponse.matches(Constant.SUCCESS_LOGIN_WITH_TABLE)){
+			String tableNum = getTableNumbers(loginResponse);
+			return PrepareHeaders.getGetTableHeader(ac, deviceID, counter) + "," + tableNumber;
+		}else{
+			throw new IllegalArgumentException("INVALID RESPONSE -"+ loginResponse);
+		}
+	}
+	
 	public static String getEditTableRequest(String getTableResponse, boolean isTip, boolean isDCC){
 		getTableResponse = getTableResponse.substring(1);
 		if(getTableResponse.matches(Constant.ERROR_REGEX)){
@@ -34,6 +49,19 @@ public class PrepareSale {
 		}
 		else if(getTableResponse.matches(Constant.SUCCESS_GET_TABLE)){
 			return PrepareHeaders.getEditTableHeader() + "," + "ADD," + getClearedTable(getTableResponse, isTip, isDCC, 10);
+		}		
+		else{
+			throw new IllegalArgumentException("INVALID RESPONSE -"+ getTableResponse);
+		}
+	}
+	
+	public static String getEditTableRequest(String getTableResponse, boolean isTip, boolean isDCC, String ac, String deviceID, String coutner){
+		getTableResponse = getTableResponse.substring(1);
+		if(getTableResponse.matches(Constant.ERROR_REGEX)){
+			throw new IllegalArgumentException("ERROR GET TABLE RESPONSE -"+ getTableResponse);
+		}
+		else if(getTableResponse.matches(Constant.SUCCESS_GET_TABLE)){
+			return PrepareHeaders.getEditTableHeader(ac, deviceID,coutner) + "," + "ADD," + getClearedTable(getTableResponse, isTip, isDCC, 10);
 		}		
 		else{
 			throw new IllegalArgumentException("INVALID RESPONSE -"+ getTableResponse);
@@ -60,6 +88,19 @@ public class PrepareSale {
 		}
 		else if(editTableResponse.matches(Constant.SUCCESS_EDIT_TABLE)){
 			return PrepareHeaders.getDisconnectHeader();
+		}		
+		else{
+			throw new IllegalArgumentException("INVALID RESPONSE -"+ editTableResponse);
+		}
+	}	
+	
+	public static String getDisconnectRequest(String editTableResponse, String ac, String deviceID, String coutner){
+		editTableResponse = editTableResponse.substring(1);
+		if(editTableResponse.matches(Constant.ERROR_REGEX)){
+			throw new IllegalArgumentException("ERROR EDIT TABLE RESPONSE -"+ editTableResponse);
+		}
+		else if(editTableResponse.matches(Constant.SUCCESS_EDIT_TABLE)){
+			return PrepareHeaders.getDisconnectHeader(ac, deviceID,coutner);
 		}		
 		else{
 			throw new IllegalArgumentException("INVALID RESPONSE -"+ editTableResponse);
@@ -136,7 +177,7 @@ public class PrepareSale {
 			if(!isDCC){
 				String clearedTable = "{"+ tableNumber+ "##COMPLETED#0#" +
 							  "{"+ checkNumber+ "##01#0#" +
-							  	Tender.sale_1_Tender_no_dcc_no_tip(newAmt)+"#" +
+							  	Tender.sale_1_Tender_no_dcc_no_tip("100")+"#" +
 							  "}" +
 							  "}";
 				return clearedTable;
