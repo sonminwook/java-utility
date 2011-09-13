@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project name="JCache" basedir="." default="yguard">
 	<property name="lib.dir" location="lib" />
 	<property name="build.dir" location="bin" />
 	<property name="src.dir" location="src" />
 	<property name="jar.dir" location="jar" />
 	<property name="doc.dir" location="docs" />
-	<property name="jar.name" value="JCache.jar" />
-	<property name="obsjar.name" value="JCache-1.0.1" />
+	<property name="jar.name" value="JCache-non-hash.jar" />
+	<property name="obsjar.name" value="JCache-" />
 	<property name="jarPostFix" value=".jar" />
 	<property name="yguardJar" value="yguard.jar" />
-	<property name="version" value="" />
+	<property name="version" value="1.0.1" />
 	<property name="app.name" value="Rendered Receipt in OneInterface" />
 	<property name="packages" value="com.javainsight.*" />
 
@@ -21,8 +21,12 @@
 		</fileset>
 	</path>
 	
+	<echo message="========================================================================= " />
+	<echo message="|              ${ant.project.name}: Creating jarfile                    | " />
+	<echo message="========================================================================= " />
 	<!-- Deletes the existing build directory-->
 	<target name="clean">
+		<echo message="STEP 1 = CLEANING CLASS/JAR FILES" />
 		<delete dir="${build.dir}" />
 		<delete dir="${jar.dir}" />
 		<delete dir="${doc.dir}" />
@@ -35,11 +39,13 @@
 	
 	<!-- Compiles the java code -->
 	<target name="compile" depends="clean, makedir">
+		<echo message="STEP 2 = COMPILING THE SOURCE CODE" />
 		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath" />
 	</target>
 	
 	<!--  Create a JAR file -->
 	<target name="jar" depends="compile">
+		<echo message="STEP 3 = CREATING JAR FILE" />
     <jar destfile="${jar.dir}/${jar.name}"
          basedir="${build.dir}"
          includes="**/*.class"
@@ -64,6 +70,7 @@
 	
 	<!-- Y Guard stuff -->
 	<target name="yguard" depends="jar">
+		<echo message="STEP 4 = HASHING JAR FILE" />
 		<taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" classpath="${lib.dir}/${yguardJar}" />
 		<yguard>
 			<inoutpair in="${jar.dir}/${jar.name}" out="${jar.dir}/${obsjar.name}${version}${jarPostFix}" />
