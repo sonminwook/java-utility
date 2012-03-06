@@ -2,15 +2,17 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="gdata_lib/gdata-client-1.0.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/gdata-client-meta-1.0.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/gdata-core-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata_lib/gdata-client-1.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
+	<classpathentry kind="lib" path="gdata_lib/gdata-client-meta-1.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
+	<classpathentry kind="lib" path="gdata_lib/gdata-core-1.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
 	<classpathentry kind="lib" path="gdata_lib/external/activation.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/gdata-media-1.0.jar"/>
+	<classpathentry kind="lib" path="gdata_lib/gdata-media-1.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
 	<classpathentry kind="lib" path="gdata_lib/external/mail.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/external/gdata-docs-3.0.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/external/gdata-docs-meta-3.0.jar"/>
+	<classpathentry kind="lib" path="gdata_lib/external/gdata-docs-3.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
+	<classpathentry kind="lib" path="gdata_lib/external/gdata-docs-meta-3.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
 	<classpathentry kind="lib" path="gdata_lib/external/servlet-api.jar"/>
 	<classpathentry kind="lib" path="gdata_lib/external/guava-r09.jar"/>
+	<classpathentry kind="lib" path="gdata_lib/gdata-spreadsheet-3.0.jar"/>
+	<classpathentry kind="lib" path="gdata_lib/gdata-spreadsheet-meta-3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
