@@ -61,7 +61,7 @@ public class TestGoogleDocs {
 	}
 	
 	public static void showAllDocs() throws IOException, ServiceException {
-		  URL feedUri = new URL(URL_SPECIAL + DOC);
+		  URL feedUri = new URL(URL_SPECIAL);
 		  DocumentListFeed feed = client.getFeed(feedUri, DocumentListFeed.class);
 
 		  for (DocumentListEntry entry : feed.getEntries()) {

@@ -22,8 +22,8 @@ public class CreateDocument {
 			CreateDocument createDoc = new CreateDocument();
 			createDoc.client.setUserToken(Constants.AUTH_TOKEN);
 			//createDoc.createDoc();
-			//createDoc.uploadDocument();
-			createDoc.uploadDocInFolder(Constants.GOOGLE_DOC_URL+Constants.FOLDER, Constants.AUTH_TOKEN, "config");
+			createDoc.uploadDocument();
+			//createDoc.uploadDocInFolder(Constants.GOOGLE_DOC_URL+Constants.FOLDER, Constants.AUTH_TOKEN, "config");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class CreateDocument {
 	}
 
 	private void uploadDocument() throws IOException, ServiceException{
-		DocumentListEntry uploadedEntry = uploadFile("TestData/Pay@Table_log.txt", "ErrorLog1b.txt");
+		DocumentListEntry uploadedEntry = uploadFile("TestData/result.csv", "DailyTxn.csv");
 		System.out.println("Document now online @ :" + uploadedEntry.getDocumentLink().getHref());
 
 	}
@@ -84,7 +84,8 @@ public class CreateDocument {
 	// Prevent collaborators from sharing the document with others?
 	// newDocument.setWritersCanInvite(false);
 
-	return client.insert(new URL("https://docs.google.com/feeds/default/private/full/"), newDocument);
+		//return client.insert(new URL("https://docs.google.com/feeds/default/private/full/"), newDocument);
+		return client.update(new URL("https://docs.google.com/feeds/default/private/full/"), newDocument);
 	}
 
 	private void uploadDocInFolder(String URL, String _authToken, String folderName) throws IOException, ServiceException{
