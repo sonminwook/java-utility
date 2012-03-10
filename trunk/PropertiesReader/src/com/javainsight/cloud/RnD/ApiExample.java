@@ -1,4 +1,4 @@
-package com.javainsight.cloud;
+package com.javainsight.cloud.RnD;
 
 import com.google.gdata.client.ClientLoginAccountType;
 import com.google.gdata.client.GoogleService;
