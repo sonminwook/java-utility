@@ -1,4 +1,4 @@
-package com.javainsight.cloud;
+package com.javainsight.cloud.RnD;
 
 import java.io.File;
 import java.net.URL;
