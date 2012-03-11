@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.google.gdata.data.Person;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 
@@ -17,26 +18,17 @@ public class ExcelCloud {
 		
 	public List<SpreadsheetEntry> getFileList() {
 		try{
-		Date date = new Date();
+
 		URL metafeedUrl = new URL(Constants.SPREADSHEET_URL);
-		System.err.println("Step 1 " + (new Date().getTime() - date.getTime()) + " ms");
-		date = new Date();
-		
 		SpreadsheetFeed feed = service.getFeed(metafeedUrl, SpreadsheetFeed.class);
-		System.err.println("Step 2 " + (new Date().getTime() - date.getTime()) + " ms");
-		date = new Date();
-		
 		List<SpreadsheetEntry> spreadsheets = feed.getEntries();
-		System.err.println("Step 3 " + (new Date().getTime() - date.getTime()) + " ms");
-		date = new Date();
-		
-		for (int i = 0; i < spreadsheets.size(); i++) {
-			SpreadsheetEntry entry = spreadsheets.get(i);
-			System.out.println(entry.getTitle().getPlainText());
-			System.err.println("sub Steps " + (new Date().getTime() - date.getTime()) + " ms");
-			date = new Date();
+		for(SpreadsheetEntry entry : spreadsheets){
+			for(Person p : entry.getAuthors()){
+				if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD))
+				System.err.println(entry.getTitle().getPlainText() + " >---> " + p.getName() + "/"+ p.getEmail());
+			}
+			
 		}
-		
 		return spreadsheets;
 		}catch(Exception e){
 			e.printStackTrace();

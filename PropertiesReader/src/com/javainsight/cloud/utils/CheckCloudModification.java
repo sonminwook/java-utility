@@ -1,13 +1,10 @@
 package com.javainsight.cloud.utils;
 
-import java.io.File;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-
-import org.apache.commons.io.FileUtils;
 
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.enums.events.FolderEvent;
@@ -16,18 +13,18 @@ import com.javainsight.enums.events.FolderEvent;
 
 public class CheckCloudModification {
 	
-	private Map<SpreadsheetEntry, Long> fileModificationMap = null;
+	private Map<String, Long> fileModificationMap = null;
 	//private File dir = null;
 //	private Collection<File> fileList = null;
 	private List<SpreadsheetEntry> fileList = null;
 	private Stack<SpreadsheetEntry> updateQueue = null;
-	private Stack<SpreadsheetEntry> deleteQueue = null;
+	private Stack<String> deleteQueue = null;
 	private List<FolderEvent> folderEventList = null;
 	
-	public CheckCloudModification(Map<SpreadsheetEntry, Long> fileModificationMap,
+	public CheckCloudModification(Map<String, Long> fileModificationMap,
 							 				//File dir,
 							 				Stack<SpreadsheetEntry> updateQueue,
-							 				Stack<SpreadsheetEntry> deleteQueue,
+							 				Stack<String> deleteQueue,
 							 				List<FolderEvent> folderEventList){
 		this.fileModificationMap = fileModificationMap;
 		//this.dir = dir;		
@@ -40,7 +37,6 @@ public class CheckCloudModification {
 		/*
 		 * Step 1: Take the latest file listing
 		 */
-		
 		fileList = new ExcelCloud().getFileList();
 		/*
 		 * Step 2: Update the Queues
@@ -60,17 +56,27 @@ public class CheckCloudModification {
 		/*
 		 * Check for deletion first
 		 */
-		Set<SpreadsheetEntry> existingFileSet = this.fileModificationMap.keySet();
-		for(SpreadsheetEntry file : existingFileSet){
-			if(!this.fileList.contains(file)){				
+		//System.err.println("Inside update Queues");
+		//System.err.println("File Map" + this.fileModificationMap);
+		Set<String> existingFileSet = this.fileModificationMap.keySet();
+		
+		Map<String, SpreadsheetEntry> tempFileNameURLMap = new HashMap<String, SpreadsheetEntry>();
+		
+		for(SpreadsheetEntry entry : fileList){
+			String fileName = entry.getTitle().getPlainText();
+			tempFileNameURLMap.put(fileName, entry);
+		}
+		
+		for(String fileName : existingFileSet){
+			if(!tempFileNameURLMap.containsKey(fileName)){
 				/*
 				 * This file has been deleted
 				 */
-				this.deleteQueue.push(file);
+				this.deleteQueue.push(fileName);
 				/*
 				 * Remove it from File Database
 				 */
-				this.fileModificationMap.remove(file);
+				this.fileModificationMap.remove(fileName);
 				/*
 				 * Add an Event
 				 */
@@ -80,10 +86,9 @@ public class CheckCloudModification {
 		/*
 		 * Check for new addition
 		 */
-		//for(File file : fileList){
 		for (int i = 0; i < fileList.size(); i++) {
 			SpreadsheetEntry entry = fileList.get(i);
-			if(!this.fileModificationMap.containsKey(entry)){				
+			if(!this.fileModificationMap.containsKey(entry.getTitle().getPlainText())){				
 				/*
 				 * This is a new File
 				 */
@@ -99,19 +104,20 @@ public class CheckCloudModification {
 		 */
 		for(SpreadsheetEntry file : fileList){
 			Long lastModifiedTime = file.getUpdated().getValue();			
-			Long previousModifiedTime = this.fileModificationMap.get(file) == null ? -1 : this.fileModificationMap.get(file);
+			Long previousModifiedTime = this.fileModificationMap.get(file.getTitle().getPlainText()) == null ? -1 : 
+																					this.fileModificationMap.get(file.getTitle().getPlainText());
 			
 			if(previousModifiedTime < 0){
 				/*
 				 * It was new addition, File Object has been already pushed onto Queue
 				 */	
-				this.fileModificationMap.put(file, lastModifiedTime);
+				this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
 			}else{
 				if(lastModifiedTime > previousModifiedTime){
 					/*
 					 * File has been modified				
 					 */
-					this.fileModificationMap.put(file, lastModifiedTime);
+					this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
 					this.updateQueue.push(file);					
 					/*
 					 * Add an Event
