@@ -80,9 +80,9 @@ public class ImportClient {
  public SpreadsheetEntry getSpreadsheet(String spreadsheet)
      throws Exception {
    
-     SpreadsheetQuery spreadsheetQue     = new SpreadsheetQuery(factory.getSpreadsheetsFeedUrl());
+     SpreadsheetQuery spreadsheetQuery     = new SpreadsheetQuery(factory.getSpreadsheetsFeedUrl());
      spreadsheetQuery.setTitleQuery(spreadsheet);
-     SpreadsheetFeed spreadsheetFeed = service.query(spreadsheetQue    SpreadsheetFeed.class);
+     SpreadsheetFeed spreadsheetFeed = service.query(spreadsheetQuery,    SpreadsheetFeed.class);
      List<SpreadsheetEntry> spreadsheets = spreadsheetFeed.getEntries();
      if (spreadsheets.isEmpty()) {
        throw new Exception("No spreadsheets with that name");
@@ -107,13 +107,13 @@ public class ImportClient {
 
    SpreadsheetEntry spreadsheetEntry = getSpreadsheet(spreadsheet);
 
-   WorksheetQuery worksheetQu      = new WorksheetQuery(spreadsheetEntry.getWorksheetFeedUrl());
+   WorksheetQuery worksheetQuery      = new WorksheetQuery(spreadsheetEntry.getWorksheetFeedUrl());
 
    worksheetQuery.setTitleQuery(worksheet);
-   WorksheetFeed worksheetFeed = service.query(worksheetQue     WorksheetFeed.class);
+   WorksheetFeed worksheetFeed = service.query(worksheetQuery,     WorksheetFeed.class);
    List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
    if (worksheets.isEmpty()) {
-     throw new Exception("No worksheets with that name in spreadhshee      + spreadsheetEntry.getTitle().getPlainText());
+     throw new Exception("No worksheets with that name in spreadhshee "     + spreadsheetEntry.getTitle().getPlainText());
    }
 
    return worksheets.get(0);
@@ -126,7 +126,7 @@ public class ImportClient {
   * @param worksheet the name of the worksheet
   * @throws Exception if error is encountered, such as bad permissions
   */
- public void purgeWorksheet(String spreadsheet, String workshee
+ public void purgeWorksheet(String spreadsheet, String worksheet)
         throws Exception {
 
    WorksheetEntry worksheetEntry = getWorksheet(spreadsheet, worksheet);

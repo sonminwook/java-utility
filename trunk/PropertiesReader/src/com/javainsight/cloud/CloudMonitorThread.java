@@ -1,6 +1,5 @@
 package com.javainsight.cloud;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -8,24 +7,21 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.cloud.utils.CheckCloudModification;
 import com.javainsight.cloud.utils.ExcelCloud;
 import com.javainsight.enums.events.FolderEvent;
-import com.javainsight.monitor.utils.CheckModification;
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 
 public class CloudMonitorThread implements Runnable {
 
 	//private String directory;	
-	private Map<SpreadsheetEntry, Long> fileModificationMap = new ConcurrentHashMap<SpreadsheetEntry, Long>();
+	private Map<String, Long> fileModificationMap = new ConcurrentHashMap<String, Long>();
 	private List<SpreadsheetEntry> fileList = null;
 	private boolean firstTime = true;
 	private Stack<SpreadsheetEntry> updateQueue = null;
-	private Stack<SpreadsheetEntry> deleteQueue = null;
+	private Stack<String> deleteQueue = null;
 	private CheckCloudModification checker = null;
 	private List<FolderEvent> folderEventList = null;
 	
@@ -38,7 +34,7 @@ public class CloudMonitorThread implements Runnable {
 	
 	public CloudMonitorThread(//String directory,
 								Stack<SpreadsheetEntry> updateQueue,
-								Stack<SpreadsheetEntry> deleteQueue,
+								Stack<String> deleteQueue,
 								List<FolderEvent> folderEventList,
 								Lock proceed,
 								Condition isProceed){
@@ -76,7 +72,7 @@ public class CloudMonitorThread implements Runnable {
 			 */	
 			 status = checker.check();		 
 			}
-			
+
 			if(status){
 				 if(this.folderEventList.size() > 0){
 						this.proceed.lock();
@@ -96,7 +92,7 @@ public class CloudMonitorThread implements Runnable {
 	
 	
 	
-	private void firstTime(){		
+	private void firstTime(){
 		/*
 		 * Step 2 : Find out all the files present in the directory
 		 */
@@ -119,10 +115,10 @@ public class CloudMonitorThread implements Runnable {
 		
 		for(SpreadsheetEntry file : fileList){
 			Long lastModifiedTime = file.getUpdated().getValue();
-			Long previousModifiedTime = this.fileModificationMap.get(file) == null? 0 : this.fileModificationMap.get(file);
+			Long previousModifiedTime = this.fileModificationMap.get(file.getTitle().getPlainText()) == null? 0 : this.fileModificationMap.get(file.getTitle().getPlainText());
 			
-			if(lastModifiedTime > previousModifiedTime){				
-				this.fileModificationMap.put(file, lastModifiedTime);
+			if(lastModifiedTime > previousModifiedTime){
+				this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
 			}else{
 				System.err.println("<NOT MODIFIED> "+ file.getTitle().getPlainText());
 			}

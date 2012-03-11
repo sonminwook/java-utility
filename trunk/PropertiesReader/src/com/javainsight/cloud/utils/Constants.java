@@ -20,4 +20,6 @@ public class Constants {
 	public static String SPREADSHEET_AUTH_TOKEN = "DQAAALIAAABxlQXVBgkxVclPPo0llkgNmzD3aAf9PDdc7TL13iKTlI_mlR6gRgz8CcCOLXzwR3ZfRc7RxTxG5U8eYW8jLCvr4qa-7AVF-nxVgRb28W5Di-18rUvdmWi_6O8O0" +
 													"--4z4IBrE1U5yhXCNQ9NFsJ07mhuuuZkXRYbOxf95sIAeMxkEnlUb6qrB5jtk0ChXh9lo8tuq0kDc7P1JMZz" +
 													"HcBlVGZ4iQeyxHT5C73t5pgjQkvNB_FbyRXh2u78UVw5rH-qQg";
+	
+	public static final String MASTER_EMAIL_ADD = "xesunny@gmail.com";
 }
