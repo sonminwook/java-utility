@@ -25,7 +25,7 @@ public class TestCloud {
 	private Stack<String> deleteQueue = new Stack<String>();
 	private List<FolderEvent> folderEventList = new ArrayList<FolderEvent>();
 	
-	private Reader reader = null;
+	private CloudReader reader = null;
 	
 	//private String directory = null;
 	private int pollingTime = 15;
@@ -97,7 +97,7 @@ INFINITE_LOOP:while(true){
 						}					
 				}
 					folderEventList.remove(0);
-					//this.reader.start();
+				//	this.reader.start();
 			}catch(Exception e){						
 						logger.error("Error" + e.getMessage(), e);					
 				}finally{
