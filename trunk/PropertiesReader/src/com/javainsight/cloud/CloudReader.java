@@ -15,6 +15,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.disclaimer;
+import com.javainsight.cloud.utils.ReadFile;
 import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
@@ -63,8 +64,7 @@ public class CloudReader {
 			updateLock.lock();
 			for(SpreadsheetEntry entry : updateQueue){
 				try{
-					//parser.startParsing(file.getAbsolutePath());
-					System.err.println(" Reading starts for "+ entry.getTitle().getPlainText());
+					new ReadFile().readWorkSheet(entry.getTitle().getPlainText(), null, false);
 					logger.info("Cloud Update <SUCCESS> for <"+entry.getTitle().getPlainText()+">");
 					
 				}catch(Exception e){
