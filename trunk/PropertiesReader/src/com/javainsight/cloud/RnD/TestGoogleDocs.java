@@ -36,21 +36,21 @@ public class TestGoogleDocs {
 			 * In that special case, set the account type to GOOGLE if the user wishes to use the Google 
 			 * Accounts version of user@example.com.
 			 */
-			//client.setUserCredentials("javainsights@gmail.com", "1qaz1234", ClientLoginAccountType.GOOGLE);
+			client.setUserCredentials("javainsights@gmail.com", "1qaz1234", ClientLoginAccountType.GOOGLE);
 			/*
 			 * Use token to avoid CAPTCHA  CHALLENGE
 			 */
-			client.setUserToken("DQAAAKAAAABsRsSvYr5DC_a0K9mfde2R0bMe2BoKWB--sQ3yJxAjzp6IL" +
-								"4NxUkQoN58cSfCVVnCWm7QH-KNs7ElXLqgAaCwu8mLyBs3yXOGOO7vArQw5Xu3N1X5WycB5" +
-								"qwx1eeobZkQRntqNGiFOhTNq0amrqbYJBaSpKugPCC0nq4g55UgCBf75m0uMlpPES68-r4hsDAq" +
-								"ZBJjvc-ilxWmNMwVhtYWf");
+			//client.setUserToken("DQAAAKAAAABsRsSvYr5DC_a0K9mfde2R0bMe2BoKWB--sQ3yJxAjzp6IL" +
+							//	"4NxUkQoN58cSfCVVnCWm7QH-KNs7ElXLqgAaCwu8mLyBs3yXOGOO7vArQw5Xu3N1X5WycB5" +
+							//	"qwx1eeobZkQRntqNGiFOhTNq0amrqbYJBaSpKugPCC0nq4g55UgCBf75m0uMlpPES68-r4hsDAq" +
+							//	"ZBJjvc-ilxWmNMwVhtYWf");
 			
-//			UserToken auth_token = (UserToken) client.getAuthTokenFactory().getAuthToken();
-//			String token = auth_token.getValue(); // token is '12345abcde'
+			UserToken auth_token = (UserToken) client.getAuthTokenFactory().getAuthToken();
+			String token = auth_token.getValue(); // token is '12345abcde'
 //			
-//			System.err.println("Token is "+ token);
+			System.err.println("Token is "+ token);
 			
-			showAllDocs();
+		//	showAllDocs();
 			
 			
 

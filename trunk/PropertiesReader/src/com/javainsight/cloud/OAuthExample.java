@@ -1,87 +1,85 @@
 package com.javainsight.cloud;
 
 
-import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.draft10.AccessTokenResponse;
+import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
+import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessTokenRequest.GoogleAuthorizationCodeGrant;
+import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAuthorizationRequestUrl;
+import com.google.api.client.http.ByteArrayContent;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpContent;
+import com.google.api.client.http.HttpHeaders;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
-import com.google.api.services.oauth2.Oauth2;
-import com.google.api.services.oauth2.model.Tokeninfo;
-import com.google.api.services.oauth2.model.Userinfo;
+import com.google.gdata.util.ContentType;
 
-import com.google.api.services.samples.shared.cmdline.oauth2.LocalServerReceiver;
-import com.google.api.services.samples.shared.cmdline.oauth2.OAuth2Native;
-
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 
-/**
- * Sample application using OAuth in the Google Data Java Client.  See the
- * comments below to learn about the details.
- *
- * 
- */
+
+
+
 class OAuthExample {
-
-	 /** Global instance of the HTTP transport. */
-	  private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
-
-	  /** Global instance of the JSON factory. */
+	  private static final String SCOPE = "https://www.googleapis.com/auth/urlshortener";
+	  private static final String CALLBACK_URL = "urn:ietf:wg:oauth:2.0:oob";
+	  private static final HttpTransport TRANSPORT = new NetHttpTransport();
 	  private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-	  /** OAuth 2.0 scopes. */
-	  private static final List<String> SCOPES = Arrays.asList(
-	      "https://www.googleapis.com/auth/userinfo.profile",
-	      "https://www.googleapis.com/auth/userinfo.email");
+	  // FILL THESE IN WITH YOUR VALUES FROM THE API CONSOLE
+	  private static final String CLIENT_ID = "534273956027.apps.googleusercontent.com";
+	  private static final String CLIENT_SECRET = "cLx9Xh9cEVUKv-FUhLqSuFVe";
 
-	  private static Oauth2 oauth2;
+	  @SuppressWarnings("all")
+	  public static void main(String[] args) throws IOException {
+	    // Generate the URL to which we will direct users
+	    String authorizeUrl = new GoogleAuthorizationRequestUrl(CLIENT_ID,
+	        CALLBACK_URL, SCOPE).build();
+	    System.out.println("Paste this url in your browser: " + authorizeUrl);
 
-	  public static void main(String[] args) {
-	    try {
-	      try {
-	        // authorization
-	        Credential credential = OAuth2Native.authorize(HTTP_TRANSPORT, JSON_FACTORY, new LocalServerReceiver(), SCOPES);
-	        // set up global Oauth2 instance
-	        oauth2 = Oauth2.builder(HTTP_TRANSPORT, JSON_FACTORY)
-	            .setApplicationName("Google-OAuth2Sample/1.0").setHttpRequestInitializer(credential)
-	            .build();
-	        // run commands
-	        tokenInfo(credential.getAccessToken());
-	        userInfo();
-	        // success!
-	        return;
-	      } catch (IOException e) {
-	        System.err.println(e.getMessage());
-	      }
-	    } catch (Throwable t) {
-	      t.printStackTrace();
+	    // Wait for the authorization code
+	    System.out.println("Type the code you received here: ");
+	    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+	    String authorizationCode = in.readLine();
+
+	    // Exchange for an access and refresh token
+	    GoogleAuthorizationCodeGrant authRequest = new GoogleAuthorizationCodeGrant(TRANSPORT,
+	        JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, authorizationCode, CALLBACK_URL);
+	    authRequest.useBasicAuthorization = false;
+	    AccessTokenResponse authResponse = authRequest.execute();
+	    String accessToken = authResponse.accessToken;
+	    GoogleAccessProtectedResource access = new GoogleAccessProtectedResource(accessToken,
+	        TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, authResponse.refreshToken);
+	    HttpRequestFactory rf = TRANSPORT.createRequestFactory(access);
+	    System.out.println("Access token: " + authResponse.accessToken);
+
+	    // Make an authenticated request
+	    GenericUrl shortenEndpoint = new GenericUrl("https://www.googleapis.com/urlshortener/v1/url");
+	    String requestBody = "{\"longUrl\":\"http://farm6.static.flickr.com/5281/5686001474_e06f1587ff_o.jpg\"}";
+	    HttpRequest request = rf.buildPostRequest(shortenEndpoint, new ByteArrayContent("UTF-8", requestBody.getBytes()));
+	    HttpHeaders header = new HttpHeaders();
+	    header.setContentType("application/json");
+	    request.setHeaders(header);
+	    //request.headers.contentType = ;
+	    HttpResponse shortUrl = request.execute();
+	    BufferedReader output = new BufferedReader(new InputStreamReader(shortUrl.getContent()));
+	    System.out.println("Shorten Response: ");
+	    for (String line = output.readLine(); line != null; line = output.readLine()) {
+	      System.out.println(line);
 	    }
-	    System.exit(1);
-	  }
 
-	  private static void tokenInfo(String accessToken) throws IOException {
-	    header("Validating a token");
-	    Tokeninfo tokeninfo = oauth2.tokeninfo().setAccessToken(accessToken).execute();
-	    System.out.println(tokeninfo.toPrettyString());
-	    if (!tokeninfo.getAudience()
-	        .equals(OAuth2Native.getClientSecrets().getDetails().getClientId())) {
-	      System.err.println("ERROR: audience does not match our client ID!");
-	    }
+	    // Refresh a token (SHOULD ONLY BE DONE WHEN ACCESS TOKEN EXPIRES)
+	    access.refreshToken();
+	    System.out.println("Original Token: " + accessToken + " New Token: " + access.getAccessToken());
 	  }
+	}
 
-	  private static void userInfo() throws IOException {
-	    header("Obtaining User Profile Information");
-	    Userinfo userinfo = oauth2.userinfo().get().execute();
-	    System.out.println(userinfo.toPrettyString());
-	  }
 
-	  static void header(String name) {
-	    System.out.println();
-	    System.out.println("================== " + name + " ==================");
-	    System.out.println();
-	  }
 
-}

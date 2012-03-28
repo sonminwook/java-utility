@@ -1,10 +1,17 @@
 package com.javainsight.cloud.RnD;
 
+import java.io.Console;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.gdata.client.DocumentQuery;
+import com.google.gdata.client.GoogleAuthTokenFactory.UserToken;
+import com.google.gdata.client.authn.oauth.OAuthUtil;
 import com.google.gdata.client.docs.DocsService;
 import com.google.gdata.client.spreadsheet.ListQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
@@ -22,6 +29,15 @@ import com.google.gdata.data.spreadsheet.WorksheetFeed;
 public class UpdateExcel {
 	
 	private DocsService client = new DocsService("~Javainsights~");
+	
+	  /** E-mail address of the service account. */
+	  private static final String SERVICE_ACCOUNT_EMAIL =  "873813560123@developer.gserviceaccount.com";
+
+	  /** Global instance of the HTTP transport. */
+	  private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+
+	  /** Global instance of the JSON factory. */
+	  private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
 	public static void main(String[] args) {
 		try{
@@ -44,6 +60,94 @@ public class UpdateExcel {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	private void testAuth() throws Exception{
+		 ////////////////////////////////////////////////////////////////////////////
+	      // STEP 1: Configure how to perform OAuth 2.0
+	      ////////////////////////////////////////////////////////////////////////////
+
+	      // TODO: Update the following information with that obtained from
+	      // https://code.google.com/apis/console. After registering
+	      // your application, these will be provided for you.
+
+	      String CLIENT_ID = "12345678.apps.googleusercontent.com";
+
+	      // This is the OAuth 2.0 Client Secret retrieved
+	      // above.  Be sure to store this value securely.  Leaking this
+	      // value would enable others to act on behalf of your application!
+	      String CLIENT_SECRET = "Gc0230jdsah01jqpowpgff";
+
+	      // Space separated list of scopes for which to request access.
+	      String SCOPE = "https://spreadsheets.google.com/feeds https://docs.google.com/feeds";
+
+	      // This is the Redirect URI for installed applications.
+	      // If you are building a web application, you have to set your
+	      // Redirect URI at https://code.google.com/apis/console.
+	      String REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob";
+
+	      ////////////////////////////////////////////////////////////////////////////
+	      // STEP 2: Set up the OAuth 2.0 object
+	      ////////////////////////////////////////////////////////////////////////////
+
+	      // OAuth2Parameters holds all the parameters related to OAuth 2.0.
+	      OAuth2Parameters parameters = new OAuth2Parameters();
+
+	      // Set your OAuth 2.0 Client Id (which you can register at
+	      // https://code.google.com/apis/console).
+	      parameters.ClientId = CLIENT_ID;
+
+	      // Set your OAuth 2.0 Client Secret, which can be obtained at
+	      // https://code.google.com/apis/console.
+	      parameters.ClientSecret = CLIENT_SECRET;
+
+	      // Set your Redirect URI, which can be registered at
+	      // https://code.google.com/apis/console.
+	      parameters.RedirectUri = REDIRECT_URI;
+
+	      ////////////////////////////////////////////////////////////////////////////
+	      // STEP 3: Get the Authorization URL
+	      ////////////////////////////////////////////////////////////////////////////
+
+	      // Set the scope for this particular service.
+	      parameters.Scope = SCOPE;
+
+	      // Get the authorization url.  The user of your application must visit
+	      // this url in order to authorize with Google.  If you are building a
+	      // browser-based application, you can redirect the user to the authorization
+	      // url.
+	      String authorizationUrl = OAuthUtil.CreateOAuth2AuthorizationUrl(parameters);
+	      System.err.println(authorizationUrl);
+	      System.err.println("Please visit the URL above to authorize your OAuth "
+	        + "request token.  Once that is complete, type in your access code to "
+	        + "continue...");
+	      parameters.AccessCode = Console.ReadLine();
+
+	      ////////////////////////////////////////////////////////////////////////////
+	      // STEP 4: Get the Access Token
+	      ////////////////////////////////////////////////////////////////////////////
+
+	      // Once the user authorizes with Google, the request token can be exchanged
+	      // for a long-lived access token.  If you are building a browser-based
+	      // application, you should parse the incoming request token from the url and
+	      // set it in OAuthParameters before calling GetAccessToken().
+	      OAuthUtil.GetAccessToken(parameters);
+	      string accessToken = parameters.AccessToken;
+	      Console.WriteLine("OAuth Access Token: " + accessToken);
+
+	      ////////////////////////////////////////////////////////////////////////////
+	      // STEP 5: Make an OAuth authorized request to Google
+	      ////////////////////////////////////////////////////////////////////////////
+
+	      // Initialize the variables needed to make the request
+	      GOAuth2RequestFactory requestFactory =
+	          new GOAuth2RequestFactory(null, "MySpreadsheetIntegration-v1", parameters);
+	      SpreadsheetsService service = new SpreadsheetsService("MySpreadsheetIntegration-v1");
+	      service.RequestFactory = requestFactory;
+
+	      // Make the request to Google
+	      // See other portions of this guide for code to put here...
+		
 	}
 	
 	private void getAllExcelList() throws Exception	{
@@ -169,6 +273,9 @@ public class UpdateExcel {
 	private void readStructuredQuery(String mainFileName, String workSheetName, String conditionStatment) throws Exception{
 		SpreadsheetService service = new SpreadsheetService("~JavaInsights-SpreadSheets");
 		service.setUserCredentials("javainsights@gmail.com", "1qaz1234");
+		UserToken spreadsheetsToken = (UserToken) service.getAuthTokenFactory().getAuthToken();
+//		
+		System.err.println("Token is "+ spreadsheetsToken.getValue());
 		URL metafeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full");
 		SpreadsheetFeed feed = service.getFeed(metafeedUrl, SpreadsheetFeed.class);
 		List<SpreadsheetEntry> spreadsheets = feed.getEntries();

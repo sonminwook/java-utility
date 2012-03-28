@@ -17,9 +17,7 @@ public class Constants {
 								"qwx1eeobZkQRntqNGiFOhTNq0amrqbYJBaSpKugPCC0nq4g55UgCBf75m0uMlpPES68-r4hsDAq" +
 								"ZBJjvc-ilxWmNMwVhtYWf";
 	
-	public static String SPREADSHEET_AUTH_TOKEN = "DQAAALIAAABxlQXVBgkxVclPPo0llkgNmzD3aAf9PDdc7TL13iKTlI_mlR6gRgz8CcCOLXzwR3ZfRc7RxTxG5U8eYW8jLCvr4qa-7AVF-nxVgRb28W5Di-18rUvdmWi_6O8O0" +
-													"--4z4IBrE1U5yhXCNQ9NFsJ07mhuuuZkXRYbOxf95sIAeMxkEnlUb6qrB5jtk0ChXh9lo8tuq0kDc7P1JMZz" +
-													"HcBlVGZ4iQeyxHT5C73t5pgjQkvNB_FbyRXh2u78UVw5rH-qQg";
-	
+	public static String SPREADSHEET_AUTH_TOKEN = "DQAAALgAAAChV8ASkpeiTaBra7DAEJ1p7PmrFFX6085RYEv-6ZXNiVkJzI8hTYi7zbZAJuHshHHLNz_b0K8hiUGk_p46Q3AjNj1Fup4BdbmVHyNHsjCJy8or5BRbZ1in6rJdPQy9BYF5PnSQbLFN-dTGia81vYmTnNb2r6aXSSy3XwyoU7TLuQH7KUxyh8Ow2jGvS-CoP0zc71NyKk1HTXELME0o9_gDaoebmp8cpWjCqQqT_xZmPV_Z9Q0uHyR1YbRpOHQ_NlU";
+
 	public static final String MASTER_EMAIL_ADD = "xesunny@gmail.com";
 }
