@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gdata.client.spreadsheet.ListQuery;
-import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.data.spreadsheet.WorksheetEntry;
 import com.google.gdata.data.spreadsheet.WorksheetFeed;
 
+//1561659027
 public class ReadFile {
 	
 	//private SpreadsheetService service = new SpreadsheetService(Constants.CLOUD_SERVICE_NAME);
@@ -20,13 +19,7 @@ public class ReadFile {
 	
 	public void readWorkSheet( String mainFileName, String workSheetName, boolean isReverseOrder) throws Exception{
 		List<String> lines = new ArrayList<String>();
-		
-		SpreadsheetService service = new SpreadsheetService("~JavaInsights-SpreadSheets");
-
-		service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
-		URL metafeedUrl = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full");
-		SpreadsheetFeed feed = service.getFeed(metafeedUrl, SpreadsheetFeed.class);
-		List<SpreadsheetEntry> spreadsheets = feed.getEntries();
+		List<SpreadsheetEntry> spreadsheets = ServiceFactory.getSpreadSheets();
 		
 		for (int i = 0; i < spreadsheets.size(); i++) {
 		  SpreadsheetEntry entry = spreadsheets.get(i);
@@ -34,20 +27,39 @@ public class ReadFile {
 		  
 		 if(entry.getTitle().getPlainText().equalsIgnoreCase(mainFileName)){ 
 		  URL worksheetFeedUrl = entry.getWorksheetFeedUrl();
-		  WorksheetFeed worksheetFeed = service.getFeed(worksheetFeedUrl, WorksheetFeed.class);
+		  WorksheetFeed worksheetFeed = ServiceFactory.getWorksheetFeed(worksheetFeedUrl);
+
 
 		  for (WorksheetEntry worksheet : worksheetFeed.getEntries()) {
 			  	URL listFeedUrl = worksheet.getListFeedUrl();
 			  	ListQuery query = new ListQuery(listFeedUrl);
 			  	query.setReverse(isReverseOrder);
-			  	ListFeed listFeed = service.query(query, ListFeed.class);
+			  	ListFeed listFeed = ServiceFactory.getListFeed(query);
+
 			  	
 			  		for (ListEntry listEntry : listFeed.getEntries()) {
-			  				String value = listEntry.getTitle().getPlainText() + ">>-->";
+			  				String replacer = "";
+			  				String value = ""; 
+			  				boolean isRequired = false;
 			  						for (String tag : listEntry.getCustomElements().getTags()) {
-			  								value += "["+tag+"] >> ["+ listEntry.getCustomElements().getValue(tag)+"],";
+			  							String val = listEntry.getCustomElements().getValue(tag)==null?"":listEntry.getCustomElements().getValue(tag);
+			  							if(isRequired){
+			  								if(tag.equalsIgnoreCase(Constants.SEPARATOR)){
+			  									replacer = listEntry.getCustomElements().getValue(tag);
+			  								}else{
+			  									value +=  val + Constants.SEPARATOR_CHAR;
+			  								}
+			  							}else{
+			  								value =  val + "=";
+			  								isRequired = true;
+			  							}
 			   
 			  						}
+			  						value = value.replaceAll(Constants.SEPARATOR_CHAR, replacer);
+			  						if(value.endsWith(replacer)){
+			  							value = value.substring(0, value.lastIndexOf(replacer));
+			  						}
+			  						lines.add(value);
 			  						System.err.println(value);
 			  		}
 		  	}

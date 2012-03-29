@@ -1,35 +1,24 @@
 package com.javainsight.cloud.utils;
 
-import java.net.URL;
-import java.util.Date;
 import java.util.List;
 
-import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.Person;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 
 public class ExcelCloud {
 	
-	private SpreadsheetService service = new SpreadsheetService(Constants.CLOUD_SERVICE_NAME);
-	{
-		service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
-	}
 		
 	public List<SpreadsheetEntry> getFileList() {
 		try{
-
-		URL metafeedUrl = new URL(Constants.SPREADSHEET_URL);
-		SpreadsheetFeed feed = service.getFeed(metafeedUrl, SpreadsheetFeed.class);
-		List<SpreadsheetEntry> spreadsheets = feed.getEntries();
-		for(SpreadsheetEntry entry : spreadsheets){
-			for(Person p : entry.getAuthors()){
-				if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD))
-				System.err.println(entry.getTitle().getPlainText() + " >---> " + p.getName() + "/"+ p.getEmail());
-			}
+			List<SpreadsheetEntry> spreadsheets = ServiceFactory.getSpreadSheets();
+			for(SpreadsheetEntry entry : spreadsheets){
+				for(Person p : entry.getAuthors()){
+					if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD))
+						System.err.println(entry.getTitle().getPlainText() + " >---> " + p.getName() + "/"+ p.getEmail());
+				}
 			
-		}
-		return spreadsheets;
+			}
+			return spreadsheets;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

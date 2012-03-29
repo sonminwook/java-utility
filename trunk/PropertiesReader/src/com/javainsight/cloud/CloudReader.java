@@ -16,6 +16,7 @@ import org.apache.log4j.PropertyConfigurator;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.disclaimer;
 import com.javainsight.cloud.utils.ReadFile;
+import com.javainsight.cloud.utils.ServiceFactory;
 import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
@@ -90,6 +91,7 @@ public class CloudReader {
 		} catch (Exception e) {			
 			logger.error(" Exception while updating cache", e);
 		}finally{
+			ServiceFactory.reset();
 			loadCondition.signal();
 			updateLock.unlock();
 			

@@ -140,8 +140,7 @@ public class UpdateExcel {
 	      ////////////////////////////////////////////////////////////////////////////
 
 	      // Initialize the variables needed to make the request
-	      GOAuth2RequestFactory requestFactory =
-	          new GOAuth2RequestFactory(null, "MySpreadsheetIntegration-v1", parameters);
+	      GOAuth2RequestFactory requestFactory = new GOAuth2RequestFactory(null, "MySpreadsheetIntegration-v1", parameters);
 	      SpreadsheetsService service = new SpreadsheetsService("MySpreadsheetIntegration-v1");
 	      service.RequestFactory = requestFactory;
 

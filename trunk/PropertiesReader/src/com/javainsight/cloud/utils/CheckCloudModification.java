@@ -37,6 +37,7 @@ public class CheckCloudModification {
 		/*
 		 * Step 1: Take the latest file listing
 		 */
+		System.err.println("Checker is running");
 		fileList = new ExcelCloud().getFileList();
 		/*
 		 * Step 2: Update the Queues
