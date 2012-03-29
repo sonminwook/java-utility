@@ -77,7 +77,8 @@ INFINITE_LOOP:while(true){
 						case LOAD:{
 							logger.debug("Cache Updation Alert");
 							for(SpreadsheetEntry file : this.updateQueue){
-								logger.debug("File Name is "+ file.getTitle().getPlainText());							
+								logger.debug("File Name is "+ file.getTitle().getPlainText());
+								//file.
 							}
 //							while(this.updateQueue.size() > 0){
 //								this.updateQueue.pop();

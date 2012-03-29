@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.cloud.utils.CheckCloudModification;
 import com.javainsight.cloud.utils.ExcelCloud;
+import com.javainsight.cloud.utils.ServiceFactory;
 import com.javainsight.enums.events.FolderEvent;
 
 public class CloudMonitorThread implements Runnable {
@@ -83,6 +84,8 @@ public class CloudMonitorThread implements Runnable {
 							this.proceed.unlock();
 						}
 					}
+			 }else{
+				 ServiceFactory.reset();
 			 }
 		} catch (Exception e) {
 			logger.error("Error" ,  e);
