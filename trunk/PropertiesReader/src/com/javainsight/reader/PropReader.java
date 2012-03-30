@@ -62,7 +62,7 @@ public class PropReader {
 	 * @param location : Directory where properties files are stored. Either direct or relative path.
 	 */	
 	public PropReader(String location, int timePeriod) {
-	 disclaimer.print();
+	 //disclaimer.print();
 	 this.location = location;
 	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod);
 	 new Thread(detectiveOO7).start();	 
@@ -76,7 +76,7 @@ public class PropReader {
 		    @Override
 		    public void run() {
 		    	detectiveOO7.graceFullShutDown();
-		        logger.info("~~~~~~JCONFIG READER - SHUT DOWN COMPLETED~~~~~~");
+		        logger.info("~~~~~~JCache READER - SHUT DOWN COMPLETED~~~~~~");
 		    }});
 	}
 

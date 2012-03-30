@@ -20,8 +20,7 @@ public class ServiceFactory {
 	private static Map<ListQuery, ListFeed> listQueryMap = new HashMap<ListQuery, ListFeed>();
 	
 	public static final SpreadsheetService getService(){
-		if(service == null){
-			System.err.println("starting fresh Service");
+		if(service == null){			
 			service = new SpreadsheetService(Constants.CLOUD_SERVICE_NAME);
 		}
 		service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
@@ -29,8 +28,7 @@ public class ServiceFactory {
 	}
 	
 	public static final List<SpreadsheetEntry> getSpreadSheets() throws Exception{
-		if(spreadsheets == null){
-			System.err.println("Retreiving fresh excel list");
+		if(spreadsheets == null){			
 			URL metafeedUrl = new URL(Constants.SPREADSHEET_URL);
 		    SpreadsheetFeed feed = getService().getFeed(metafeedUrl, SpreadsheetFeed.class);
 		    spreadsheets = feed.getEntries();
@@ -61,8 +59,7 @@ public class ServiceFactory {
 		return listFeed;
 	}
 	
-	public static final void reset(){
-		System.err.println("Service Factory was reset");
+	public static final void reset(){		
 		service = null;
 		spreadsheets = null;
 		listQueryMap.clear();
