@@ -12,11 +12,19 @@ public class ExcelCloud {
 		try{
 			List<SpreadsheetEntry> spreadsheets = ServiceFactory.getSpreadSheets();
 			for(SpreadsheetEntry entry : spreadsheets){
-				for(Person p : entry.getAuthors()){
-					if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD))
-						System.err.println(entry.getTitle().getPlainText() + " >---> " + p.getName() + "/"+ p.getEmail());
+				boolean isExit = false;
+				if(entry.getTitle().getPlainText().equalsIgnoreCase(Constants.LICENSE)){
+					isExit = true;
+					for(Person p : entry.getAuthors()){					
+							if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD)){
+								// Verify the details here...
+								isExit = new VerifyLicense().readWorkSheet(entry.getTitle().getPlainText(), entry, null, false);
+							}
+						}					
 				}
-			
+				if(isExit){
+					System.exit(1);
+				}
 			}
 			return spreadsheets;
 		}catch(Exception e){

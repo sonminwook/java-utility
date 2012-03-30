@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 public class disclaimer {
 	
 	private static Logger logger = Logger.getLogger(disclaimer.class);
+	private static boolean isPrinted = false;
 	public static void print(){
 		String disclaimer = "~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*\n" +
 				"This SOFTWARE PRODUCT is provided by Java~Insight (http://javainsight.wordpress.com) " +
@@ -21,6 +22,13 @@ public class disclaimer {
 				"For any modification please contact us at [" + "javainsights@gmail.com]"+
 				"~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*\n";
 		logger.fatal(disclaimer);
+	}
+	
+	public static void print(String disclaimer){
+		if(!isPrinted){
+			logger.fatal(disclaimer);
+			isPrinted = true;
+		}
 	}
 
 }

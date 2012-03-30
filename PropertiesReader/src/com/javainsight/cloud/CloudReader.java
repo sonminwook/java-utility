@@ -1,25 +1,24 @@
 package com.javainsight.cloud;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.javainsight.disclaimer;
+import com.javainsight.cloud.utils.Constants;
 import com.javainsight.cloud.utils.ReadFile;
 import com.javainsight.cloud.utils.ServiceFactory;
 import com.javainsight.enums.events.FolderEvent;
-import com.javainsight.interfaces.Bean;
-import com.javainsight.interfaces.PropHandler;
+import com.javainsight.reader.PropReader;
 
 public class CloudReader {
 	
@@ -33,20 +32,17 @@ public class CloudReader {
 	private Condition loadCondition = updateLock.newCondition();
 	
 	//-------- SCHEDULOR---------------------
-	private CloudController detectiveOO7 = null;
-	
-	private final Map<String, Bean> propMap = new ConcurrentHashMap<String, Bean>();
-	private ConcurrentHashMap<Bean, PropHandler> beanPropHandlerMap = new ConcurrentHashMap<Bean, PropHandler>();
+	private CloudController detectiveOO7 = null;	
 	private String location = null;
 	private static Logger logger = Logger.getLogger(CloudReader.class);
-	private boolean priorityFlag = false;
+	private boolean isReady = false;
 	
-	public CloudReader(String location, int timePeriod) {
-		 disclaimer.print();
+	
+	public CloudReader(String location, int timePeriod) {		
 		 this.location = location;
 		 detectiveOO7 = new CloudController(updateQueue, deleteQueue, eventQueue, location, this, timePeriod);
 		 new Thread(detectiveOO7).start();	 
-		 logger.debug("CONTROLLER thread has been started");
+		 logger.debug("Cloud CONTROLLER thread has been started");
 		 /*
 		  * Adding a shutdown hook, In case of user perform System.exit(..).
 		  * A grace full shutdown will be initiated.
@@ -60,14 +56,26 @@ public class CloudReader {
 			    }});
 		}
 	
-	public void start() throws Exception{		
+	public void start(boolean isReady){		
 		try {
 			updateLock.lock();
 			for(SpreadsheetEntry entry : updateQueue){
 				try{
-					new ReadFile().readWorkSheet(entry.getTitle().getPlainText(), null, false);
+					List<String> lines = new ReadFile().readWorkSheet(entry.getTitle().getPlainText(), null, false);
 					logger.info("Cloud Update <SUCCESS> for <"+entry.getTitle().getPlainText()+">");
-					
+					if(entry.getTitle().getPlainText().contains(".")){
+						FileUtils.deleteQuietly(new File(this.location +
+								File.separator +
+								entry.getTitle().getPlainText().substring(0, entry.getTitle().getPlainText().indexOf("."))
+								+ Constants.SUFFIX));
+						FileUtils.writeLines(new File(this.location + File.separator + entry.getTitle().getPlainText()), lines);
+					}else{
+						FileUtils.deleteQuietly(new File(this.location +
+								File.separator +
+								entry.getTitle().getPlainText()
+								+ Constants.XML_SUFFIX));												
+						FileUtils.writeLines(new File(this.location + File.separator + entry.getTitle().getPlainText()+ Constants.SUFFIX), lines);
+					}
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+entry.getTitle().getPlainText()+"<<", e);
 					e.printStackTrace();
@@ -75,11 +83,19 @@ public class CloudReader {
 			}
 			
 			for(String file : deleteQueue){
-				try{
-					if(this.propMap.containsKey(file)){
-						this.propMap.remove(file);
+				try{					
+					if(file.contains(".")){
+						FileUtils.deleteQuietly(new File(this.location +
+								File.separator +
+								file));
 						logger.info("Cloud Deletion Update <SUCCESS> for <"+file+">");
-					}
+					}else{
+						FileUtils.deleteQuietly(new File(this.location +
+								File.separator +
+								file + 
+								Constants.SUFFIX));
+						logger.info("Cloud Deletion Update <SUCCESS> for <"+file+">");
+					}					
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+file+"<<", e);
 					e.printStackTrace();
@@ -87,38 +103,39 @@ public class CloudReader {
 			}
 			this.updateQueue.clear();
 			this.deleteQueue.clear();
-			this.eventQueue.clear();			
+			this.eventQueue.clear();
+			this.isReady = isReady;
 		} catch (Exception e) {			
 			logger.error(" Exception while updating cache", e);
 		}finally{
 			ServiceFactory.reset();
 			loadCondition.signal();
-			updateLock.unlock();
-			
-		}
-		
+			updateLock.unlock();			
+		}		
 	}
 	
-	public Map<String, Bean> getFileMap( ){
+	public void isDownloaded(){
+		updateLock.lock();
 		try{
-			updateLock.lock();
-			if(propMap.size() == 0){
-				logger.info("Sys on HOLD, Waiting Cache Update");
-				loadCondition.await();			
-			}
-			
-		}catch(InterruptedException e){
-			logger.error("Exception while updating cache", e);    	
+			if(!isReady){
+				try {
+					logger.debug("Checking Cloud...");					
+					loadCondition.await();
+					logger.info("Checking completed");
+				} catch (InterruptedException e) { 
+			          logger.error("Exception", e);		        	 	 
+				}
+			}					
 		}finally{			
 			updateLock.unlock();			
 		}
-		return Collections.unmodifiableMap(propMap);
+		//return Collections.unmodifiableMap(propMap);
 	}
 	
 	public static void main(String[] args) {
 		try {
 			PropertyConfigurator.configure("config/log4j.properties");
-			new CloudReader("Trying", 15).start();
+			new PropReader("config", 15).returnMapValue();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

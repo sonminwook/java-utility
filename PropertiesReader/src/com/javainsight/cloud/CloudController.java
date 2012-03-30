@@ -75,26 +75,19 @@ INFINITE_LOOP:while(true){
 					for(FolderEvent event : folderEventList){
 						switch(event){
 						case LOAD:{
-							logger.debug("Cache Updation Alert");
+							logger.debug("Cloud Update Available");
 							for(SpreadsheetEntry file : this.updateQueue){
 								logger.debug("File Name is "+ file.getTitle().getPlainText());
-								//file.
 							}
-//							while(this.updateQueue.size() > 0){
-//								this.updateQueue.pop();
-//							}
+
 							break;
 						}
 						case UNLOAD:{
-							logger.debug("Cache Deletion Alert");
+							logger.debug("Cache Deletion notification");
 							for(String file : this.deleteQueue){
 								logger.debug("File Name is "+ file);							
 							}
-//							while(this.deleteQueue.size() > 0){
-//								this.deleteQueue.pop();
-//							}
-							break;
-							
+							break;							
 						}
 						case EXIT:{
 							logger.debug("Shutdown Alert");
@@ -102,11 +95,10 @@ INFINITE_LOOP:while(true){
 							break INFINITE_LOOP;
 						}
 						}					
-				}
-					//folderEventList.remove(0);
-					this.reader.start();
+					}					
+				this.reader.start(true);
 			}catch(Exception e){						
-						logger.error("Error" + e.getMessage(), e);					
+					logger.error("Error" + e.getMessage(), e);					
 				}finally{
 					this.proceed.unlock();
 				}			

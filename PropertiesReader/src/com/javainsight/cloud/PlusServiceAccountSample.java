@@ -31,11 +31,10 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
-import com.google.api.services.plus.Plus;
-import com.google.api.services.plus.PlusScopes;
-import com.google.api.services.plus.model.Activity;
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
+import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.javainsight.cloud.utils.Constants;
 
 /**
  * @author Yaniv Inbar
@@ -51,7 +50,7 @@ public class PlusServiceAccountSample {
   /** Global instance of the JSON factory. */
   private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
-  private static Plus plus;
+  private static final String E_URL  = "https://spreadsheets.google.com/feeds/";
 
   public static void main(String[] args) {
     try {
@@ -62,6 +61,9 @@ public class PlusServiceAccountSample {
             + "SERVICE_ACCOUNT_EMAIL constant in %s", PlusServiceAccountSample.class.getName());
         String p12Content = Files.readFirstLine(new File("key.p12"), Charset.defaultCharset());
         Preconditions.checkArgument(!p12Content.startsWith("Please"), p12Content);
+        
+        String scope = "https://spreadsheets.google.com/feeds https://docs.google.com/feeds";
+
         // service account credential (uncomment setServiceAccountUser for domain-wide delegation)
         GoogleCredential credential = new GoogleCredential.Builder().setTransport(HTTP_TRANSPORT)
             														.setJsonFactory(JSON_FACTORY)
@@ -72,7 +74,8 @@ public class PlusServiceAccountSample {
             .build();
        // new BasicAuthentication().
         HttpRequestFactory rf = HTTP_TRANSPORT.createRequestFactory(credential);
-        GenericUrl shortenEndpoint = new GenericUrl("https://www.googleapis.com/urlshortener/v1/url");
+        
+        GenericUrl shortenEndpoint = new GenericUrl(E_URL/*"https://www.googleapis.com/urlshortener/v1/url"*/);
 	    String requestBody = "{\"longUrl\":\"http://farm6.static.flickr.com/5281/5686001474_e06f1587ff_o.jpg\"}";
 	    HttpRequest request = rf.buildPostRequest(shortenEndpoint, new ByteArrayContent("UTF-8", requestBody.getBytes()));
 	    HttpHeaders header = new HttpHeaders();
@@ -101,14 +104,5 @@ public class PlusServiceAccountSample {
     }
     System.exit(1);
   }
-
-  /** Get an activity for which we already know the ID. */
-  private static void getActivity() throws IOException {
-    // A known public activity ID
-    String activityId = "z12gtjhq3qn2xxl2o224exwiqruvtda0i";
-    // We do not need to be authenticated to fetch this activity
-    View.header1("Get an explicit public activity by ID");
-    Activity activity = plus.activities().get(activityId).execute();
-    View.show(activity);
-  }
+ 
 }

@@ -12,6 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
+import com.javainsight.cloud.CloudReader;
 import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.monitor.FolderMonitorThread;
 
@@ -112,9 +113,12 @@ INFINITE_LOOP:while(true){
 	}
 	
 	private void firstTime(){
+		CloudReader cloud = new CloudReader(directory2Monitor, timePeriod);
+		cloud.isDownloaded();
 		logger.debug(":::::::::::::::::::::::::::::::::::");
 		logger.debug("Monitor Thread has been started");
 		logger.debug("Directory under monitor is :"+ directory2Monitor);
+		
 		File f = new File(directory2Monitor);
 		if(f.isDirectory()){
 			for(File file : f.listFiles()){
@@ -139,8 +143,7 @@ INFINITE_LOOP:while(true){
 																	this.folderEventList,
 																	this.proceed,
 																	this.isProceed);
-		executorPool.scheduleWithFixedDelay(folderMonitor, 0, timePeriod, TimeUnit.SECONDS);		
-
+		executorPool.scheduleWithFixedDelay(folderMonitor, 0, timePeriod, TimeUnit.SECONDS);
 	}
 	
 	void graceFullShutDown(){
