@@ -18,6 +18,7 @@ import com.javainsight.disclaimer;
 import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
+import com.javainsight.tweet.TwitterHandler;
 
 /**
  * This is the main class of program which will be used by User.
@@ -96,6 +97,8 @@ public class PropReader {
 		this.priorityFlag = true;
 		updateLock.lock();
 		logger.debug("UPDATE HAS THE LOCK");
+		// Added for tweeting capabilities
+		List<String> errTweetLines = new ArrayList<String>();
 		try{
 			logger.debug("Loading the properties file");
 			for(FolderEvent event : eventQueue){
@@ -127,9 +130,11 @@ public class PropReader {
 							} catch (StringIndexOutOfBoundsException e) {
 								logger.info(name + " doesn't seem to be a valid property file name");
 								logger.error("IGNORE -->"+ e.getMessage());	
+								errTweetLines.add("Invalid Config File Name ["+name+"], It won't be uploaded into cache");
 							} catch(Exception e){
 								logger.info(name + " can not be uploaded into cache");
-								logger.error("IGNORE -->"+ e.getMessage()+ "|"+ e.getClass());	
+								logger.error("IGNORE -->"+ e.getMessage()+ "|"+ e.getClass());
+								errTweetLines.add("Err for ["+name+"]"+e.getMessage()+ "|"+ e.getClass());
 							}
 														
 						} //End of For Loop for Load Class
@@ -154,6 +159,7 @@ public class PropReader {
 			updateLock.unlock();
 			logger.info("Files uploaded into Cache");
 			logger.debug("UPDATE RELEASED THE LOCK");
+			new TwitterHandler().handle(errTweetLines);
 		}		
 	}
 	
