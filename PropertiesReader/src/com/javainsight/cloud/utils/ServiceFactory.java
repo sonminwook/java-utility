@@ -19,11 +19,12 @@ public class ServiceFactory {
 	private static Map<URL, WorksheetFeed> workSheetFeedMap = new HashMap<URL, WorksheetFeed>();
 	private static Map<ListQuery, ListFeed> listQueryMap = new HashMap<ListQuery, ListFeed>();
 	
-	public static final SpreadsheetService getService(){
+	public static final SpreadsheetService getService() throws Exception{
 		if(service == null){			
 			service = new SpreadsheetService(Constants.CLOUD_SERVICE_NAME);
 		}
-		service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
+		//service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
+		service.setUserCredentials(Constants.MASTER_EMAIL_ADD, Constants.PASSWORD);
 		return service;
 	}
 	
