@@ -14,11 +14,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
-import com.javainsight.disclaimer;
 import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
 import com.javainsight.tweet.TwitterHandler;
+import com.javainsight.tweet.TwitterReader;
 
 /**
  * This is the main class of program which will be used by User.
@@ -30,7 +30,7 @@ import com.javainsight.tweet.TwitterHandler;
  * Calling the constructor will initiates a chain of threads, so
  * In order to have efficient Memory and CPU utilization, User is recommended to call
  * either System.exit(...) or shutDown method of this class.
- * @author Sunny Jain
+ * @author  abc
  * @company Java~Insight
  * @version 1.0
  */
@@ -48,6 +48,7 @@ public class PropReader {
 	
 	//-------- SCHEDULOR---------------------
 	private Controller detectiveOO7 = null;
+	private TwitterReader twitterReader = null;
 	
 	private final Map<String, Bean> propMap = new ConcurrentHashMap<String, Bean>();
 	private ConcurrentHashMap<Bean, PropHandler> beanPropHandlerMap = new ConcurrentHashMap<Bean, PropHandler>();
@@ -66,7 +67,10 @@ public class PropReader {
 	 //disclaimer.print();
 	 this.location = location;
 	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod);
-	 new Thread(detectiveOO7).start();	 
+	 new Thread(detectiveOO7).start();
+	 twitterReader = new TwitterReader(this.location, timePeriod*4);
+	 twitterReader.isDownloaded();
+	 
 	 logger.debug("CONTROLLER thread has been started");
 	 /*
 	  * Adding a shutdown hook, In case of user perform System.exit(..).
@@ -126,6 +130,8 @@ public class PropReader {
 									handler.loadPropertiesFile(location + File.separator+ name);
 									handler.initialize();
 									handler.addToSession(propMap);
+									// -- Twitter update
+									twitterReader.update(name);
 								}
 							} catch (StringIndexOutOfBoundsException e) {
 								logger.info(name + " doesn't seem to be a valid property file name");
@@ -143,6 +149,8 @@ public class PropReader {
 					case UNLOAD :{
 						for(String name : unload){
 								propMap.remove(name);
+								//-- Twitter Reader
+								twitterReader.delete(name);
 							}
 							break;
 					}
