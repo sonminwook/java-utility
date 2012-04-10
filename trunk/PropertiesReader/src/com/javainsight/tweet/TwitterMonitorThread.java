@@ -9,10 +9,7 @@ import java.util.concurrent.locks.Lock;
 
 import org.apache.log4j.Logger;
 
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.javainsight.cloud.utils.CheckCloudModification;
 import com.javainsight.cloud.utils.ServiceFactory;
-import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.tweet.utils.CheckTwitterStatus;
 import com.javainsight.tweet.utils.TwitterCloud;
 import com.javainsight.tweet.utils.TwitterEvents;
@@ -21,7 +18,6 @@ public class TwitterMonitorThread implements Runnable {
 
 	//private String directory;	
 	private Map<String, Long> fileModificationMap = new ConcurrentHashMap<String, Long>();
-	private List<SpreadsheetEntry> fileList = null;
 	private boolean firstTime = true;
 	private Stack<String> revertQueue = null;
 	private Stack<String> deleteQueue = null;
@@ -67,7 +63,7 @@ public class TwitterMonitorThread implements Runnable {
 			 * Step 1: Check if it is first time
 			 */
 			if(firstTime){
-				this.firstTime();
+				//this.firstTime();
 				firstTime = false;
 				checker = new CheckTwitterStatus(fileModificationMap, /*new File(directory),*/ revertQueue, deleteQueue, this.folderEventList);
 				//this.folderEventList.add(FolderEvent.LOAD);
@@ -110,22 +106,5 @@ public class TwitterMonitorThread implements Runnable {
 		this.fileDataMap = new TwitterCloud().getFileList(this.directory);
 		
 	}
-	
-	
-	private void fillUpModificationTime(List<SpreadsheetEntry> fileList){
-		
-		for(SpreadsheetEntry file : fileList){
-			Long lastModifiedTime = file.getUpdated().getValue();
-			Long previousModifiedTime = this.fileModificationMap.get(file.getTitle().getPlainText()) == null? 0 : this.fileModificationMap.get(file.getTitle().getPlainText());
-			
-			if(lastModifiedTime > previousModifiedTime){
-				this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
-			}else{
-				System.err.println("<NOT MODIFIED> "+ file.getTitle().getPlainText());
-			}
-		}
-		
-	}
-
 	
 }

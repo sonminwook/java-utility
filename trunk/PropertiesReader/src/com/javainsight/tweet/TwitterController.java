@@ -11,7 +11,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.tweet.utils.TwitterEvents;
 
 public class TwitterController implements Runnable{

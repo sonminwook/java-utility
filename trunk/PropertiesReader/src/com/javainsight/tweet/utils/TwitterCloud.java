@@ -50,11 +50,7 @@ public class TwitterCloud {
 		return fileDataMap;
 	}
 	
-	
-	
-	
-	
-	
+
 	
 	public static void main(String[] args) {
 		try {

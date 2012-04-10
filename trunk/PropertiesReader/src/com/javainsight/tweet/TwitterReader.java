@@ -1,8 +1,10 @@
 package com.javainsight.tweet;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -12,11 +14,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.cloud.utils.Constants;
-import com.javainsight.cloud.utils.ReadFile;
 import com.javainsight.cloud.utils.ServiceFactory;
 import com.javainsight.reader.PropReader;
+import com.javainsight.tweet.utils.TwitterCloud;
 import com.javainsight.tweet.utils.TwitterEvents;
 
 public class TwitterReader {
@@ -35,6 +36,7 @@ public class TwitterReader {
 	private String location = null;
 	private static Logger logger = Logger.getLogger(TwitterReader.class);
 	private boolean isReady = false;
+	private Map<String, List<String>> fileDataMap = null;
 	
 	
 	public TwitterReader(String location, int timePeriod) {		
@@ -59,17 +61,16 @@ public class TwitterReader {
 		try {
 			updateLock.lock();
 			for(String file : revertQueue){
-				try{					
+				try{				
 					if(file.contains(".")){
-						
-						logger.info("Cloud Revert Update <SUCCESS> for <"+file+">");
+						FileUtils.writeLines(new File(this.location +File.separator +file), this.fileDataMap.get(file));
+						logger.info("Twitter Revert Update <SUCCESS> for <"+file+">");
 					}else{
-						
-						logger.info("Cloud Revert Update <SUCCESS> for <"+file+">");
+						FileUtils.writeLines(new File(this.location +File.separator +file + Constants.SUFFIX), this.fileDataMap.get(file + Constants.SUFFIX));
+						logger.info("Twitter Revert Update <SUCCESS> for <"+file+">");
 					}					
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+file+"<<", e);
-					e.printStackTrace();
 				}
 			}
 			
@@ -79,17 +80,16 @@ public class TwitterReader {
 						FileUtils.deleteQuietly(new File(this.location +
 								File.separator +
 								file));
-						logger.info("Cloud Deletion Update <SUCCESS> for <"+file+">");
+						logger.info("Twitter Deletion Update <SUCCESS> for <"+file+">");
 					}else{
 						FileUtils.deleteQuietly(new File(this.location +
 								File.separator +
 								file + 
 								Constants.SUFFIX));
-						logger.info("Cloud Deletion Update <SUCCESS> for <"+file+">");
+						logger.info("Twitter Deletion Update <SUCCESS> for <"+file+">");
 					}					
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+file+"<<", e);
-					e.printStackTrace();
 				}
 			}
 			this.revertQueue.clear();
@@ -110,10 +110,11 @@ public class TwitterReader {
 		try{
 			if(!isReady){
 				try {
+					this.update();
 					logger.debug("Checking Cloud...");					
 					loadCondition.await();
 					logger.info("Checking completed");
-				} catch (InterruptedException e) { 
+				} catch (Exception e) { 
 			          logger.error("Exception", e);		        	 	 
 				}
 			}					
@@ -123,10 +124,34 @@ public class TwitterReader {
 		//return Collections.unmodifiableMap(propMap);
 	}
 	
+	/*
+	 * First Time twitter reading will be performed
+	 */
+	private void update() throws Exception{
+		/*
+		 * Read data of all properties file
+		 */
+		this.fileDataMap = new TwitterCloud().getFileList(this.location);
+	}
+	
+	public void update(String fileName){
+		try{
+			List<String> fileData = FileUtils.readLines(new File(this.location + File.separator + fileName));
+			this.fileDataMap.put(fileName, fileData);
+		}catch(IOException ioe){
+			logger.error("Unable to update file data", ioe);
+		}
+	}
+	
+	public void delete(String fileName){
+		this.fileDataMap.remove(fileName);
+	}
+	
+	
 	public static void main(String[] args) {
 		try {
 			PropertyConfigurator.configure("config/log4j.properties");
-			new TwitterReader("config", 15).isDownloaded();
+			new PropReader("config", 15).returnMapValue();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

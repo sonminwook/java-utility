@@ -11,6 +11,7 @@ public class ExcelCloud {
 	public List<SpreadsheetEntry> getFileList() {
 		try{
 			List<SpreadsheetEntry> spreadsheets = ServiceFactory.getSpreadSheets();
+			System.err.println(spreadsheets);
 			for(SpreadsheetEntry entry : spreadsheets){
 				boolean isExit = false;
 				if(entry.getTitle().getPlainText().equalsIgnoreCase(Constants.LICENSE)){
