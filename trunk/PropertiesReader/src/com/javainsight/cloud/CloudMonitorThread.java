@@ -29,6 +29,7 @@ public class CloudMonitorThread implements Runnable {
 	//-----LOCKS and CONDITIONS BETWEEN CONTROLLER AND FOLDER MONITOR THREAD ----
 	private Lock proceed = null;
 	private Condition isProceed = null;
+	private List<String> stopUpdateList = null;
 	
 		
 	private static Logger logger = Logger.getLogger(CloudMonitorThread.class);
@@ -38,13 +39,15 @@ public class CloudMonitorThread implements Runnable {
 								Stack<String> deleteQueue,
 								List<FolderEvent> folderEventList,
 								Lock proceed,
-								Condition isProceed){
+								Condition isProceed,
+								List<String> stopUpdateList){
 					//this.directory = directory;
 					this.updateQueue = updateQueue;
 					this.deleteQueue = deleteQueue;
 					this.folderEventList = folderEventList;
 					this.proceed = proceed;
 					this.isProceed = isProceed;
+					this.stopUpdateList = stopUpdateList;
 					
 					Runtime.getRuntime().addShutdownHook(
 							new Thread() {
@@ -63,7 +66,7 @@ public class CloudMonitorThread implements Runnable {
 			if(firstTime){
 				this.firstTime();
 				firstTime = false;
-				checker = new CheckCloudModification(fileModificationMap, /*new File(directory),*/ updateQueue, deleteQueue, this.folderEventList);
+				checker = new CheckCloudModification(fileModificationMap, this.stopUpdateList, updateQueue, deleteQueue, this.folderEventList);
 				this.folderEventList.add(FolderEvent.LOAD);
 				status = true;
 			}else{

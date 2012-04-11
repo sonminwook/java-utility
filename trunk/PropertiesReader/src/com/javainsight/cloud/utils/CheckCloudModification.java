@@ -20,9 +20,10 @@ public class CheckCloudModification {
 	private Stack<SpreadsheetEntry> updateQueue = null;
 	private Stack<String> deleteQueue = null;
 	private List<FolderEvent> folderEventList = null;
+	private List<String> stopUpdateList = null;
 	
 	public CheckCloudModification(Map<String, Long> fileModificationMap,
-							 				//File dir,
+							 				List<String> stopUpList,
 							 				Stack<SpreadsheetEntry> updateQueue,
 							 				Stack<String> deleteQueue,
 							 				List<FolderEvent> folderEventList){
@@ -31,6 +32,7 @@ public class CheckCloudModification {
 		this.updateQueue = updateQueue;
 		this.deleteQueue = deleteQueue;
 		this.folderEventList = folderEventList;
+		this.stopUpdateList = stopUpList;
 	}
 	
 	public boolean check(){
@@ -68,7 +70,8 @@ public class CheckCloudModification {
 			tempFileNameURLMap.put(fileName, entry);
 		}
 		
-		for(String fileName : existingFileSet){
+	  for(String fileName : existingFileSet){
+		if(!this.stopUpdateList.contains(fileName)){
 			if(!tempFileNameURLMap.containsKey(fileName)){
 				/*
 				 * This file has been deleted
@@ -83,6 +86,7 @@ public class CheckCloudModification {
 				 */
 				this.folderEventList.add(FolderEvent.UNLOAD);
 			}
+		 }
 		}
 		/*
 		 * Check for new addition
@@ -115,15 +119,17 @@ public class CheckCloudModification {
 				this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
 			}else{
 				if(lastModifiedTime > previousModifiedTime){
-					/*
-					 * File has been modified				
-					 */
-					this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
-					this.updateQueue.push(file);					
-					/*
-					 * Add an Event
-					 */
-					this.folderEventList.add(FolderEvent.LOAD);
+				  if(!this.stopUpdateList.contains(file.getTitle().getPlainText())){
+						/*
+						 * File has been modified				
+						 */
+						this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
+						this.updateQueue.push(file);					
+						/*
+						 * Add an Event
+						 */
+						this.folderEventList.add(FolderEvent.LOAD);
+					}
 				}
 			}
 			

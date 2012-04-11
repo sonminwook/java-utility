@@ -1,6 +1,5 @@
 package com.javainsight.cloud;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.Executors;
@@ -27,24 +26,26 @@ public class CloudController implements Runnable{
 	
 	//private String directory = null;
 	private int pollingTime = 15;
-	private String directory2Monitor;
 	
 	//--------LOCK BETWEEN CONTROLLER AND FOLDER MONITOR THREAD----
 	Lock proceed = new ReentrantLock();
 	Condition isProceed = proceed.newCondition();
+	private List<String> stopUpdateList = null;
 	
 	public CloudController(Stack<SpreadsheetEntry> load,
 			 				Stack<String> unload,
 			 				List<FolderEvent> eventQueue,
 			 				String directory2Monitor,
 			 				CloudReader prop,
-			 				int timePeriod){
+			 				int timePeriod,
+			 				List<String> stopUpdateList
+			 				){
 			this.updateQueue = load;
 			this.deleteQueue = unload;
-			this.folderEventList = eventQueue;
-			this.directory2Monitor = directory2Monitor;		
+			this.folderEventList = eventQueue;		
 			this.reader = prop;
 			this.pollingTime = timePeriod;
+			this.stopUpdateList = stopUpdateList;
 }
 	
 	void graceFullShutDown(){
@@ -60,7 +61,8 @@ public class CloudController implements Runnable{
 																	this.deleteQueue,
 																	this.folderEventList,
 																	this.proceed,
-																	this.isProceed);
+																	this.isProceed,
+																	this.stopUpdateList);
 		executorPool.scheduleWithFixedDelay(folderMonitor, 1, this.pollingTime, TimeUnit.SECONDS);
 		/*
 		 * DANGEROUS --> Infinite Loop "Handle Carefully"		
