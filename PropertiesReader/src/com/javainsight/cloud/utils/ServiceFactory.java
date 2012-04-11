@@ -23,8 +23,13 @@ public class ServiceFactory {
 		if(service == null){			
 			service = new SpreadsheetService(Constants.CLOUD_SERVICE_NAME);
 		}
+
+		//service.setUserCredentials("javainsights@gmail.com", "yzshsacrafmwmyje");
+		//service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
+
 		//service.setUserToken(Constants.SPREADSHEET_AUTH_TOKEN);
 		service.setUserCredentials(Constants.MASTER_EMAIL_ADD, Constants.PASSWORD);
+
 		return service;
 	}
 	

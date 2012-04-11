@@ -36,10 +36,12 @@ public class CloudReader {
 	private String location = null;
 	private static Logger logger = Logger.getLogger(CloudReader.class);
 	private boolean isReady = false;
+	private boolean closeCloudAfterFirstTime = false;
 	
 	
-	public CloudReader(String location, int timePeriod) {		
+	public CloudReader(String location, int timePeriod, boolean isClosedAfterFirstTime) {		
 		 this.location = location;
+		 this.closeCloudAfterFirstTime = isClosedAfterFirstTime;
 		 detectiveOO7 = new CloudController(updateQueue, deleteQueue, eventQueue, location, this, timePeriod);
 		 new Thread(detectiveOO7).start();	 
 		 logger.debug("Cloud CONTROLLER thread has been started");
@@ -109,8 +111,12 @@ public class CloudReader {
 			logger.error(" Exception while updating cache", e);
 		}finally{
 			ServiceFactory.reset();
+			if(this.closeCloudAfterFirstTime){
+				this.eventQueue.add(FolderEvent.EXIT);
+			}
 			loadCondition.signal();
-			updateLock.unlock();			
+			updateLock.unlock();
+			
 		}		
 	}
 	

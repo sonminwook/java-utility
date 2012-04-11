@@ -75,7 +75,7 @@ public class PlusServiceAccountSample {
        // new BasicAuthentication().
         HttpRequestFactory rf = HTTP_TRANSPORT.createRequestFactory(credential);
         
-        GenericUrl shortenEndpoint = new GenericUrl(E_URL/*"https://www.googleapis.com/urlshortener/v1/url"*/);
+        GenericUrl shortenEndpoint = new GenericUrl("https://www.googleapis.com/urlshortener/v1/url");
 	    String requestBody = "{\"longUrl\":\"http://farm6.static.flickr.com/5281/5686001474_e06f1587ff_o.jpg\"}";
 	    HttpRequest request = rf.buildPostRequest(shortenEndpoint, new ByteArrayContent("UTF-8", requestBody.getBytes()));
 	    HttpHeaders header = new HttpHeaders();

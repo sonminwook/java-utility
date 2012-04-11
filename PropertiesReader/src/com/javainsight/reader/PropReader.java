@@ -15,6 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.log4j.Logger;
 
 import com.javainsight.enums.events.FolderEvent;
+import com.javainsight.handler.ConfigurationConstants;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
 import com.javainsight.tweet.TwitterHandler;
@@ -55,6 +56,24 @@ public class PropReader {
 	private String location = null;
 	private static Logger logger = Logger.getLogger(PropReader.class);
 	private boolean priorityFlag = false;
+	
+	private static boolean needCloud = false;
+	private static boolean needTwitter = false;
+	private static boolean closeCloudAfterFirstTime = false;
+	
+	/*
+	 * Static block to check whether Cloud and Twitter are required or not
+	 */
+	static{
+		try{
+			needCloud = ConfigurationConstants.needCloud; 
+			needTwitter = ConfigurationConstants.needTwitter;
+			closeCloudAfterFirstTime = ConfigurationConstants.closeCloudAfterFirstTime;
+		}catch(Exception e){
+			logger.error("Problem while reading class \"ConfigurationConstants.class\", Please make sure it is in classpath");
+			logger.error(e.getMessage());
+		}
+	}
 		
 	/**
 	 * This is the heart of application. In order to start, all it needs is location of properties
@@ -64,12 +83,13 @@ public class PropReader {
 	 * @param location : Directory where properties files are stored. Either direct or relative path.
 	 */	
 	public PropReader(String location, int timePeriod) {
-	 //disclaimer.print();
 	 this.location = location;
-	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod);
+	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod, needCloud, closeCloudAfterFirstTime);
 	 new Thread(detectiveOO7).start();
-	 twitterReader = new TwitterReader(this.location, timePeriod*4);
-	 twitterReader.isDownloaded();
+	 if(needTwitter){
+		 twitterReader = new TwitterReader(this.location, timePeriod*4);
+		 twitterReader.isDownloaded();
+	 }
 	 
 	 logger.debug("CONTROLLER thread has been started");
 	 /*
@@ -131,7 +151,9 @@ public class PropReader {
 									handler.initialize();
 									handler.addToSession(propMap);
 									// -- Twitter update
-									twitterReader.update(name);
+									if(needTwitter){
+										twitterReader.update(name);
+									}
 								}
 							} catch (StringIndexOutOfBoundsException e) {
 								logger.info(name + " doesn't seem to be a valid property file name");
@@ -150,7 +172,9 @@ public class PropReader {
 						for(String name : unload){
 								propMap.remove(name);
 								//-- Twitter Reader
-								twitterReader.delete(name);
+								if(needTwitter){
+									twitterReader.delete(name);
+								}
 							}
 							break;
 					}
