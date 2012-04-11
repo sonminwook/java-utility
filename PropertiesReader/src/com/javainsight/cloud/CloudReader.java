@@ -2,7 +2,6 @@ package com.javainsight.cloud;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.locks.Condition;
@@ -26,6 +25,7 @@ public class CloudReader {
 	private Stack<SpreadsheetEntry> updateQueue = new Stack<SpreadsheetEntry>();
 	private Stack<String> deleteQueue = new Stack<String>();
 	private List<FolderEvent> eventQueue = new ArrayList<FolderEvent>();
+	private List<String>	stopUpdateList = new ArrayList<String>();
 	
 	//-----------------==LOCK and CONIDITON BETWEEN 
 	private final Lock updateLock = new ReentrantLock();
@@ -39,10 +39,11 @@ public class CloudReader {
 	private boolean closeCloudAfterFirstTime = false;
 	
 	
+	
 	public CloudReader(String location, int timePeriod, boolean isClosedAfterFirstTime) {		
 		 this.location = location;
 		 this.closeCloudAfterFirstTime = isClosedAfterFirstTime;
-		 detectiveOO7 = new CloudController(updateQueue, deleteQueue, eventQueue, location, this, timePeriod);
+		 detectiveOO7 = new CloudController(updateQueue, deleteQueue, eventQueue, location, this, timePeriod, stopUpdateList);
 		 new Thread(detectiveOO7).start();	 
 		 logger.debug("Cloud CONTROLLER thread has been started");
 		 /*
@@ -136,6 +137,10 @@ public class CloudReader {
 			updateLock.unlock();			
 		}
 		//return Collections.unmodifiableMap(propMap);
+	}
+	
+	public void update(String name){
+		this.stopUpdateList.add(name);
 	}
 	
 	public static void main(String[] args) {
