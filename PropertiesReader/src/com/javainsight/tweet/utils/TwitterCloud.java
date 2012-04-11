@@ -7,37 +7,9 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import com.google.gdata.data.Person;
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-
 public class TwitterCloud {
 	
 		
-	public List<SpreadsheetEntry> getFileList() {
-		try{
-			List<SpreadsheetEntry> spreadsheets = TwitterServiceFactory.getSpreadSheets();
-			for(SpreadsheetEntry entry : spreadsheets){
-				boolean isExit = false;
-				if(entry.getTitle().getPlainText().equalsIgnoreCase(Constants.LICENSE)){
-					isExit = true;
-					for(Person p : entry.getAuthors()){					
-							if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD)){
-								// Verify the details here...
-								isExit = false; //new VerifyLicense().readWorkSheet(entry.getTitle().getPlainText(), entry, null, false);
-							}
-						}					
-				}
-				if(isExit){
-					System.exit(1);
-				}
-			}
-			return spreadsheets;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
 	
 	public Map<String, List<String>> getFileList(String directory) throws Exception{
         boolean recursive = false;

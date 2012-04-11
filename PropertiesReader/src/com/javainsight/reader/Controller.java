@@ -24,9 +24,7 @@ public class Controller implements Runnable{
 	private String directory2Monitor = null;
 	private PropReader prop = null;
 	private int timePeriod = 5;
-	private boolean needCloud = false;
-	private boolean closeCloudAfterFirstTime = false;
-	//private String mainFileName = null;
+	private CloudReader cloud = null;
 	
 	private final ScheduledExecutorService executorPool = Executors.newScheduledThreadPool(1);
 	
@@ -42,16 +40,14 @@ public class Controller implements Runnable{
 					 String directory2Monitor,
 					 PropReader prop,
 					 int timePeriod,
-					 boolean needCloud,
-					 boolean closeCloudAfterFirstTime){
+					 CloudReader cloud){
 		this.load = load;
 		this.unload = unload;
 		this.folderEventList = eventQueue;
 		this.directory2Monitor = directory2Monitor;		
 		this.prop = prop;
 		this.timePeriod = timePeriod;
-		this.needCloud = needCloud;
-		this.closeCloudAfterFirstTime = closeCloudAfterFirstTime;
+		this.cloud = cloud;
 	}
 	
 	//----------------STARTING TO MONITOR THE THREAD---------------------
@@ -119,8 +115,7 @@ INFINITE_LOOP:while(true){
 	}
 	
 	private void firstTime(){
-		if(needCloud){
-			CloudReader cloud = new CloudReader(directory2Monitor, timePeriod, this.closeCloudAfterFirstTime);
+		if(this.cloud != null){
 			cloud.isDownloaded();
 		}else{
 			logger.error("Cloud monitoring has been turned off");

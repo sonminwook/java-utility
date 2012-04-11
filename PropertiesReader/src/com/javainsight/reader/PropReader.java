@@ -14,12 +14,18 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
 
+import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
+
+import com.javainsight.cloud.CloudReader;
+import com.javainsight.cloud.utils.Constants;
 import com.javainsight.enums.events.FolderEvent;
 import com.javainsight.handler.ConfigurationConstants;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
 import com.javainsight.tweet.TwitterHandler;
 import com.javainsight.tweet.TwitterReader;
+import com.javainsight.tweet.utils.TwitterServiceFactory;
 
 /**
  * This is the main class of program which will be used by User.
@@ -60,6 +66,9 @@ public class PropReader {
 	private static boolean needCloud = false;
 	private static boolean needTwitter = false;
 	private static boolean closeCloudAfterFirstTime = false;
+	private static boolean cloudPriority = false;
+	
+	private CloudReader cloud = null;
 	
 	/*
 	 * Static block to check whether Cloud and Twitter are required or not
@@ -68,7 +77,22 @@ public class PropReader {
 		try{
 			needCloud = ConfigurationConstants.needCloud; 
 			needTwitter = ConfigurationConstants.needTwitter;
-			closeCloudAfterFirstTime = ConfigurationConstants.closeCloudAfterFirstTime;
+			
+			if(needCloud){
+				closeCloudAfterFirstTime = ConfigurationConstants.closeCloudAfterFirstTime;
+				cloudPriority = ConfigurationConstants.cloudPriority;
+				Constants.PASSWORD = ConfigurationConstants.gdoc_password;
+			}
+			if(needTwitter){
+				ConfigurationBuilder builder = new ConfigurationBuilder();
+				builder.setOAuthConsumerKey(ConfigurationConstants.oauth_consumerKey);
+				builder.setOAuthConsumerSecret(ConfigurationConstants.oauth_consumerSecret);
+				builder.setOAuthAccessToken(ConfigurationConstants.oauth_accessToken);
+				builder.setOAuthAccessTokenSecret(ConfigurationConstants.oauth_accessTokenSecret);
+				builder.setDebugEnabled(false);
+				//builder.set
+		         TwitterServiceFactory.setTwitter(new TwitterFactory(builder.build()).getInstance());
+			}
 		}catch(Exception e){
 			logger.error("Problem while reading class \"ConfigurationConstants.class\", Please make sure it is in classpath");
 			logger.error(e.getMessage());
@@ -83,13 +107,17 @@ public class PropReader {
 	 * @param location : Directory where properties files are stored. Either direct or relative path.
 	 */	
 	public PropReader(String location, int timePeriod) {
-	 this.location = location;
-	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod, needCloud, closeCloudAfterFirstTime);
-	 new Thread(detectiveOO7).start();
+	 this.location = location; 
 	 if(needTwitter){
-		 twitterReader = new TwitterReader(this.location, timePeriod*4);
+		 twitterReader = new TwitterReader(this.location, timePeriod*4*5);
 		 twitterReader.isDownloaded();
 	 }
+	 if(needCloud){
+		 cloud = new CloudReader(this.location, timePeriod*4, closeCloudAfterFirstTime);
+	 }
+	 
+	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod, cloud);
+	 new Thread(detectiveOO7).start();
 	 
 	 logger.debug("CONTROLLER thread has been started");
 	 /*
@@ -146,6 +174,9 @@ public class PropReader {
 										logger.error("IGNORE -->"+ e.getMessage());									
 									}								
 								}else{
+									/*
+									 * Means files have been modified again
+									 */
 									handler = beanPropHandlerMap.get(propMap.get(name));
 									handler.loadPropertiesFile(location + File.separator+ name);
 									handler.initialize();
@@ -154,6 +185,10 @@ public class PropReader {
 									if(needTwitter){
 										twitterReader.update(name);
 									}
+									if(!cloudPriority && (this.cloud != null)){
+										this.cloud.update(name);
+									}
+									
 								}
 							} catch (StringIndexOutOfBoundsException e) {
 								logger.info(name + " doesn't seem to be a valid property file name");
