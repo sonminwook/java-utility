@@ -8,73 +8,12 @@
 	<classpathentry kind="lib" path="gdata_lib/external/activation.jar"/>
 	<classpathentry kind="lib" path="gdata_lib/gdata-media-1.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
 	<classpathentry kind="lib" path="gdata_lib/external/mail.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/external/gdata-docs-3.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
-	<classpathentry kind="lib" path="gdata_lib/external/gdata-docs-meta-3.0.jar" sourcepath="gdata_src/gdata-src.java-1.46.0.zip"/>
 	<classpathentry kind="lib" path="gdata_lib/external/servlet-api.jar"/>
 	<classpathentry kind="lib" path="gdata_lib/external/guava-r09.jar"/>
 	<classpathentry kind="lib" path="gdata_lib/external/commons-io-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="gdata_lib/gdata-spreadsheet-3.0.jar"/>
 	<classpathentry kind="lib" path="gdata_lib/gdata-spreadsheet-meta-3.0.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-android2-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-android2-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-appengine-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-appengine-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-servlet-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/google-api-client-servlet-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/commons-codec-1.6-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/commons-logging-1.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-android2-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-android2-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-android3-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-android3-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-appengine-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-http-client-appengine-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-oauth-client-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-oauth-client-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-oauth-client-appengine-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-oauth-client-appengine-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-oauth-client-servlet-1.7.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/google-oauth-client-servlet-1.7.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/gson-2.1.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/gson-2.1-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/guava-11.0.1.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/guava-11.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/httpclient-4.0.3.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/httpclient-4.0.3-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/httpcore-4.0.1.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/httpcore-4.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jackson-core-asl-1.9.4.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jackson-core-asl-1.9.4-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jdo2-api-2.3-eb.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jdo2-api-2.3-eb-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/joda-time-1.6.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/joda-time-1.6-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/json-20080701.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/json-20080701-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jsontoken-1.0.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jsontoken-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/jsr305-1.3.9.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/junit-4.8.2.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/junit-4.8.2-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/protobuf-java-2.2.0.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/protobuf-java-2.2.0-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/transaction-api-1.1.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/transaction-api-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/xpp3-1.1.4c.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-java-client-1.7.0-beta/dependencies/xpp3-1.1.4c-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-plus-v1-rev3-java-1.4.0-beta.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-plus-v1-rev3-java-1.4.0-beta-javadoc.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/oAuth/google-api-plus-v1-rev3-java-1.4.0-beta-sources.jar"/>
-	<classpathentry kind="lib" path="gdata_lib/external/jackson-mapper-asl-1.0.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/O_AUTH_2_0_GOOGLE"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/OAuth"/>
 	<classpathentry kind="lib" path="gdata_lib/external/twitter4j-core-2.2.5.jar" sourcepath="gdata_src/twitter4j-core-2.2.5-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/JCacheCloud/gdata_src/twitter4j-core-2.2.5-javadoc.jar!/"/>
