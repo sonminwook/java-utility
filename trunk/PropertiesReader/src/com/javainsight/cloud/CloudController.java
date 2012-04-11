@@ -83,7 +83,7 @@ INFINITE_LOOP:while(true){
 							break;
 						}
 						case UNLOAD:{
-							logger.debug("Cache Deletion notification");
+							logger.debug("Cloud Deletion notification");
 							for(String file : this.deleteQueue){
 								logger.debug("File Name is "+ file);							
 							}
