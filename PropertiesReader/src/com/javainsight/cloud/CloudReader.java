@@ -1,23 +1,24 @@
 package com.javainsight.cloud;
 
 import java.io.File;
+import java.net.NoRouteToHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.javainsight.cloud.utils.Constants;
-import com.javainsight.cloud.utils.ReadFile;
 import com.javainsight.cloud.utils.ServiceFactory;
+import com.javainsight.cloud.utils.WorkSheetReader;
 import com.javainsight.enums.events.FolderEvent;
-import com.javainsight.reader.PropReader;
 
 public class CloudReader {
 	
@@ -64,7 +65,25 @@ public class CloudReader {
 			updateLock.lock();
 			for(SpreadsheetEntry entry : updateQueue){
 				try{
-					List<String> lines = new ReadFile().readWorkSheet(entry.getTitle().getPlainText(), null, false);
+					logger.info("Downloading <"+entry.getTitle().getPlainText()+">");
+					
+					List<String> lines = null;
+					WorkSheetReader reader = new WorkSheetReader(entry.getTitle().getPlainText());
+					synchronized (reader) {
+						FutureTask<List<String>> callTask = new FutureTask<List<String>>(reader);
+						callTask.run();
+						for (int i = 0; i < Constants.WAITING_TIME_IN_SECONDS ; i++) {
+							reader.wait(1000);
+							if(callTask.isDone()){
+								lines = callTask.get();
+								break;
+							}
+						}
+					if(lines == null){
+							throw new NoRouteToHostException("Unable to download file from Cloud");
+						}
+					}
+					
 					logger.info("Cloud Update <SUCCESS> for <"+entry.getTitle().getPlainText()+">");
 					if(entry.getTitle().getPlainText().contains(".")){
 						FileUtils.deleteQuietly(new File(this.location +
@@ -79,9 +98,18 @@ public class CloudReader {
 								+ Constants.XML_SUFFIX));												
 						FileUtils.writeLines(new File(this.location + File.separator + entry.getTitle().getPlainText()+ Constants.SUFFIX), lines);
 					}
-				}catch(Exception e){
+				}catch(NoRouteToHostException nrthe){
+					logger.error("Unable to download file from cloud, either Internet not available or firewall blocking the route to google.com [" + 
+							nrthe.getMessage()+"]");
+						break;
+				}
+				catch(ExecutionException uhe){
+						logger.error("Unable to download file from cloud, either Internet not available or firewall blocking the route to google.com [" + 
+									uhe.getMessage()+"]");
+						break;
+				}
+				catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+entry.getTitle().getPlainText()+"<<", e);
-					e.printStackTrace();
 				}
 			}
 			
@@ -143,15 +171,13 @@ public class CloudReader {
 		this.stopUpdateList.add(name);
 	}
 	
-	public static void main(String[] args) {
-		try {
-			PropertyConfigurator.configure("config/log4j.properties");
-			new PropReader("config", 15).returnMapValue();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	/**
+	 * This method will trigger a grace full shutdown 
+	 * sequence of all threads.
+	 */
+	public void shutDown(){
+		logger.info("SHUTTING DOWN....");
+		detectiveOO7.graceFullShutDown();
 	}
-
 
 }

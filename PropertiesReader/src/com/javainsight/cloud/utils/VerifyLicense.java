@@ -28,38 +28,38 @@ public class VerifyLicense {
 			  	query.setReverse(isReverseOrder);
 			  	ListFeed listFeed = ServiceFactory.getListFeed(query);		  				  	 
 			  	
-			  	for (ListEntry listEntry : listFeed.getEntries()) {				
-	  				String value = "";  				
+			  	for (ListEntry listEntry : listFeed.getEntries()) {								
 	  				 for (String tag : listEntry.getCustomElements().getTags()) {
 	  					 	if(tag.equalsIgnoreCase(Constants.DISCLAIMER)){
 	  					 		disclaimer.print(listEntry.getCustomElements().getValue(tag));
 	  					 	}
-	  					 	if(tag.equalsIgnoreCase(Constants._TOKEN)){
-	  					 		Constants.AUTH_TOKEN = listEntry.getCustomElements().getValue(tag);
-	  					 	}
-	  					 	if(tag.equalsIgnoreCase(Constants.LICENSE)){
-	  					 		//TODO - Verify License
+	  					 	
+	  					 	if(tag.equalsIgnoreCase(Constants.EXP)){
+	  					 		String expiryDate	= listEntry.getCustomElements().getValue(tag);
+	  					 		return this.checkExpiry(expiryDate);
 	  					 	}	  						
 	  					}	  					
 				}					  	
 			  	
 		  		} // End of For loop for iterating in the worksheets
 		   } // End of if (entry...	
-		return false;
+		return true;
 	}
+	
+	private boolean checkExpiry(String toDateAsString) throws Exception{
+		Date toDate = new SimpleDateFormat("dd/MM/yyyy").parse(toDateAsString);
+		long toDateAsTimestamp = toDate.getTime();
+		long currentTimestamp = System.currentTimeMillis();
+		long getRidOfTime = 1000 * 60 * 60 * 24;
+		long toDateAsTimestampWithoutTime = toDateAsTimestamp / getRidOfTime;
+		long currentTimestampWithoutTime = currentTimestamp / getRidOfTime;
 
-	private String prepareComment(String mainFileName, WorksheetEntry worksheet){
-		String comment = "Entries from "+ worksheet.getTitle().getPlainText() +
-							" ["+ "Last Modified on " + 
-								new SimpleDateFormat(Constants.COMMENT_DATE_FORMAT).format(new Date(worksheet.getUpdated().getValue()))+"]";
+		if (toDateAsTimestampWithoutTime >= currentTimestampWithoutTime) {
+		    return false;//System.out.println("Display report.");
+		} else {
+		    return true; //System.out.println("Don't display report.");
+		}	
 		
-		if(mainFileName.contains(".XML") || mainFileName.contains(".xml")){
-			comment = "<!-- " + comment + "-->";
-		}else{
-			comment = "# " + comment;
-		}		
-		return comment;		
-	}	
-
+	}
 
 }

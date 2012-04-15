@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Condition;
@@ -20,12 +21,12 @@ import twitter4j.conf.ConfigurationBuilder;
 import com.javainsight.cloud.CloudReader;
 import com.javainsight.cloud.utils.Constants;
 import com.javainsight.enums.events.FolderEvent;
-import com.javainsight.handler.ConfigurationConstants;
 import com.javainsight.interfaces.Bean;
 import com.javainsight.interfaces.PropHandler;
 import com.javainsight.tweet.TwitterHandler;
 import com.javainsight.tweet.TwitterReader;
 import com.javainsight.tweet.utils.TwitterServiceFactory;
+import com.javainsight.util.ReadProperties;
 
 /**
  * This is the main class of program which will be used by User.
@@ -63,41 +64,18 @@ public class PropReader {
 	private static Logger logger = Logger.getLogger(PropReader.class);
 	private boolean priorityFlag = false;
 	
+	/*
+	 * Added additional flags
+	 */
 	private static boolean needCloud = false;
 	private static boolean needTwitter = false;
 	private static boolean closeCloudAfterFirstTime = false;
 	private static boolean cloudPriority = false;
 	
 	private CloudReader cloud = null;
+	private static final String JCache_Config = "JCache.properties";
+	private static String package_name = "com.javainsight.handler.";
 	
-	/*
-	 * Static block to check whether Cloud and Twitter are required or not
-	 */
-	static{
-		try{
-			needCloud = ConfigurationConstants.needCloud; 
-			needTwitter = ConfigurationConstants.needTwitter;
-			
-			if(needCloud){
-				closeCloudAfterFirstTime = ConfigurationConstants.closeCloudAfterFirstTime;
-				cloudPriority = ConfigurationConstants.cloudPriority;
-				Constants.PASSWORD = ConfigurationConstants.gdoc_password;
-			}
-			if(needTwitter){
-				ConfigurationBuilder builder = new ConfigurationBuilder();
-				builder.setOAuthConsumerKey(ConfigurationConstants.oauth_consumerKey);
-				builder.setOAuthConsumerSecret(ConfigurationConstants.oauth_consumerSecret);
-				builder.setOAuthAccessToken(ConfigurationConstants.oauth_accessToken);
-				builder.setOAuthAccessTokenSecret(ConfigurationConstants.oauth_accessTokenSecret);
-				builder.setDebugEnabled(false);
-				//builder.set
-		         TwitterServiceFactory.setTwitter(new TwitterFactory(builder.build()).getInstance());
-			}
-		}catch(Exception e){
-			logger.error("Problem while reading class \"ConfigurationConstants.class\", Please make sure it is in classpath");
-			logger.error(e.getMessage());
-		}
-	}
 		
 	/**
 	 * This is the heart of application. In order to start, all it needs is location of properties
@@ -107,6 +85,7 @@ public class PropReader {
 	 * @param location : Directory where properties files are stored. Either direct or relative path.
 	 */	
 	public PropReader(String location, int timePeriod) {
+	 configure(location);
 	 this.location = location; 
 	 if(needTwitter){
 		 twitterReader = new TwitterReader(this.location, timePeriod*4*5);
@@ -164,7 +143,7 @@ public class PropReader {
 								if(propMap.get(name)== null){
 									//----MEANS This is the first time.
 									try {
-										handler=(PropHandler)Class.forName("com.javainsight.handler."+className).newInstance();
+										handler=(PropHandler)Class.forName(package_name+className).newInstance();
 										handler.loadPropertiesFile(location + File.separator+ name);
 										handler.initialize();
 										handler.addToSession(propMap);
@@ -308,6 +287,40 @@ public class PropReader {
 		finally{
 			detectiveOO7.unlock();
 		}
+	}
+	
+	private static void configure(String location){
+			try{
+				Properties config = new Properties();
+				boolean status = ReadProperties.readProperties(location + File.separator+ JCache_Config, config);
+				
+				if(status){
+					needTwitter = 	Boolean.parseBoolean(config.getProperty("twitter").trim());
+					needCloud = 	Boolean.parseBoolean(config.getProperty("cloud").trim());
+					package_name = config.getProperty("package_name").trim();
+					logger.error("vaues "+ needCloud + "  "+ needTwitter+" "+ package_name);
+					
+					if(needCloud){
+						closeCloudAfterFirstTime = Boolean.parseBoolean(config.getProperty("closeCloudAfterFirstTime").trim());
+						cloudPriority = Boolean.parseBoolean(config.getProperty("cloudPriority").trim());
+						Constants.PASSWORD = config.getProperty("gdoc_password").trim();
+						Constants.MASTER_EMAIL_ADD = config.getProperty("gdoc_email").trim();
+					}
+					if(needTwitter){
+						ConfigurationBuilder builder = new ConfigurationBuilder();
+						builder.setOAuthConsumerKey(config.getProperty("oauth_consumerKey").trim());
+						builder.setOAuthConsumerSecret(config.getProperty("oauth_consumerSecret").trim());
+						builder.setOAuthAccessToken(config.getProperty("oauth_accessToken").trim());
+						builder.setOAuthAccessTokenSecret(config.getProperty("oauth_accessTokenSecret").trim());
+						builder.setDebugEnabled(false);
+						//builder.set
+				         TwitterServiceFactory.setTwitter(new TwitterFactory(builder.build()).getInstance());
+					}
+				}
+			}catch(Exception e){
+				logger.error("Problem while reading file \""+JCache_Config+"\", Please make sure it is in \""+ location + "\" directory");
+				logger.error(e.getMessage());
+			}
 	}
 
 }

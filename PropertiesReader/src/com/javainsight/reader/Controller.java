@@ -162,6 +162,8 @@ INFINITE_LOOP:while(true){
 		}finally{
 			this.proceed.unlock();
 		}
+		cloud.shutDown();
+		
 		//executorPool.shutdown();
 	}
 	

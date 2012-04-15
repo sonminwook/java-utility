@@ -39,15 +39,21 @@ public class CheckCloudModification {
 		/*
 		 * Step 1: Take the latest file listing
 		 */
-		System.err.println("Checker is running");
+		//System.err.println("Checker is running");
 		fileList = new ExcelCloud().getFileList();
-		/*
-		 * Step 2: Update the Queues
-		 */
-		this.updateQueues( );
 		
-		if(this.updateQueue.size() > 0 || this.deleteQueue.size() > 0){
-			return true;
+		
+		if(fileList != null){
+			/*
+			 * Step 2: Update the Queues
+			 */
+			this.updateQueues( );
+			
+			if(this.updateQueue.size() > 0 || this.deleteQueue.size() > 0){
+				return true;
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}
