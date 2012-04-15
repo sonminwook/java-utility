@@ -11,26 +11,12 @@ import twitter4j.Status;
 import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
-
-import com.javainsight.handler.ConfigurationConstants;
 
 public class TwitterServiceFactory {
 	
 	private static Logger logger = Logger.getLogger(TwitterServiceFactory.class);
 	public static Twitter twitter = null;
 	
-	static {
-		ConfigurationBuilder builder = new ConfigurationBuilder();
-		builder.setOAuthConsumerKey(ConfigurationConstants.oauth_consumerKey);
-		builder.setOAuthConsumerSecret(ConfigurationConstants.oauth_consumerSecret);
-		builder.setOAuthAccessToken(ConfigurationConstants.oauth_accessToken);
-		builder.setOAuthAccessTokenSecret(ConfigurationConstants.oauth_accessTokenSecret);
-		builder.setDebugEnabled(false);
-		//builder.set
-         twitter = new TwitterFactory(builder.build()).getInstance();
-	}
 
 	public static void setTwitter(Twitter twit){
 		twitter = twit;

@@ -31,6 +31,7 @@ public class CloudController implements Runnable{
 	Lock proceed = new ReentrantLock();
 	Condition isProceed = proceed.newCondition();
 	private List<String> stopUpdateList = null;
+	private boolean isStarted = false;
 	
 	public CloudController(Stack<SpreadsheetEntry> load,
 			 				Stack<String> unload,
@@ -49,6 +50,16 @@ public class CloudController implements Runnable{
 }
 	
 	void graceFullShutDown(){
+		logger.info("SHUTTING DOWN Cloud Executor");
+		executorPool.shutdown();
+		this.folderEventList.add(FolderEvent.EXIT);
+		this.proceed.lock();
+		try{
+		this.isProceed.signal();
+		}finally{
+			this.proceed.unlock();
+		}
+		//executorPool.shutdown();
 		
 	}
 	
@@ -63,7 +74,7 @@ public class CloudController implements Runnable{
 																	this.proceed,
 																	this.isProceed,
 																	this.stopUpdateList);
-		executorPool.scheduleWithFixedDelay(folderMonitor, 1, this.pollingTime, TimeUnit.SECONDS);
+		folderMonitor.run();
 		/*
 		 * DANGEROUS --> Infinite Loop "Handle Carefully"		
 		 */
@@ -71,7 +82,7 @@ INFINITE_LOOP:while(true){
 				this.proceed.lock();
 				try{
 					if(this.folderEventList.isEmpty()){
-						System.err.println("on hold");
+						//System.err.println("on hold");
 						this.isProceed.await();						
 					}
 					for(FolderEvent event : folderEventList){
@@ -103,8 +114,14 @@ INFINITE_LOOP:while(true){
 					logger.error("Error" + e.getMessage(), e);					
 				}finally{
 					this.proceed.unlock();
-				}			
-			}		
+					if(!isStarted){
+						executorPool.scheduleWithFixedDelay(folderMonitor, 1, this.pollingTime, TimeUnit.SECONDS);
+						isStarted = true ;	
+					}
+				}
+		}
+				
+			
 	}
 
 

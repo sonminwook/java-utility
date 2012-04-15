@@ -65,7 +65,7 @@ public class ReadFile {
   						value = value + "<" + tag + ">" + val + "</" + tag + ">";			
   					}
   					lines.add(value);	
-  					System.err.println(value);
+  					//System.err.println(value);
 			}						
 		}else{
 			for (ListEntry listEntry : listFeed.getEntries()) {

@@ -2,16 +2,19 @@ package com.javainsight.cloud.utils;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.google.gdata.data.Person;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
+import com.google.gdata.util.AuthenticationException;
 
 public class ExcelCloud {
 	
+	private static Logger logger = Logger.getLogger(ExcelCloud.class);
 		
 	public List<SpreadsheetEntry> getFileList() {
 		try{
 			List<SpreadsheetEntry> spreadsheets = ServiceFactory.getSpreadSheets();
-			System.err.println(spreadsheets);
 			for(SpreadsheetEntry entry : spreadsheets){
 				boolean isExit = false;
 				if(entry.getTitle().getPlainText().equalsIgnoreCase(Constants.LICENSE)){
@@ -24,32 +27,20 @@ public class ExcelCloud {
 						}					
 				}
 				if(isExit){
+					logger.error("License expired");
 					System.exit(1);
 				}
 			}
 			return spreadsheets;
-		}catch(Exception e){
-			e.printStackTrace();
+		}catch(AuthenticationException uhe){
+			logger.error("Unable to hook up with cloud, either Internet not available or firewall blocking the route to google.com [" + 
+					uhe.getMessage()+"]");
+		}
+		catch(Exception e){
+			logger.error("Exception while fetching the file list from cloud", e);
 		}
 		
 		return null;
-	}
-	
-	
-	
-	
-	
-	public static void main(String[] args) {
-		try {
-//			service.setUserCredentials("javainsights@gmail.com", "1qaz1234");
-//			UserToken auth_token = (UserToken) service.getAuthTokenFactory().getAuthToken();
-//			String token = auth_token.getValue(); // token is '12345abcde'
-//			System.err.println(token);
-			new ExcelCloud().getFileList();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

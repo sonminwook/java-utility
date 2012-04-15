@@ -103,15 +103,18 @@ public class CloudMonitorThread implements Runnable {
 		 * Step 2 : Find out all the files present in the directory
 		 */
 		fileList = new ExcelCloud().getFileList();
-		/*
-		 * Step 3: Fill up modification time
-		 */
-		this.fillUpModificationTime(fileList);
-		/*
-		 * Step 4: Fill up the update Queue
-		 */
-		for(SpreadsheetEntry file : fileList){
-			this.updateQueue.push(file);
+		
+		if(fileList != null){
+			/*
+			 * Step 3: Fill up modification time
+			 */
+			this.fillUpModificationTime(fileList);
+			/*
+			 * Step 4: Fill up the update Queue
+			 */
+			for(SpreadsheetEntry file : fileList){
+				this.updateQueue.push(file);
+			}
 		}
 		
 	}
