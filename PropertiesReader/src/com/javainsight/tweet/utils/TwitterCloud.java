@@ -17,6 +17,7 @@ public class TwitterCloud {
 
 		for(File file : FileUtils.listFiles(new File(directory), null, recursive)){
 			List<String> fileData = FileUtils.readLines(file);
+			System.err.println("Putting File >"+ file.getName()+" with "+ fileData.size() + " lines");
 			fileDataMap.put(file.getName(), fileData);
 		}
 		return fileDataMap;

@@ -66,8 +66,8 @@ public class TwitterMonitorThread implements Runnable {
 				//this.firstTime();
 				firstTime = false;
 				checker = new CheckTwitterStatus(fileModificationMap, /*new File(directory),*/ revertQueue, deleteQueue, this.folderEventList);
-				//this.folderEventList.add(FolderEvent.LOAD);
-				status = false;
+				this.folderEventList.add(TwitterEvents.REVERT);
+				status = true;
 			}else{
 			
 			/*
@@ -75,6 +75,8 @@ public class TwitterMonitorThread implements Runnable {
 			 */	
 			 status = checker.check();		 
 			}
+			System.err.println(status + " was");
+			
 
 			if(status){
 				 if(this.folderEventList.size() > 0){
@@ -87,7 +89,7 @@ public class TwitterMonitorThread implements Runnable {
 						}
 					}
 			 }else{
-				 ServiceFactory.reset();
+				// ServiceFactory.reset();
 			 }
 		} catch (Exception e) {
 			logger.error("Error" ,  e);
