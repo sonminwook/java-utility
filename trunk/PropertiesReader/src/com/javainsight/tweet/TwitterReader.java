@@ -84,8 +84,7 @@ public class TwitterReader {
 					}else{
 						FileUtils.deleteQuietly(new File(this.location +
 								File.separator +
-								file + 
-								Constants.SUFFIX));
+								file));
 						logger.info("Twitter Deletion Update <SUCCESS> for <"+file+">");
 					}					
 				}catch(Exception e){
@@ -99,7 +98,7 @@ public class TwitterReader {
 		} catch (Exception e) {			
 			logger.error(" Exception while updating cache", e);
 		}finally{
-			ServiceFactory.reset();
+			//ServiceFactory.reset();
 			loadCondition.signal();
 			updateLock.unlock();			
 		}		
@@ -137,6 +136,8 @@ public class TwitterReader {
 	public void update(String fileName){
 		try{
 			List<String> fileData = FileUtils.readLines(new File(this.location + File.separator + fileName));
+			System.err.println("updated File >"+ fileName+" with "+ fileData.size() + " lines");
+			
 			this.fileDataMap.put(fileName, fileData);
 		}catch(IOException ioe){
 			logger.error("Unable to update file data", ioe);

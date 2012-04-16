@@ -31,6 +31,8 @@ public class TwitterController implements Runnable{
 	Lock proceed = new ReentrantLock();
 	Condition isProceed = proceed.newCondition();
 	
+	private boolean isStarted = false;
+	
 	public TwitterController(Stack<String> load,
 			 				Stack<String> unload,
 			 				List<TwitterEvents> eventQueue,
@@ -60,7 +62,9 @@ public class TwitterController implements Runnable{
 																	this.proceed,
 																	this.isProceed);
 		
-		executorPool.scheduleWithFixedDelay(folderMonitor, 1, this.pollingTime, TimeUnit.SECONDS);
+		System.err.println("Running the controller for the first time");
+		executorPool.scheduleWithFixedDelay(folderMonitor, 5, this.pollingTime, TimeUnit.SECONDS);
+		System.err.println("Running the controller for the first time");
 		/*
 		 * DANGEROUS --> Infinite Loop "Handle Carefully"		
 		 */
@@ -94,6 +98,9 @@ INFINITE_LOOP:while(true){
 					logger.error("Error" + e.getMessage(), e);					
 				}finally{
 					this.proceed.unlock();
+					if(!isStarted){
+						isStarted = true ;	
+					}
 				}			
 			}		
 	}

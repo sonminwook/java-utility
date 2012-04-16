@@ -151,7 +151,10 @@ public class PropReader {
 									} catch (ClassNotFoundException e) {
 										logger.info("No Handler/Bean has been defined for the ["+name+"] properties file");
 										logger.error("IGNORE -->"+ e.getMessage());									
-									}								
+									}
+									if(needTwitter){
+										twitterReader.update(name);
+									}
 								}else{
 									/*
 									 * Means files have been modified again

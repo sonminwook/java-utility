@@ -1,7 +1,11 @@
 package com.javainsight.tweet.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -26,10 +30,11 @@ public class TwitterServiceFactory {
 		
 	}
 	
-	static List<String> getTimeLine(){
+	static Map<Long, String> getTimeLine(){
 		// gets Twitter instance with default credentials
 		
         List<String> tweets = new ArrayList<String>();
+        Map<Long, String> tweetMap = new HashMap<Long, String>();
         try {
         	List<Status> statuses;
         	String user;
@@ -38,15 +43,15 @@ public class TwitterServiceFactory {
             
             System.out.println("Showing @" + user + "'s user timeline.");
             for (Status status : statuses) {
-
                 System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             	tweets.add(status.getText());
+            	tweetMap.put(status.getId(), status.getText());
                 
             }
         } catch (TwitterException te) {
         	logger.error("Failed to retrieve tweets: " + te.getMessage(), te);
         }
-        return tweets;
+        return tweetMap;
 	}
 	
 	public List<String> searchTweets(String searchHashTag){
@@ -77,6 +82,23 @@ public class TwitterServiceFactory {
         } catch (TwitterException te) {
             logger.error("Failed to retweet: " + te.getMessage(), te);
         }
+	}
+	
+	public static boolean deleteStatus(long id, String status){
+		try {
+			
+         //   Twitter twitter = new TwitterFactory().getInstance();
+			twitter.updateStatus(status + " Accepted on "+ new SimpleDateFormat("dd-MMM-yy HH:mm:ss").format(new Date()));
+            twitter.destroyStatus(id); 
+            return true;
+        } catch (TwitterException te) {
+        	if(te.getStatusCode() != 403){
+        		logger.error("Failed to retweet: " + te.getMessage());
+        	}
+        }catch(Exception e){
+        	logger.error("Failed to retweet: " + e.getMessage());
+        }
+        return false;
 	}
 	
 	public void retweetStatus(String user){
