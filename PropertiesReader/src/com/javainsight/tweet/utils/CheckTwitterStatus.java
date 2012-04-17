@@ -33,7 +33,9 @@ public class CheckTwitterStatus {
 		System.err.println("Twitter Checker is running");
 		List<String> tweets = new ArrayList<String>();
 		Map<Long, String> tweetMap = TwitterServiceFactory.getTimeLine();
-		
+		if(tweetMap == null){
+			return false;
+		}
 		tweets.addAll(tweetMap.values());
 		/*
 		 * Separate the REVERT commands. (JC:REVERT[filename])

@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.javainsight.cloud.utils.Constants;
-import com.javainsight.cloud.utils.ServiceFactory;
 import com.javainsight.reader.PropReader;
 import com.javainsight.tweet.utils.TwitterCloud;
 import com.javainsight.tweet.utils.TwitterEvents;
@@ -63,11 +62,21 @@ public class TwitterReader {
 			for(String file : revertQueue){
 				try{				
 					if(file.contains(".")){
-						FileUtils.writeLines(new File(this.location +File.separator +file), this.fileDataMap.get(file));
-						logger.info("Twitter Revert Update <SUCCESS> for <"+file+">");
+						File newFile = new File(this.location +File.separator +file);
+						if(newFile.exists()){
+							FileUtils.writeLines(newFile, this.fileDataMap.get(file));
+							logger.info("/Twitter Revert Command/Status {VALID}/Result {SUCCESS}/File {"+file+"}");
+						}else{
+							logger.info("/Twitter Revert Command/Status {INVALID}");
+						}
 					}else{
-						FileUtils.writeLines(new File(this.location +File.separator +file + Constants.SUFFIX), this.fileDataMap.get(file + Constants.SUFFIX));
-						logger.info("Twitter Revert Update <SUCCESS> for <"+file+">");
+						File newFile = new File(this.location +File.separator +file + Constants.SUFFIX);
+						if(newFile.exists()){
+							FileUtils.writeLines(newFile, this.fileDataMap.get(file + Constants.SUFFIX));
+							logger.info("/Twitter Revert Command/Status {VALID}/Result {SUCCESS}/File {"+file+"}");
+						}else{
+							logger.info("/Twitter Revert Command/Status {INVALID}");
+						}
 					}					
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+file+"<<", e);
@@ -76,17 +85,13 @@ public class TwitterReader {
 			
 			for(String file : deleteQueue){
 				try{					
-					if(file.contains(".")){
-						FileUtils.deleteQuietly(new File(this.location +
-								File.separator +
-								file));
-						logger.info("Twitter Deletion Update <SUCCESS> for <"+file+">");
-					}else{
-						FileUtils.deleteQuietly(new File(this.location +
-								File.separator +
-								file));
-						logger.info("Twitter Deletion Update <SUCCESS> for <"+file+">");
-					}					
+						File newFile = new File(this.location + File.separator +file);
+						if(newFile.exists()){
+							FileUtils.deleteQuietly(newFile);
+							logger.info("/Twitter Delete Command/Status {VALID}/Result {SUCCESS}/File {"+file+"}");
+						}else{
+							logger.info("/Twitter Delete Command/Status {INVALID}");
+						}				
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+file+"<<", e);
 				}
