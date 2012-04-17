@@ -1,5 +1,6 @@
 package com.javainsight.tweet.utils;
 
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +49,12 @@ public class TwitterServiceFactory {
             	tweetMap.put(status.getId(), status.getText());
                 
             }
-        } catch (TwitterException te) {
-        	logger.error("Failed to retrieve tweets: " + te.getMessage(), te);
+        } catch (Exception e) {
+        	if(e instanceof TwitterException || e instanceof UnknownHostException){
+				logger.error("Unable to hook up with twitter, either Internet is not available or firewall is blocking");
+			}else{
+				logger.error("Error while reading twitter status", e);
+			}
         }
         return tweetMap;
 	}
