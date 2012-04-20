@@ -10,11 +10,11 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.javainsight.cloud.utils.Constants;
+import com.javainsight.commons.io.FileUtils;
 import com.javainsight.reader.PropReader;
 import com.javainsight.tweet.utils.TwitterCloud;
 import com.javainsight.tweet.utils.TwitterEvents;

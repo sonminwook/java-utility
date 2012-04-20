@@ -5,21 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
+import com.javainsight.commons.io.FileUtils;
 
 public class TwitterCloud {
 	
 		
 	
-	public Map<String, List<String>> getFileList(String directory) throws Exception{
-        boolean recursive = false;
-        Map<String, List<String>> fileDataMap = new HashMap<String, List<String>>();
-
-		for(File file : FileUtils.listFiles(new File(directory), null, recursive)){
-			List<String> fileData = FileUtils.readLines(file);
-			System.err.println("Putting File >"+ file.getName()+" with "+ fileData.size() + " lines");
-			fileDataMap.put(file.getName(), fileData);
-		}
+	public Map<String, List<String>> getFileList(String directory) throws Exception{       
+        Map<String, List<String>> fileDataMap = new HashMap<String, List<String>>();        
+        for(String str : new File(directory).list()){
+        	File file = new File(directory + File.separator + str);
+        	if(file.isFile()){
+        		List<String> fileData = FileUtils.readLines(file);
+        		System.err.println("Putting File >"+ file.getName()+" with "+ fileData.size() + " lines");
+        		fileDataMap.put(file.getName(), fileData);
+        	}
+        }			
 		return fileDataMap;
 	}
 	
