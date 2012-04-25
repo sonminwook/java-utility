@@ -30,7 +30,7 @@ public class CheckTwitterStatus {
 		/*
 		 * Step 1: Take the latest file listing
 		 */
-		System.err.println("Twitter Checker is running");
+		//System.err.println("Twitter Checker is running");
 		List<String> tweets = new ArrayList<String>();
 		Map<Long, String> tweetMap = TwitterServiceFactory.getTimeLine();
 		if(tweetMap == null){

@@ -81,7 +81,7 @@ public class CloudMonitorThread implements Runnable {
 				 if(this.folderEventList.size() > 0){
 						this.proceed.lock();
 						try{
-							logger.debug("Notifying Controller Deamon to update cache !");
+							logger.debug("Something changed on Cloud !");
 							this.isProceed.signal();					
 						}finally{
 							this.proceed.unlock();
@@ -129,7 +129,7 @@ public class CloudMonitorThread implements Runnable {
 			if(lastModifiedTime > previousModifiedTime){
 				this.fileModificationMap.put(file.getTitle().getPlainText(), lastModifiedTime);
 			}else{
-				System.err.println("<NOT MODIFIED> "+ file.getTitle().getPlainText());
+				//System.err.println("<NOT MODIFIED> "+ file.getTitle().getPlainText());
 			}
 		}
 		

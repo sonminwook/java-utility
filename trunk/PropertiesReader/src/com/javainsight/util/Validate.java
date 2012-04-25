@@ -10,7 +10,7 @@ public class Validate {
 				}
 			}
 			return true;
-			//Test comment - Merge Test sunny
+			//Test comment - Merge Test 
 		}else{
 			for(Object ob: obj){
 				if(ob == null){

@@ -38,8 +38,8 @@ import com.javainsight.util.ReadProperties;
  * Calling the constructor will initiates a chain of threads, so
  * In order to have efficient Memory and CPU utilization, User is recommended to call
  * either System.exit(...) or shutDown method of this class.
- * @author  abc
- * @company Java~Insight
+ * @author  thegoodcode Engineer
+ * @company thegoodcode
  * @version 1.0
  */
 
@@ -75,6 +75,7 @@ public class PropReader {
 	private CloudReader cloud = null;
 	private static final String JCache_Config = "JCache.properties";
 	private static String package_name = "com.javainsight.handler.";
+	private boolean community_license = true;
 	
 		
 	/**
@@ -85,8 +86,15 @@ public class PropReader {
 	 * @param location : Directory where properties files are stored. Either direct or relative path.
 	 */	
 	public PropReader(String location, int timePeriod) {
+	
+		if(community_license){
+			logger.fatal(Constants.community_license_disclaimer);
+		}
+		
+	 timePeriod = checkTimePeriod(timePeriod);	
 	 configure(location);
 	 this.location = location; 
+	 
 	 if(needTwitter){
 		 twitterReader = new TwitterReader(this.location, timePeriod*4*5);
 		 twitterReader.isDownloaded();
@@ -98,7 +106,7 @@ public class PropReader {
 	 detectiveOO7 = new Controller(load, unload, eventQueue, location, this, timePeriod, cloud);
 	 new Thread(detectiveOO7).start();
 	 
-	 logger.debug("CONTROLLER thread has been started");
+	 //logger.debug("CONTROLLER thread has been started");
 	 /*
 	  * Adding a shutdown hook, In case of user perform System.exit(..).
 	  * A grace full shutdown will be initiated.
@@ -127,7 +135,7 @@ public class PropReader {
 											{
 		this.priorityFlag = true;
 		updateLock.lock();
-		logger.debug("UPDATE HAS THE LOCK");
+		//logger.debug("UPDATE HAS THE LOCK");
 		// Added for tweeting capabilities
 		List<String> errTweetLines = new ArrayList<String>();
 		try{
@@ -224,9 +232,9 @@ public class PropReader {
 			if(propMap.size() == 0){
 				try {
 					logger.debug("Waiting for properties file to upload...");
-					logger.info("Reader on HOLD");
+					//logger.info("Reader on HOLD");
 					loadCondition.await();
-					logger.info("Reader UNHOLD");
+					//logger.info("Reader UNHOLD");
 				} catch (InterruptedException e) {
 					 StackTraceElement stackTrace = new StackTraceElement("PropReader","returnMapValue", "com.javainsight.reader", -1);
 		        	 e.setStackTrace(new StackTraceElement[]{stackTrace});
@@ -257,6 +265,28 @@ public class PropReader {
 		}
 		return Collections.unmodifiableMap(propMap);
 	}
+	
+	/**
+	 * This method will return an Bean Object.	
+	 */
+	@SuppressWarnings("unchecked")
+	public synchronized <T> T getFileObject(Class<T> t){
+		T returnBean = null;		
+		for(String key : propMap.keySet()){
+			Bean bean = propMap.get(key);
+			if(bean != null){
+					try{
+					if(bean.getClass().equals(t)){						
+							returnBean = (T)bean;						
+							break;
+						}
+					}catch(ClassCastException ignoreException){	
+						ignoreException.printStackTrace();
+					}
+			}
+		}		
+		return returnBean;
+	}
 
 	//----------------------RUNNING THE GARBAGE COLLECTOR-----------------
 	protected void finalize(){
@@ -264,6 +294,8 @@ public class PropReader {
 		detectiveOO7.graceFullShutDown();
 		
 	}
+	
+	
 	
 	/**
 	 * This method will trigger a grace full shutdown 
@@ -301,13 +333,13 @@ public class PropReader {
 					needTwitter = 	Boolean.parseBoolean(config.getProperty("twitter").trim());
 					needCloud = 	Boolean.parseBoolean(config.getProperty("cloud").trim());
 					package_name = config.getProperty("package_name").trim();
-					logger.error("vaues "+ needCloud + "  "+ needTwitter+" "+ package_name);
-					
 					if(needCloud){
 						closeCloudAfterFirstTime = Boolean.parseBoolean(config.getProperty("closeCloudAfterFirstTime").trim());
 						cloudPriority = Boolean.parseBoolean(config.getProperty("cloudPriority").trim());
 						Constants.PASSWORD = config.getProperty("gdoc_password").trim();
 						Constants.MASTER_EMAIL_ADD = config.getProperty("gdoc_email").trim();
+					}else{
+						logger.info("Cloud Module is turned off");
 					}
 					if(needTwitter){
 						ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -318,12 +350,28 @@ public class PropReader {
 						builder.setDebugEnabled(false);
 						//builder.set
 				         TwitterServiceFactory.setTwitter(new TwitterFactory(builder.build()).getInstance());
+					}else{
+						logger.info("Tweeting capability is turned off");
 					}
 				}
 			}catch(Exception e){
 				logger.error("Problem while reading file \""+JCache_Config+"\", Please make sure it is in \""+ location + "\" directory");
 				logger.error(e.getMessage());
 			}
+	}
+	
+	
+	private static int checkTimePeriod(int timePeriod){
+		int newValue = 5;
+		if(timePeriod <= 0){
+			logger.error("Invalid timeperiod value ["+ timePeriod+"] seconds, system will use recommended value 5 seconds");
+		}else if((1 < timePeriod) && (timePeriod < 5)){
+			logger.error("timeperiod value ["+ timePeriod+"] seconds toos short, recommended value is 5 seconds");	
+			newValue = timePeriod;
+		}
+		
+		return newValue;
+		
 	}
 
 }

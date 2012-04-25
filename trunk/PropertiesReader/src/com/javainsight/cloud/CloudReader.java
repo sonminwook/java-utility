@@ -46,7 +46,7 @@ public class CloudReader {
 		 this.closeCloudAfterFirstTime = isClosedAfterFirstTime;
 		 detectiveOO7 = new CloudController(updateQueue, deleteQueue, eventQueue, location, this, timePeriod, stopUpdateList);
 		 new Thread(detectiveOO7).start();	 
-		 logger.debug("Cloud CONTROLLER thread has been started");
+		 logger.info("Cloud module has been started");
 		 /*
 		  * Adding a shutdown hook, In case of user perform System.exit(..).
 		  * A grace full shutdown will be initiated.
@@ -83,8 +83,7 @@ public class CloudReader {
 							throw new NoRouteToHostException("Unable to download file from Cloud");
 						}
 					}
-					
-					logger.info("Cloud Update <SUCCESS> for <"+entry.getTitle().getPlainText()+">");
+					logger.info("/Cloud Update Command/Status {VALID}/Result {SUCCESS}/File {"+entry.getTitle().getPlainText()+"}");					
 					if(entry.getTitle().getPlainText().contains(".")){
 						FileUtils.deleteQuietly(new File(this.location +
 								File.separator +
@@ -119,13 +118,13 @@ public class CloudReader {
 						FileUtils.deleteQuietly(new File(this.location +
 								File.separator +
 								file));
-						logger.info("Cloud Deletion Update <SUCCESS> for <"+file+">");
+						logger.info("/Cloud Delete Command/Status {VALID}/Result {SUCCESS}/File {"+file+"}");
 					}else{
 						FileUtils.deleteQuietly(new File(this.location +
 								File.separator +
 								file + 
 								Constants.SUFFIX));
-						logger.info("Cloud Deletion Update <SUCCESS> for <"+file+">");
+						logger.info("/Cloud Delete Command/Status {VALID}/Result {SUCCESS}/File {"+file+"}");
 					}					
 				}catch(Exception e){
 					logger.error("IGNORING EXCEPTION FOR >>"+file+"<<", e);
@@ -154,9 +153,9 @@ public class CloudReader {
 		try{
 			if(!isReady){
 				try {
-					logger.debug("Checking Cloud...");					
+					//logger.debug("Checking Cloud...");					
 					loadCondition.await();
-					logger.info("Checking completed");
+					//logger.info("Checking completed");
 				} catch (InterruptedException e) { 
 			          logger.error("Exception", e);		        	 	 
 				}

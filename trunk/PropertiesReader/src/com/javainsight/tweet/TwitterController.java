@@ -62,33 +62,33 @@ public class TwitterController implements Runnable{
 																	this.proceed,
 																	this.isProceed);
 		
-		System.err.println("Running the controller for the first time");
+		//System.err.println("Running the controller for the first time");
 		executorPool.scheduleWithFixedDelay(folderMonitor, 5, this.pollingTime, TimeUnit.SECONDS);
-		System.err.println("Running the controller for the first time");
+		//System.err.println("Running the controller for the first time");
 		/*
 		 * DANGEROUS --> Infinite Loop "Handle Carefully"		
 		 */
-INFINITE_LOOP:while(true){
+		while(true){
 				this.proceed.lock();
 				try{
 					if(this.folderEventList.isEmpty()){
-						System.err.println("on hold");
+						//System.err.println("on hold");
 						this.isProceed.await();						
 					}
 					for(TwitterEvents event : folderEventList){
 						switch(event){
 						case REVERT:{
-							logger.debug("Twitter Revert Command");
-							for(String file : this.updateQueue){
-								logger.debug("File Name is "+ file);							
-							}
+							//logger.info("Twitter Revert Command");
+//							for(String file : this.updateQueue){
+//								//logger.info("File Name is "+ file);							
+//							}
 							break;
 						}
 						case DELETE:{
-							logger.debug("Twitter Delete Command");
-							for(String file : this.deleteQueue){
-								logger.debug("File Name is "+ file);							
-							}
+							//logger.info("Twitter Delete Command");
+//							for(String file : this.deleteQueue){
+//								//logger.info("File Name is "+ file);							
+//							}
 							break;							
 						}
 							}					

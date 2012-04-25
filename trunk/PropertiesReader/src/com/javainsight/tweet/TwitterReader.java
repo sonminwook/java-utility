@@ -11,11 +11,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.javainsight.cloud.utils.Constants;
 import com.javainsight.commons.io.FileUtils;
-import com.javainsight.reader.PropReader;
 import com.javainsight.tweet.utils.TwitterCloud;
 import com.javainsight.tweet.utils.TwitterEvents;
 
@@ -42,7 +40,7 @@ public class TwitterReader {
 		 this.location = location;
 		 detectiveOO7 = new TwitterController(revertQueue, deleteQueue, eventQueue, location, this, timePeriod);
 		 new Thread(detectiveOO7).start();	 
-		 logger.debug("Twitter CONTROLLER thread has been started");
+		 logger.info("Twitter module has been started");
 		 /*
 		  * Adding a shutdown hook, In case of user perform System.exit(..).
 		  * A grace full shutdown will be initiated.
@@ -115,9 +113,9 @@ public class TwitterReader {
 			if(!isReady){
 				try {
 					this.update();
-					logger.debug("Checking Cloud...");					
+					//logger.debug("Checking Cloud...");					
 					loadCondition.await();
-					logger.info("Checking completed");
+					//logger.info("Checking completed");
 				} catch (Exception e) { 
 			          logger.error("Exception", e);		        	 	 
 				}
@@ -141,7 +139,7 @@ public class TwitterReader {
 	public void update(String fileName){
 		try{
 			List<String> fileData = FileUtils.readLines(new File(this.location + File.separator + fileName));
-			System.err.println("updated File >"+ fileName+" with "+ fileData.size() + " lines");
+			//System.err.println("updated File >"+ fileName+" with "+ fileData.size() + " lines");
 			
 			this.fileDataMap.put(fileName, fileData);
 		}catch(IOException ioe){
@@ -154,15 +152,15 @@ public class TwitterReader {
 	}
 	
 	
-	public static void main(String[] args) {
-		try {
-			PropertyConfigurator.configure("config/log4j.properties");
-			new PropReader("config", 15).returnMapValue();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try {
+//			PropertyConfigurator.configure("config/log4j.properties");
+//			new PropReader("config", 15).returnMapValue();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 
 
 }

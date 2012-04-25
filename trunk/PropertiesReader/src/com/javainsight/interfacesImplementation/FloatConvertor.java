@@ -5,7 +5,7 @@ import com.javainsight.interfaces.Convertor;
 /**
  * This class will be the float encoding-decoding 
  * version of convertor<T> interface.
- * @author sjain
+ * @author thegoodcode engineer
  *
  */
 public class FloatConvertor implements Convertor<Float> {

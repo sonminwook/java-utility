@@ -15,20 +15,22 @@ public class ExcelCloud {
 	public List<SpreadsheetEntry> getFileList() {
 		try{
 			List<SpreadsheetEntry> spreadsheets = ServiceFactory.getSpreadSheets();
-			for(SpreadsheetEntry entry : spreadsheets){
-				boolean isExit = false;
-				if(entry.getTitle().getPlainText().equalsIgnoreCase(Constants.LICENSE)){
-					isExit = true;
-					for(Person p : entry.getAuthors()){					
-							if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD)){
-								// Verify the details here...
-								isExit = new VerifyLicense().readWorkSheet(entry.getTitle().getPlainText(), entry, null, false);
-							}
-						}					
-				}
-				if(isExit){
-					logger.error("License expired");
-					System.exit(1);
+			if(Constants.license_check){
+				for(SpreadsheetEntry entry : spreadsheets){
+					boolean isExit = false;
+					if(entry.getTitle().getPlainText().equalsIgnoreCase(Constants.LICENSE)){
+						isExit = true;
+						for(Person p : entry.getAuthors()){					
+								if(p.getEmail().equalsIgnoreCase(Constants.MASTER_EMAIL_ADD)){
+									// Verify the details here...
+									isExit = new VerifyLicense().readWorkSheet(entry.getTitle().getPlainText(), entry, null, false);
+								}
+							}					
+					}
+					if(isExit){
+						logger.error("License expired");
+						System.exit(1);
+					}
 				}
 			}
 			return spreadsheets;

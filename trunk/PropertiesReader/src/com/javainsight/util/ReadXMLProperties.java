@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 
 
 /**
- * @author Sunny Jain
- * @Email sjain@global-blue.com
+ * @author thegoodcode engineer
+ * @Email contact@thegoodcode.com
  * @Version 1.0
  * @Date 02-Mar-2010
  * @about This program is to read properties file where ISO message is stored.</br>
@@ -19,8 +19,8 @@ public class ReadXMLProperties {
 		 
 	private static Logger logger = Logger.getLogger(ReadXMLProperties.class);
 	 /**
-	   * @author Sunny Jain
-	   * @Email sjain@global-blue.com
+	   * @author thegoodcode engineer
+	   * @Email contact@thegoodcode.com
 	   * @Version 1.0
 	   * @Date 02-Mar-2010
 	   * @param fileName : Relative path of the file along with file Name.<br>
@@ -38,7 +38,7 @@ public class ReadXMLProperties {
 	               return true;
 	            }
 	             else{
-	             	System.out.println(f.getAbsolutePath());
+	             	//System.out.println(f.getAbsolutePath());
 	             	if(!f.exists())
 	                logger.error("File not found!");
 	             	else if(!f.canRead())

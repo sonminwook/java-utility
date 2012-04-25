@@ -42,9 +42,9 @@ public class TwitterServiceFactory {
             user = twitter.verifyCredentials().getScreenName();
             statuses = twitter.getUserTimeline();
             
-            System.out.println("Showing @" + user + "'s user timeline.");
+            //System.out.println("Showing @" + user + "'s user timeline.");
             for (Status status : statuses) {
-                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+                //System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
             	tweets.add(status.getText());
             	tweetMap.put(status.getId(), status.getText());
                 

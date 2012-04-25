@@ -17,7 +17,7 @@ import com.javainsight.interfacesImplementation.StringConvertor;
  * Configuration enum will read the properties file and will store the values in a Map.<br>
  * Helper class will choose correct convertor and format the value read by enum.<br>
  * Helper class will return the correct formatted value.<br>
- * @author sjain
+ * @author thegoodcode engineer
  *@version 1.2
  */
 public class ConfigurationHelper {
