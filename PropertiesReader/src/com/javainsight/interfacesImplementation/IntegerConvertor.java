@@ -6,7 +6,7 @@ import com.javainsight.interfaces.Convertor;
  * This class will help to convert String into Integer.
  * If Integer can not be converted into Integer than Number format
  * exception will be thrown.
- * @author sjain
+ * @author thegoodcode engineer
  *
  */
 public class IntegerConvertor implements Convertor<Integer> {

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
-import twitter4j.GeoLocation;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -23,9 +21,7 @@ public class TweetUtils {
 	
 	public void postMessage(String message){
 		try{
-			Twitter twitter = new TwitterFactory().getInstance();
-			//twitter.getGeoDetails(new GeoLocation(52, 0).toString());
-			//twitter.
+			Twitter twitter = new TwitterFactory().getInstance();			
 			Status status = twitter.updateStatus(message);
 			logger.trace("Successfully updated the status to ["+ status.getText()+"]");
 		}catch(Exception e){
@@ -39,12 +35,11 @@ public class TweetUtils {
         try {
             
            
-            Query query = new Query(searchHashTag);
-           // query.setGeoCode(new GeoLocation(52, 0), 40000, Query.KILOMETERS);
+            Query query = new Query(searchHashTag);           
             QueryResult result = twitter.search(query);
             List<Tweet> tweets = result.getTweets();
             for (Tweet tweet : tweets) {
-                logger.trace("@" + tweet.getFromUser() + " - " + tweet.getText());
+                //logger.trace("@" + tweet.getFromUser() + " - " + tweet.getText());
                 tweetsInstructions.add("@" + tweet.getFromUser() + Constants.USER_TWEET_SEPARATOR + tweet.getText());
             }
         } catch (TwitterException te) {
@@ -75,13 +70,13 @@ public class TweetUtils {
 	}
 	
 	public static void main(String[] args) {
-		PropertyConfigurator.configure("config/log4j.properties");
-		String hashTrend = "#TableColumnproperties010242012";
-		//new TweetUtils().postMessage("#TableColumnproperties010242012 was modified");
-		List<String> replies = new TweetUtils().searchTweets(hashTrend);
-		for(String str : replies){
-			System.err.println(str);
-		}
+//		PropertyConfigurator.configure("config/log4j.properties");
+//		String hashTrend = "#TableColumnproperties010242012";
+//		//new TweetUtils().postMessage("#TableColumnproperties010242012 was modified");
+//		List<String> replies = new TweetUtils().searchTweets(hashTrend);
+//		for(String str : replies){
+//			System.err.println(str);
+//		}
 	}
 
 }

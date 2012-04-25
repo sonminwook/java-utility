@@ -88,9 +88,9 @@ INFINITE_LOOP:while(true){
 					for(FolderEvent event : folderEventList){
 						switch(event){
 						case LOAD:{
-							logger.debug("Cloud Update Available");
+							logger.info("Cloud Update Available");
 							for(SpreadsheetEntry file : this.updateQueue){
-								logger.debug("File Name is "+ file.getTitle().getPlainText());
+								logger.info("File Name is "+ file.getTitle().getPlainText());
 							}
 
 							break;
@@ -98,7 +98,7 @@ INFINITE_LOOP:while(true){
 						case UNLOAD:{
 							logger.debug("Cloud Deletion notification");
 							for(String file : this.deleteQueue){
-								logger.debug("File Name is "+ file);							
+								logger.info("File Name is "+ file);							
 							}
 							break;							
 						}

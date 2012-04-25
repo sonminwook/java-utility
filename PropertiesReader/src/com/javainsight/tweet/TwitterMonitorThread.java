@@ -75,7 +75,7 @@ public class TwitterMonitorThread implements Runnable {
 			 */	
 			 status = checker.check();		 
 			}
-			System.err.println(status + " was");
+			//System.err.println(status + " was");
 			
 
 			if(status){
