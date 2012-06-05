@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JSwitch" basedir="." default="externaljar">      
+    <property name="classDir" location="bin" />
+    <property name="src.dir" location="src" />
+    <property name="targetdir" location="dist" />
+    <property name="doc.dir" location="docs" />
+    <property name="lib" location="lib" />
+    <property name="bits" location="64_x86" />
+    <property name="name" value="JSwitch_64_x86_1_0.jar" />
+    <property name="zipname" value="JSwitch_64_x86_1_0.zip" />
+    <property name="zipdir" value="release/64_x86" />
+    <property name="app.name" value="IP-Serial Switch Java Based" />
+    <property name="packages" value="com.thegoodcode.*" />
+    
+    
+        
+    <echo message="========================================================================= " />
+    <echo message="|              Creating jarfile !!! ${ant.project.name}!!!               | " />
+    <echo message="========================================================================= " />
+    
+    <path id="build.classpath">        
+        <fileset dir="${lib}" >
+             <include name="*.jar" />
+        </fileset> 
+        <fileset dir="${bits}" >
+           <include name="*.jar" />
+        </fileset> 
+    </path> 
+    
+    <target name="clean-build-files">
+       <echo message="STEP 1 = CLEANING CLASS FILES" />
+        <delete failonerror="false">
+                <fileset dir="${classDir}" includes="**/*" />
+        </delete>
+        <delete dir="${targetdir}" includes="*.*"></delete>
+        <delete dir="${doc.dir}" includes="*.*"></delete>
+        <delete dir="${zipdir}" includes="*.*"></delete>
+        <delete file="release/${name}" />
+        <delete file="release/${zipname}" />
+        <mkdir dir="${zipdir}" description="Creating Dest direcotry for 32 bits" />
+        <mkdir dir="${targetdir}" description="Creating Dest direcotry for jar" />
+    </target>
+    
+    
+        <!-- Compiles the java code --> 
+    <target name="compile" depends="clean-build-files" >
+        <echo message="STEP 2 = COMPILING JAVA FILES " />
+        <mkdir dir="${classDir}" description="Ensure launch directory created" />
+        
+        <javac srcdir="${src.dir}" destdir="${classDir}" classpathref="build.classpath"/>
+        
+        <mkdir dir="${doc.dir}"/>
+
+                                       <javadoc packagenames="${packages}"
+                                                sourcepath="${src.dir}"
+                                                destdir="${doc.dir}"                                                
+                                                classpathref="build.classpath"
+                                                author="true"
+                                                version="true"
+                                                use="true"
+                                                windowtitle="${app.name} API"
+                                                doctitle="&lt;h1&gt;${app.name}&lt;/h1&gt;" />
+    </target>
+    
+    <!--  Create a JAR file -->
+    <target name="jar" depends="compile">
+        <echo message="STEP 3 = GENERATING JAR FILE" />
+        <jar destfile="${targetdir}/${ant.project.name}.jar" basedir="${classDir}" filesonly="false" includes="**/*.class" />  
+  </target>
+    
+    <!-- Y Guard stuff -->
+        <target name="yguard" depends="jar">
+            
+            
+            
+            
+            <echo message="STEP 5 = EMBEDDING COMANY INFO" />           
+            <!-- write manifest after obfuscation, yguared would remove it -->
+            <jar destfile="${targetdir}/${ant.project.name}.jar" update="true">
+                                <manifest>
+                                    <section name="Version-Specific-Properties">
+                                        <attribute name="Implementation-Title"   value="${ant.project.name}" />                                     
+                                        <attribute name="Implementation-Vendor"  value="www.thegoodcode.com" />
+                                        <attribute name="Product-Name"           value="IP-Serial Switch ( All rights reserved )" />                                                                                
+                                    </section>
+                                </manifest>
+                            </jar>          
+        </target> 
+    
+       <target name="externaljar" depends="yguard">
+                <echo message="STEP 3 = CREATING EXTERNAL JAR FILE" />
+                <zip destfile="release/${name}">
+                    <zipgroupfileset dir="${lib}" includes="*.jar"/>
+                    <zipgroupfileset dir="${targetdir}" includes="*.jar"/>
+                    <zipgroupfileset dir="${bits}" includes="*.jar"/>
+                </zip>
+        <delete>
+            <fileset dir="${zipdir}">
+                <include name="*.*"/>                  
+            </fileset>
+        </delete>
+            <copy todir="${zipdir}">
+                 <fileset dir="${bits}" excludes="*.jar"/>
+                 <fileset dir="release" includes="${name}"></fileset>
+            	 <fileset dir="." includes="*.properties"/>
+            </copy>
+        <zip destfile="release/${zipname}"  basedir="${zipdir}" />
+          </target>
+    
+</project>
