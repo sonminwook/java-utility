@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project name="JSwitch" basedir="." default="executable" xmlns:props="antlib:org.apache.ant.props" > 
+    
+
+	<property environment="env"/>
+	<property name="release" location="finalrelease" />
+	<property name="build" location="release" />
+	
+	
+	<target name="build">  
+		<ant antfile="build_64_x64.xml"></ant>
+		<ant antfile="build_64_x86.xml"></ant>
+		<ant antfile="build_x32.xml"></ant>
+    </target>
+    
+
+   
+
+   
+  <target name="cleanDir" depends="build">   
+  	<delete dir="${release}" includes="*.*"></delete>
+    <mkdir dir="${release}" description="Creating Dest direcotry for jar" />
+  </target>
+  
+  <target name="executable" depends="cleanDir">
+        <echo message="*******************************************************************"/>
+        <echo message="******************* GENERATING FILES********************************" />
+        <echo message="*******************************************************************" />
+
+    
+ 
+    
+    <move todir="${release}">
+         <fileset file="${build}/*.zip" />
+    </move>    
+  	<delete dir="${build}" includes="*"></delete>
+    </target>
+    
+   
+ 
+
+</project>
