@@ -1,6 +1,6 @@
 package com.thegoodcode.ipserialswitch.beans;
 
-public class FrontBean {
+public class FrontBean implements Config{
 	
 	private int port = 4123;
 	private int readBufferSize = 2048;
