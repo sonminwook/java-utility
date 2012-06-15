@@ -6,6 +6,8 @@
     <property name="doc.dir" location="docs" />
     <property name="lib" location="lib" />
     <property name="bits" location="32_x" />
+    <property name="unzip" location="release/unzip" />
+
     <property name="name" value="JSwitch_32_x_1_0.jar" />
 	<property name="zipname" value="JSwitch_32_x_1_0.zip" />
 	<property name="zipdir" value="release/32_x" />
@@ -39,8 +41,10 @@
     	<delete dir="${zipdir}" includes="*.*"></delete>
     	<delete file="release/${name}" />
     	<delete file="release/${zipname}" />
+    	<delete dir="${unzip}" includes="*" ></delete>
         <mkdir dir="${zipdir}" description="Creating Dest direcotry for 32 bits" />
         <mkdir dir="${targetdir}" description="Creating Dest direcotry for jar" />
+    	<mkdir dir="${unzip}" description="creation directory for license information" />
     </target>
     
     
@@ -99,17 +103,7 @@
             
             
             
-            <echo message="STEP 5 = EMBEDDING COMANY INFO" />           
-            <!-- write manifest after obfuscation, yguared would remove it -->
-            <jar destfile="${targetdir}/${ant.project.name}.jar" update="true">
-                                <manifest>
-                                    <section name="Version-Specific-Properties">
-                                        <attribute name="Implementation-Title"   value="${ant.project.name}" />                                     
-                                        <attribute name="Implementation-Vendor"  value="www.thegoodcode.com" />
-                                        <attribute name="Product-Name"           value="IP-Serial Switch ( All rights reserved )" />                                                                                
-                                    </section>
-                                </manifest>
-                            </jar> 
+            
         	
         	<delete>
         	                    <fileset dir="${targetdir}" includes="${ant.project.name}.non-obf.jar" />
@@ -123,11 +117,45 @@
                     <zipgroupfileset dir="${targetdir}" includes="*.jar"/>
                     <zipgroupfileset dir="${bits}" includes="*.jar"/>
                 </zip>
+        
+       	        <echo message="STEP 5 = EMBEDDING COMANY INFO" />           
+       	            <!-- write manifest after obfuscation, yguared would remove it -->
+       	            <jar destfile="release/${name}" update="true">
+       	                  <manifest>
+       	                     <section name="Version-Specific-Properties">
+       	                           <attribute name="Project-Information"   value="${ant.project.name}" />                                     
+       	                           <attribute name="Owner"                  value="www.thegoodcode.com" />
+       	                           <attribute name="Product-Name"           value="IP-Serial Switch ( All rights reserved )" />                                                                                
+       	                       </section>
+       	                     </manifest>
+       	            	
+       	            </jar> 
        	<delete>
        	    <fileset dir="${zipdir}">
        	        <include name="*.*"/>       	       
        	    </fileset>
        	</delete>
+       	<unzip src="release/${name}" dest="${unzip}">
+       		<patternset>
+       		    <include name="**/*.class"/>
+       		    <include name="**/*.MF"/>
+       		  </patternset>
+       	</unzip>
+       	
+       	<copy todir="release/unzip/META-INF">
+            <fileset dir="license" includes="*.*"/>
+       	</copy>
+       	
+       	<delete>
+       	     <fileset dir="release">
+       	          <include name="*.jar"/>                  
+       	     </fileset>
+       </delete>
+       	
+        <zip destfile="release/${name}"  basedir="${unzip}" />
+
+       	<delete dir="${unzip}"></delete>
+       	
             <copy todir="${zipdir}">
        	         <fileset dir="${bits}" excludes="*.jar"/>
             	 <fileset dir="release" includes="${name}"></fileset>
