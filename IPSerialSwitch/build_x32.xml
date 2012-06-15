@@ -26,6 +26,8 @@
            <include name="*.jar" />
         </fileset> 
     </path> 
+	
+
     
     <target name="clean-build-files">
        <echo message="STEP 1 = CLEANING CLASS FILES" />
@@ -130,6 +132,8 @@
        	         <fileset dir="${bits}" excludes="*.jar"/>
             	 <fileset dir="release" includes="${name}"></fileset>
             	 <fileset dir="." includes="*.properties"/>
+            	 <fileset dir="." includes="*.bat"/>
+                <fileset dir="." includes="*.png"/>
        	    </copy>
        	<zip destfile="release/${zipname}"  basedir="${zipdir}" />
           </target>
