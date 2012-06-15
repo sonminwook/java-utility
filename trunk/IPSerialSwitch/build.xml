@@ -28,20 +28,10 @@
   </target>
   
   <target name="executable" depends="cleanDir">
-        <echo message="*******************************************************************"/>
-        <echo message="******************* GENERATING FILES********************************" />
-        <echo message="*******************************************************************" />
-
-    
- 
-    
+        <echo message="________________________________GENERATING LATEST BUILD____________________________" />
     <move todir="${release}">
          <fileset file="${build}/*.zip" />
     </move>    
   	<delete dir="${build}" includes="*"></delete>
     </target>
-    
-   
- 
-
 </project>
