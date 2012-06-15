@@ -7,13 +7,18 @@
 	<property name="build" location="release" />
 	
 	
-	<target name="build">  
+	<target name="build" depends="test_new_features">  
 		<ant antfile="build_64_x64.xml"></ant>
 		<ant antfile="build_64_x86.xml"></ant>
 		<ant antfile="build_x32.xml"></ant>
     </target>
     
 
+	   <target name="test_new_features">
+	         <echo>The good code - JSwitch</echo>
+        <property name="splash.dir" location="."/>
+        <splash imageurl="file:${splash.dir}/thegoodcode.png" />
+	    </target>
    
 
    
