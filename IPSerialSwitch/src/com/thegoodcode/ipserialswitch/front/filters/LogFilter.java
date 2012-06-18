@@ -5,7 +5,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.filterchain.IoFilterAdapter;
 import org.apache.mina.core.session.IoSession;
 
-import com.thegoodcode.ipserialswitch.front.constants.SessionConstant;
+import com.thegoodcode.ipserialswitch.front.constants.SessionContext;
 
 
 public class LogFilter extends IoFilterAdapter {
@@ -21,7 +21,7 @@ public class LogFilter extends IoFilterAdapter {
 
 	@Override
 	public void sessionClosed(NextFilter nextFilter, IoSession session)	throws Exception {
-		if(session.getAttribute(SessionConstant.CLOSE_SESSION) != null){
+		if(session.getAttribute(SessionContext.CLOSE) != null){
 			log.info("Switch is closing connection");
 		}else{
 			log.info("Connection closed from ["+session.getRemoteAddress() + "] to ["+ session.getLocalAddress()+"][" + session.getId()+"]");
