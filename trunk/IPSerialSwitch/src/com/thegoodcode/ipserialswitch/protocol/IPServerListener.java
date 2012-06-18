@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;
 
 import com.thegoodcode.eventframework.collections.EventProperties;
+import com.thegoodcode.eventframework.collections.EventProperties.Primacy;
 import com.thegoodcode.eventframework.collections.TGCEvent;
 import com.thegoodcode.eventframework.collections.TGCListener;
-import com.thegoodcode.eventframework.collections.EventProperties.ThreadPriority;
 import com.thegoodcode.eventframework.collections.list.TGCList;
 
 public class IPServerListener implements TGCListener<String> {
@@ -19,13 +19,13 @@ public class IPServerListener implements TGCListener<String> {
 	}
 	
 	@Override
-	@EventProperties(Priority=ThreadPriority.MEDUIM,spawnThread=false)
+	@EventProperties(Primacy=Primacy.NORMAL,spawn=false)
 	public void clear(TGCEvent<String> arg0) {
 
 	}
 
 	@Override
-	@EventProperties(Priority=ThreadPriority.HIGH , spawnThread=true)
+	@EventProperties(Primacy=Primacy.CRITICAL , spawn=true)
 	public void valueAdded(TGCEvent<String> event) {
 		this.session.write(event.tgcObject());
 		@SuppressWarnings("unchecked")
@@ -34,18 +34,18 @@ public class IPServerListener implements TGCListener<String> {
 	}
 
 	@Override
-	@EventProperties(Priority=ThreadPriority.MEDUIM,spawnThread=false)
+	@EventProperties(Primacy=Primacy.NORMAL,spawn=false)
 	public void valueRemoved(TGCEvent<String> arg0) {
 	}
 
 	@Override
-	@EventProperties(Priority=ThreadPriority.MEDUIM,spawnThread=false)
+	@EventProperties(Primacy=Primacy.NORMAL,spawn=false)
 	public void valueRemovedByIndex(TGCEvent<String> arg0) {
 		log.error("Removing index");
 	}
 
 	@Override
-	@EventProperties(Priority=ThreadPriority.MEDUIM,spawnThread=false)
+	@EventProperties(Primacy=Primacy.NORMAL,spawn=false)
 	public void valuesAdded(TGCEvent<String> arg0) {
 	}
 

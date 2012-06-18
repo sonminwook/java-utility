@@ -12,10 +12,10 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.executor.ExecutorFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import com.thegoodcode.ipserialswitch.back.ip.server.IPServerClient;
 import com.thegoodcode.ipserialswitch.back.serial.Client;
 import com.thegoodcode.ipserialswitch.beans.Configure;
 import com.thegoodcode.ipserialswitch.beans.FrontBean;
+import com.thegoodcode.ipserialswitch.front.constants.disclaimer;
 import com.thegoodcode.ipserialswitch.front.filters.LogFilter;
 import com.thegoodcode.ipserialswitch.front.filters.coders.CodecFactory;
 
@@ -29,7 +29,7 @@ public class Server {
 	    	
 	    	try{
 	    		PropertyConfigurator.configure("IPSerialSwitch.properties");
-	    		
+	    		disclaimer.print();
 	    		config = Configure.getFront();
      	    	if(Configure.isLoggingEnabled()){
 		    		log.setLevel(Level.INFO);
@@ -45,8 +45,8 @@ public class Server {
 	    	chain.addAfter("threads", "factory",  new ProtocolCodecFilter(new CodecFactory( Charset.forName("UTF-8"))));
 	    	
 	    	
-	      //  acceptor.setHandler( new Handler(new Client(), Configure.getSerialConfig()) );
-	    	  acceptor.setHandler( new Handler(new IPServerClient(), Configure.getSerialConfig()) );
+	        acceptor.setHandler( new Handler(new Client(), Configure.getSerialConfig()) );
+	    	//  acceptor.setHandler( new Handler(new IPServerClient(), Configure.getSerialConfig()) );
 	        acceptor.setReuseAddress(false);
 	        acceptor.getSessionConfig().setReadBufferSize( config.getReadBufferSize() );
 	        acceptor.getSessionConfig().setBothIdleTime(config.getSessionWriteIdleTime());
