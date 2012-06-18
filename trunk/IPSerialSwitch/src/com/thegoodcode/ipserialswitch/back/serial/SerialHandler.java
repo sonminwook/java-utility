@@ -10,7 +10,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
 import com.thegoodcode.eventframework.collections.list.TGCList;
-import com.thegoodcode.ipserialswitch.front.constants.SessionConstant;
+import com.thegoodcode.ipserialswitch.front.constants.SessionContext;
 import com.thegoodcode.ipserialswitch.protocol.EventListener;
 
 public class SerialHandler extends IoHandlerAdapter {
@@ -44,7 +44,7 @@ public class SerialHandler extends IoHandlerAdapter {
 	public void messageSent(IoSession session, Object message) throws Exception {
 		super.messageSent(session, message);
 		if(session.isConnected()){
-			if(session.getAttribute(SessionConstant.CLOSE_SESSION) != null){
+			if(session.getAttribute(SessionContext.CLOSE) != null){
 				session.close(true);
 			}
 		}
