@@ -1,0 +1,48 @@
+License Overview
+JSwitch License Overview
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software. The JSwitch is being put to use by a wide range of users for a wide range of projects. This includes corporate and government infrastructure projects, commercial products and systems, and open source projects.
+Choosing an Appropriate License
+The JSwitch is available under any one of three licenses making it possible to choose to license most appropriate for a given project. The full text of each license is given later in the document.
+Premium License Agreement
+This License Agreement allows you to bundle and redistribute the JSwitch with one proprietary commercial application without requiring that the source of the application be disclosed in any way. One license allows for the generation of a single License Key, which will authorize the JSwitch to be run on a single machine.
+Community License Agreement
+This license agreement is based on the popular GPL v2 (General Public License ver.2) license used by many open source projects. For open source projects, this is a good choice as it allows the JSwitch to be redistributed as part of any application provided that all source of the application is made available to the user base free of charge.
+
+
+Premium License Agreement Overview
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+This License Agreement allows you to bundle and distribute the JSwitch with one proprietary commercial application without requiring that the source of the application be disclosed in any way. Each JSwitch instance is tied to a specific application with a restriction on how many physical machines it is installed and run on. For each physical machine, one premium license is required. Cost of 1 premium license is 45 USD. If you deploy your application on 10 machines, you need to purchase 10 such licenses. If you intend to deploy your application on more than 100 physical machine, we recommend you to buy a premium license worth of 2200 USD. This will allow you to use JSwitch in a specific application without any restriction on how many physical machines it is installed and run on. Acceptance of this License Agreement is implied by download and use of the JSwitch. When you purchase a Premium License, it includes one year of upgrades and e-mail support
+
+    Licensed Products: This License allows you to bundle the JSwitch and redistribute the JSwitch binary as part of a specific application developed in large part by your organization. The Premium License grants the right to distribute the JSwitch. (The source redistribution is not allowed.).
+
+    Licensed Range of Use: This License Agreement allows you to bundle and redistribute the JSwitch bundled with one proprietary commercial application developed in large part by your organization. Once the Premium License has been purchased, there are no additional royalties charged for redistribution of your applications to your end users. A single Premium License can be shared by multiple developers in your organization. you can not share it with other organizations.
+
+    License Term: There is NO end-date which will ever cause the JSwitch to stop running. The License Term is an “upgrade term” which defines the term during which the license will allow for free upgrades to new versions of the JSwitch and e-mail support. When you purchase premium License, it includes one year of upgrades and e-mail support.
+    Disclaimer : By buying a Premium license, you are agreeing to following disclaimer - This SOFTWARE PRODUCT is provided "as is" and "with all faults."
+    THE PROVIDER makes no representations or warranties of any kind concerning the safety, suitability, lack of viruses, inaccuracies, typographical errors, or other harmful components of this SOFTWARE PRODUCT.
+    There are inherent dangers in the use of any software, and you are solely responsible for determining whether this SOFTWARE PRODUCT is compatible with your equipment and other software installed on your equipment.
+    You are also solely responsible for the protection of your equipment and backup of your data, and THE PROVIDER will not be liable for any damages you may suffer in connection with using, modifying, or distributing this SOFTWARE PRODUCT.
+     
+
+Intended Use for Premium License Agreement
+Premium Licenses are intended for companies who wish to deploy the JSwitch as part of a larger application without having to worry about open source or user specific licensing issues.
+
+Community License Agreement Overview
+ This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+This license agreement is based on the popular GPLv2 license used by many open source projects. For open source projects this is a good choice as it allows the JSwitch to be distributed as part of any application, provided that all source of the application is made available to the user base free of charge. Acceptance of this License Agreement is implied by download and use of the JSwitch.
+Licensed Products: The Community License Agreement allows you to use JSwitch in your application, provided that all source of the application is made available to the user base free of charge.
+
+Licensed Range of Use:  This Community License Agreement is based on the popular GPL v2 (General Public License ver.2) license used by many open source projects. It allows deployment of the JSwitch in applications whose complete source is made available to the user base free of charge. Intended Use for Community License Agreement.
+
+Open Source Projects: The JSwitch itself has a history as a popular open source application. thegoodcode Software intends to continue working with and supporting the open source community. The Community License is perfect for open source applications with GPL compatible licenses. As long as the entire application solution does not violate any of the requirements of the GPL, the JSwitch can be included under this license. If any component of the total application can not be released in a form which does not violate the GPL, then it necessary to purchase a Premium License Agreement.
+
+Non-GPL Open Source Projects:  thegoodcode Software has no desire to restrict the use of the JSwitch in open source applications released under licenses not directly compatible with GPL. We will be happy to work with the open source community to come up with a license agreement which works with your application as long as redistribution of the JSwitch is protected in a way which follows the spirit of the GPL.
+
+Closed Source Use:  The GPL does not restrict private software from being developed for internal use which depends on software under the GPL as long as that software is never redistributed without making the full source of the entire application available to all users. While we encourage corporate and government users to make use of either a Premium License Agreement, the Community License Agreement is acceptable as long as the application is for internal use or will be always be redistributed along with its full source.
+
+Disclaimer : By Downloading a Community license, you are agreeing to following disclaimer - This SOFTWARE PRODUCT is provided "as is" and "with all faults."
+THE PROVIDER makes no representations or warranties of any kind concerning the safety, suitability, lack of viruses, inaccuracies, typographical errors, or other harmful components of this SOFTWARE PRODUCT.
+There are inherent dangers in the use of any software, and you are solely responsible for determining whether this SOFTWARE PRODUCT is compatible with your equipment and other software installed on your equipment.
+You are also solely responsible for the protection of your equipment and backup of your data, and THE PROVIDER will not be liable for any damages you may suffer in connection with using, modifying, or distributing this SOFTWARE PRODUCT.

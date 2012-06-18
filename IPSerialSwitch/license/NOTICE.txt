@@ -1,0 +1,37 @@
+
+----- Copyright information------------
+
+This project contains references to other external projects. Copyright information of each project is as follows:
+
+---------------------------------------------------------
+Apache MINA APIs
+Copyright 2004-2010 Apache MINA Project
+
+Log4j API
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+---------------------------------------------------------
+From: 'QOS.ch' (http://www.qos.ch)
+  - SLF4J API Module (http://www.slf4j.org) org.slf4j:slf4j-api:jar:1.5.11
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+--------------------------------------------------------    
+RxTx
+
+License information:
+http://users.frii.com/jarvi/rxtx/license.html
+
+Project information:
+http://rxtx.qbang.org/wiki/index.php/Main_Page
+
+Special thanks to developers for providing 64-bit dll.
+http://www.cloudhopper.com/opensource/rxtx/
+--------------------------------------------------------
+TGCCollections
+
+Copyright 2004-2010 The good code
+
+www.thegoodcode.com
+--------------------------------------------------------
+
+
